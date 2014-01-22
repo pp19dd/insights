@@ -157,9 +157,13 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 			"where {$tbl}services.is_deleted='No'",
 			array("index"=>"id")
 		),
-		"divisions_and_services" => array()
+		"divisions_and_services" => array(),
+		"config" => $VOA->query(
+			"select * from {$tbl}_config",
+			array("index"=>"symbol")
+		)
 	);
-	
+
 	foreach( $ALLOW_TYPE as $type ) $queries[$type] = insights_get_type( $type );
 	
 	$queries['editors_reduced'] = array_values(array_map( function($e) {

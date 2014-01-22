@@ -91,6 +91,8 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 # common queries, entries and activity
 # ============================================================================
 
+if( defined('VOA_DISABLE_FOOTER') ) $VOA->assign('disable_footer', true);
+
 $queries = insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday );
 foreach( $queries as $query => $data ) $VOA->assign( $query, $data );
 

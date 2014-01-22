@@ -8,6 +8,7 @@ define( 'TEMP_CONF_PWD', "md5-hash-of-temp-admin-pwd" );
 if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'VOA_BASE_URL',		'http://localhost/insights/' );
 	define( 'VOA_BASE_DIR',		'./' );
+	define( 'VOA_DISABLE_FOOTER', true );
 } else { 
 	define( 'VOA_BASE_URL',		'http://www.example.com/insights/' );
 	define( 'VOA_BASE_DIR',		'./' );

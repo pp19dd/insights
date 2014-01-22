@@ -71,5 +71,11 @@
 
 {block name='footer'}{/block}
 
+{if !$disable_footer}
+{$config.footer.value}
+{else}
+<!-- additional footer disabled -->
+{/if}
+
 </body>
 </html>
