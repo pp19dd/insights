@@ -13,6 +13,7 @@
 <link href="bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="bootstrap-datepicker/css/datepicker.css" rel="stylesheet">
 <link href="bootstrap-select2-3.4.5/select2.css" rel="stylesheet">
+<link href="bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet">
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -62,6 +63,9 @@
 <script src="bootstrap-3.0.2/js/bootstrap.min.js"></script>
 <script src="bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="bootstrap-select2-3.4.5/select2.min.js"></script>
+<script src="rainbowvis-js/rainbowvis.js"></script>
+<script src="bootstrap-sortable/Scripts/bootstrap-sortable.js"></script>
+<script src="bootstrap-sortable/Scripts/moment.min.js"></script>
 
 {include file='_javascript.tpl'}
 

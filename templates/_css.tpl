@@ -37,7 +37,16 @@ h1 { font-size: 18px; color: gray }
 .left-most { width: 70px }
 .right-most { text-align: right; width:200px }
 .datepicker-days .disabled { color: silver }
+
+/*
 .datepicker-days .today { border:1px dashed blue }
+.datepicker-days .active {
+	background-color: inherit !important;
+	background-image: inherit !important;
+}
+*/
+
+.pseudo-active { border:1px dashed blue }
 
 .cal_legend { }
 .cal_due { color: red}

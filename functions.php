@@ -101,7 +101,14 @@ $t = Array
     [2014-01-17] => 1
 )
 */
-	
+
+	return(array(
+		"list" => $t,
+		"range" => array(
+			"min" => min( $t ),
+			"max" => max( $t )
+		)
+	));
 	return( $t );
 	
 /*

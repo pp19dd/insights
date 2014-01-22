@@ -112,7 +112,7 @@
 {foreach from=$grouped_entries key=entry_group item=data}
 {if $entry_group == $smarty.get.more}
 <div class="panel panel-default">
-	<table class="table">
+	<table class="table sortable">
 {table_header}
 		<tbody>
 {foreach from=$data.all item=entry_id}
@@ -160,7 +160,7 @@
 <h1>Showing all entries for {$today|date_format:"M d, Y"}</h1>
 
 <div class="panel panel-default">
-	<table class="table">
+	<table class="table sortable">
 		{table_header}
 			<tbody>
 {foreach from=$entries key=entry_id item=dummy}
