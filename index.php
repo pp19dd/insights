@@ -1,35 +1,16 @@
 <?php
-require_once( 'config.php' );
+require_once( 'init.php' );
 require_once( 'functions.php' );
 require_once( 'functions_read.php' );
 require_once( 'functions_write.php' );
-
-error_reporting( 0 );
-session_start();
+require_once( 'class.user.php');
 
 # ============================================================================
-# login/auth/starring - cheap until later...
+# auth
 # ============================================================================
-if( isset( $_GET['logout'] ) ) {
-	$_SESSION['logged_in'] = false;
-}
-if( isset( $_GET['login'] ) && isset( $_POST['password'] ) ) {
-	$pwd = TEMP_CONF_PWD;
-	if( md5($_POST['password']) == $pwd ) {
-		
-		$_SESSION['logged_in'] = true;
-		
-	} else {
-		$VOA->assign( 'error', "Incorrect password." );
-	}
-}
-
-if( isset( $_SESSION['logged_in'] ) && $_SESSION['logged_in'] == true ) {
-	$VOA->assign( 'logged_in', true );
-} else {
-	$VOA->assign( 'logged_in', false );
-}
-
+$USER = new Insights_User();
+$VOA->assign( 'can', $USER->getPermissions() );
+$VOA->assign( 'error', $USER->error );
 
 # ============================================================================
 # calendar navigation / general queries
@@ -57,13 +38,10 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 			$r = insights_add_insight( $_POST, intval($_POST['entry_id']) );
 			
 			// consider star for logged in users
-			if( isset( $_SESSION['logged_in'] ) && $_SESSION['logged_in'] == true ) {
-			
+			if( $CAN['star'] === true ) {
 				if( isset( $_POST['star'] ) ) {
-					# pre( "enable star" );
 					insights_star( intval( $_POST['entry_id']), 'Yes' );
 				} else {
-					# pre( "disable star" );
 					insights_star( intval( $_POST['entry_id']), 'No' );
 				}
 			}
@@ -111,9 +89,9 @@ $all_maps = insights_get_all_maps( $entries );
 #			we only want entries organized by [beats, divisions, editors, mediums, regions]
 if( isset( $_GET['show'] ) ) {
 	$grouped_entries = insights_group_by( $_GET['show'], $entries );
+	$VOA->assign( 'grouped_entries', $grouped_entries );
 }
 
-$VOA->assign( 'grouped_entries', $grouped_entries );
 #pre( $sorted_entries );
 #pre( $all_maps, false );	pre( $entries );
 
@@ -180,6 +158,8 @@ switch( $mode ) {
 if( isset( $_GET['delete'] ) ) {
 	pre( $_GET );
 }
+
+$VOA->assign( "CAN", $USER->CAN );
 
 # ============================================================================
 # break caching, template compiling and display

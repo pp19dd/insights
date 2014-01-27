@@ -115,7 +115,7 @@
 	value=$entry.map.regions
 }
 
-{if $logged_in}
+{if $can.star}
 <hr/>
 You're logged in as an admin.
 

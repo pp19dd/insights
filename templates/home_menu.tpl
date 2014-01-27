@@ -4,7 +4,11 @@
        ------------------------------------------------------------------ -->*}
 
 {function name=insights_show}
-<button type="button" class="btn btn-default {if $smarty.get.show==$parm}{*btn-primary*}active{/if}" onclick="window.location='?{rewrite show=$parm erase='edit,more,all'}{/rewrite}';">{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</button>
+<button 
+	type="button" 
+	class="btn btn-default {if $smarty.get.show==$parm}{*btn-primary*}active{/if}" 
+	onclick="window.location='?{rewrite show=$parm erase='edit,more,all,logout,login'}{/rewrite}';"
+>{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</button>
 {/function}
 
 <div class="btn-group insights_show_by_menu">

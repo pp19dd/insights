@@ -26,6 +26,7 @@ insights_map
 */
 function insights_map($entry_id, $is_deleted = 'No') {
 	global $VOA;
+	global $ALLOW_TYPE;
 	$tbl = TABLE_PREFIX;
 
 	$t = $VOA->query(
@@ -34,6 +35,11 @@ function insights_map($entry_id, $is_deleted = 'No') {
 		$is_deleted,
 		array("noempty", "index" => "type", "deep", "index2" => "other_id")
 	);
+	
+	// mapping routine should show all pertinent types
+	foreach( $ALLOW_TYPE as $v ) {
+		if( !isset($t[$v])) $t[$v] = array();
+	}
 	
 	// $k = reporters, beats
 	foreach( $t as $k => $v ) {
@@ -96,6 +102,6 @@ function insights_get_entries( $date = null, $is_deleted = 'No' ) {
 	foreach( $t as $k => $v ) {
 		$t[$k]['map'] = insights_map( $v['id'], $is_deleted );
 	}
-	
+
 	return( $t );
 }

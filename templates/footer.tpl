@@ -1,11 +1,13 @@
 
 <footer>
 
-{if $logged_in}
+{if $can.logout}
 	<div class="pull-right">
 		Logged in as Admin <a href="?{rewrite logout=1}{/rewrite}">Logout</a>
 	</div>
-{else}
+{/if}
+
+{if $can.login}
 	<div class="pull-right">
 		<form method="post" action="?{rewrite login=1 erase='logout'}{/rewrite}">
 		Admin

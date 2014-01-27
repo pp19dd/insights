@@ -12,6 +12,10 @@ function insights_group_by( $map_type, &$entries ) {
 		if( !isset( $entry['map'][$map_type] ) ) continue;
 		
 		foreach( $entry['map'][$map_type] as $map ) {
+			
+			if( !isset($map['resolved']) ) continue;
+			if( !isset($map['resolved']['name'])) continue;
+			
 			$key = $map['resolved']['name'];
 			
 			if( !isset($r[$key]) ) {
@@ -42,7 +46,11 @@ find a list of all origins, targets, beats and mediums from an entries list
 */
 function insights_increment_if_exists( &$a, $map ) {
 	$type = $map['type'];
-	$entry = $map['resolved']['name'];
+	if( isset($map['resolved']) && isset($map['resolved']['name']) ) { 
+		$entry = $map['resolved']['name'];
+	} else {
+		return;
+	}
 	
 	if( !isset( $a[$type] ) ) $a[$type] = array();
 	

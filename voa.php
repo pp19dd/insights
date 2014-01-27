@@ -49,14 +49,6 @@ if( !defined( 'VOA_SMARTY_VERSION' ) ) {
 require_once( VOA_SMARTY_VERSION . '/libs/Smarty.class.php' );
 
 function pre($a, $die = true, $var_name = null) {
-	/*
-	$t = print_r( $a, true );
-	$t = preg_replace( "/Array(.*)\n([\ ]+)\(/i", "Array (", $t );
-	$t = str_replace( "\n\n", "\n", $t );
-	
-	*/
-	#if( !is_null($var_name) ) echo "{$var_name} = ";
-	#echo $t;
 	echo "<PRE>";
 	print_r( $a );
 	echo "</PRE>";

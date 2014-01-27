@@ -25,7 +25,7 @@
 			insights_data="{$data}" 
 			style="{$style}" 
 			id="{$id}" 
-			data-selected="{$value|array_keys|implode:','}"
+			data-selected="{if isset($value)}{$value|array_keys|implode:','}{/if}"
 		/>
 
 {*<!--

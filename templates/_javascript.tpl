@@ -16,7 +16,7 @@ var insights_data = {
 	editors: { results: {$editors_reduced|json_encode} },
 	reporters: { results: {$reporters_reduced|json_encode} },
 	activity: {$activity|json_encode},
-	entry: {$entry|json_encode}
+	entry: {if isset($entry)}{$entry|json_encode}{else}null{/if}
 };
 
 var rainbow = new Rainbow();
@@ -125,10 +125,12 @@ $('.parse_select2b').each( function(i,e) {
 		
 		for( value in values ) {
 			var stored_id = parseInt( values[value] );
+			
 			var temp = $.grep(insights_data[data_key].results, function(e ) {
 				if( e.id == stored_id ) return( true );
 				return( false );
-			})
+			});
+
 			values_obj.push({
 				"id": stored_id,
 				"text": temp[0].text

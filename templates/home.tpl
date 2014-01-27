@@ -7,7 +7,7 @@
 
 {include file="home_menu.tpl"}
 
-{if isset($error)}
+{if isset($error) && $error}
 <div class="alert alert-danger alert-dismissable">
 
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -107,7 +107,7 @@
 
 <hr/>
 
-
+{if isset($grouped_entries)}
 	<div class="more_view">
 {foreach from=$grouped_entries key=entry_group item=data}
 {if $entry_group == $smarty.get.more}
@@ -124,13 +124,14 @@
 {/if}
 {/foreach}
 	</div>
+{/if}
 
 </div>
 
 {else}
 
 <div class="row">
-
+{if isset($grouped_entries)}
 {foreach from=$grouped_entries key=entry_group item=data}
 	<div class="col-md-4">
 		<h3>{$entry_group|default:"(Unknown)"}</h3>
@@ -151,10 +152,9 @@
 		</p>
 	</div>
 {/foreach}
-
-</div>
-
 {/if}
+{/if}
+</div>
 
 {if isset($smarty.get.all)}
 <h1>Showing all entries for {$today|date_format:"M d, Y"}</h1>

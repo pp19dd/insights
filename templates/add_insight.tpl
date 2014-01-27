@@ -99,7 +99,7 @@
 </div>
 
 
-{if $entry_added or $entry_updated}
+{if isset($entry_added) or isset($entry_updated)}
 
 {$entry_id = $entry_added.returned.entries|array_shift}
 
