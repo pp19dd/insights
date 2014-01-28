@@ -34,7 +34,7 @@
 {include
 	file="checkbox.tpl"
 	label="Mediums"
-	name="medium[]"
+	name="mediums[]"
 	id="entry_id_medium_"
 	data=$mediums
 	value=$entry.map.mediums
@@ -65,7 +65,7 @@
 {include 
 	file="select2.tpl" 
 	label="Reporter" 
-	name="reporter" 
+	name="reporters" 
 	id="entry_id_reporter" 
 	placeholder="Reporter" 
 	style="width:50%" 
@@ -79,7 +79,7 @@
 {include 
 	file="select2.tpl" 
 	label="Editor" 
-	name="editor" 
+	name="editors" 
 	id="entry_id_editor" 
 	placeholder="Editor" 
 	style="width:50%" 
@@ -93,7 +93,7 @@
 {include
 	file="checkbox.tpl"
 	label="Beats"
-	name="beat[]"
+	name="beats[]"
 	id="entry_id_beat_"
 	data=$beats
 	value=$entry.map.beats
@@ -103,7 +103,7 @@
 {include
 	file="checkbox.tpl"
 	label="Regions"
-	name="region[]"
+	name="regions[]"
 	id="entry_id_region_"
 	data=$regions
 	value=$entry.map.regions

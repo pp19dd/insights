@@ -98,12 +98,16 @@ returns an array of entries (and meta)
 */
 function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	global $VOA;
-	// global $ALLOW_MEDIUM;
-	// global $queries;
-
+	global $ALLOW_TYPE;
+	
 	// implied date is "today"
 	if( strlen(trim($p['deadline'])) == 0 ) {
 		$p['deadline'] = date("Y-m-d");
+	}
+
+	// ensure anticipated map types are at least blank
+	foreach( $ALLOW_TYPE as $t ) {	
+		if( !isset($p[$t])) $p[$t] = array();
 	}
 
 	$ret = array(
@@ -113,9 +117,6 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	);
 	
 	$tbl = TABLE_PREFIX;
-	// if( !isset( $p['medium'] ) ) $p['medium'] = array();
-	// $try_medium = $p['medium']; 
-	// $medium = array_intersect($ALLOW_MEDIUM, $try_medium);
 
 	if( $requesting_entry_id === -1 ) {
 		$VOA->query(
@@ -125,18 +126,6 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	} else {
 		$entry_id = intval( $requesting_entry_id );
 	}
-	/*
-	
-	$VOA->query(
-		// "insert into `{$tbl}entries` (`slug`, `description`, `deadline`, `medium`) values ('%s', '%s', '%s', '%s')",
-		"insert into `{$tbl}entries` (`slug`, `description`, `deadline`) values ('%s', '%s', '%s')",
-		$p['slug'],
-		$p['description'],
-		date("Y-m-d", strtotime($p['deadline']))#,
-		//implode(",", $medium)
-	);
-	# $entry_id = mysql_insert_id();
-	*/
 	
 	$VOA->query(
 		"update `{$tbl}entries` set `slug`='%s', `description`='%s', `deadline`='%s' where `id`=%s limit 1",
@@ -149,20 +138,18 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	$ret["entries"][] = $entry_id;
 	
 	insights_clear_map( $entry_id );
-	
-	#					table													 	  insert new entry?
-	insights_add_map( 'reporters', 	$entry_id, explode(",", $p['reporter']), 	$ret, true );
-	insights_add_map( 'editors', 	$entry_id, explode(",", $p['editor']), 		$ret, true );
-	insights_add_map( 'beats', 		$entry_id, $p['beat'], 						$ret, false );
-	insights_add_map( 'mediums', 	$entry_id, $p['medium'], 					$ret, false );
-	
-	insights_add_map( 'regions', 	$entry_id, $p['region'], 					$ret, false );
-	
-	# $divisions = insights_get_type( "divisions" );
-	$services = insights_get_type( "services" );
-	// $division = intval($queries['services'][$p['origin']]['division_id']);
-	$division_id = intval($services[$p['origin']]['division_id']);
 
+	#					table													 	  insert new entry?
+	insights_add_map( 'reporters', 	$entry_id, explode(",", $p['reporters']), 	$ret, true );
+	insights_add_map( 'editors', 	$entry_id, explode(",", $p['editors']), 	$ret, true );
+	insights_add_map( 'beats', 		$entry_id, $p['beats'], 					$ret, false );
+	insights_add_map( 'mediums', 	$entry_id, $p['mediums'], 					$ret, false );
+	
+	insights_add_map( 'regions', 	$entry_id, $p['regions'], 					$ret, false );
+	
+	// lookup table
+	$services = insights_get_type( "services" );
+	$division_id = intval($services[$p['origin']]['division_id']);
 	insights_add_map( 'divisions', 	$entry_id, $division_id, 					$ret, false );
 	insights_add_map( 'services', 	$entry_id, $p['origin'], 					$ret, false );
 

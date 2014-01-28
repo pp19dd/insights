@@ -1,5 +1,5 @@
 
-{if $can.login}
+{if $can.edit == false}
 
 <div class="container" id="{$id|default:'id_add_entry'}">
 
@@ -30,7 +30,7 @@
 {include
 	file="checkbox.tpl"
 	label="Mediums"
-	name="medium[]"
+	name="mediums[]"
 	id="id_medium_"
 	data=$mediums
 }
@@ -57,7 +57,7 @@
 {include 
 	file="select2.tpl" 
 	label="Reporter" 
-	name="reporter" 
+	name="reporters" 
 	id="id_reporter" 
 	placeholder="Reporter" 
 	style="width:50%" 
@@ -69,7 +69,7 @@
 {include 
 	file="select2.tpl" 
 	label="Editor" 
-	name="editor" 
+	name="editors" 
 	id="id_editor" 
 	placeholder="Editor" 
 	style="width:50%" 
@@ -81,7 +81,7 @@
 {include
 	file="checkbox.tpl"
 	label="Beats"
-	name="beat[]"
+	name="beats[]"
 	id="id_beat_"
 	data=$beats
 }
@@ -89,7 +89,7 @@
 {include
 	file="checkbox.tpl"
 	label="Regions"
-	name="region[]"
+	name="regions[]"
 	id="id_region_"
 	data=$regions
 }
