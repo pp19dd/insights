@@ -60,7 +60,7 @@
 {function name=show_entry}
 {$entry = $entries[$entry_id]}
 
-{if $table}
+{if isset($table)}
 <tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
 	<td>{$entry.slug}</td>
 	<td>{$entry.description}</td>
@@ -78,8 +78,8 @@
 				class="btn btn-default" 
 				type="button"
 			>
-			<span class="glyphicon {if $entry.is_starred=='Yes'}glyphicon-star{else}glyphicon-star-empty{/if}"></span>
-			Edit
+			<span class="glyphicon {if $entry.is_starred=='Yes'}glyphicon-star insights_star_note_starred{else}glyphicon-star-empty{/if}"></span>
+			{if $can.edit}Edit{else}View{/if}
 			</button>
 		</div>
 	</td>

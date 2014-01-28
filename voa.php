@@ -79,7 +79,7 @@ class VOA extends Smarty {
 	var $link = null;
 	var $sql_username = VOA_DATABASE__USER;
 	var $sql_password = VOA_DATABASE__PASS;
-	var $sql_server = '';
+	var $sql_server = VOA_DATABASE__HOST;
 	var $sql_database = null;
 	var $t = null;
 	var $options = array();

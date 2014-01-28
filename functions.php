@@ -62,7 +62,15 @@ function insights_increment_if_exists( &$a, $map ) {
 }
 
 function insights_get_all_maps( $entries ) {
+	global $ALLOW_TYPE;
+	
 	$all_maps = array();
+
+	// mapping routine should show all pertinent types
+	foreach( $ALLOW_TYPE as $v ) {
+		$all_maps[$v] = array();
+	}
+	
 	foreach( $entries as $e ) {
 		foreach( $e['map'] as $type => $resolved ) {
 			foreach( $resolved as $map) {

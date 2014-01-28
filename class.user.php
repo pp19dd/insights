@@ -15,7 +15,8 @@ class Insights_User {
 
 		"star" => false			// admin login
 	);
-	
+
+	var $notes = array();
 	var $error = "";
 	
 	function __construct() {
@@ -24,22 +25,36 @@ class Insights_User {
 		$this->CAN = $this->default_CAN;
 		$this->applyWhitelist();
 		
-		if( isset( $_GET['login']) ) {
-			$this->tryLogin();
-		}
-		
-		if( isset( $_GET['logout'])) {
-			$this->doLogout();
-		}
-		
+		$URL = new Rewrite_URL();
+		if( isset( $_GET['login']) ) $this->tryLogin();
+		if( isset( $_GET['logout'])) $this->doLogout();
+
 		if(
 			isset( $_SESSION['logged_in'] ) && 
 			$_SESSION['logged_in'] === true
 		) {
+			$this->login_flag( false, true );
+			
+			$this->CAN['add'] = true;
 			$this->CAN['edit'] = true;
 			$this->CAN['delete'] = true;
 			$this->CAN['star'] = true;
+			
+			$this->notes["logged_in"] = true;
 		}
+
+		// redirect after action
+		if( isset( $_GET['login'] ) || isset( $_GET['logout'] ) ) {
+			$URL->erase("login");
+			$URL->erase("logout");
+			header("location:" . (String)$URL);
+			die;
+		}
+	}
+	
+	function login_flag($login = true, $logout = false) {
+		$this->CAN['login'] = $login;
+		$this->CAN['logout'] = $logout;
 	}
 	
 	function tryLogin() {
@@ -47,15 +62,16 @@ class Insights_User {
 			
 		if( md5($_POST['password']) == TEMP_CONF_PWD) {
 			$this->doLogin();
+			return( true );
 		} else {
 			$this->error = "Incorrect password.";
+			return( false );
 		}
 	}
 	
 	function doLogin() {
 		$_SESSION['logged_in'] = true;
-		$this->CAN['login'] = false;
-		$this->CAN['logout'] = true;
+		$this->login_flag( false, true );
 	}
 	
 	function doLogout() {
@@ -72,6 +88,8 @@ class Insights_User {
 				$this->CAN['edit'] = true;
 				$this->CAN['add'] = true;
 				$this->CAN['delete'] = true;
+				
+				$this->notes["whitelist"] = true;
 			}
 		}
 	}

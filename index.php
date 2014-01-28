@@ -1,9 +1,5 @@
 <?php
 require_once( 'init.php' );
-require_once( 'functions.php' );
-require_once( 'functions_read.php' );
-require_once( 'functions_write.php' );
-require_once( 'class.user.php');
 
 # ============================================================================
 # auth
@@ -26,6 +22,8 @@ $ts_yesterday = strtotime("-1 day", $ts);
 if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 	switch( $_POST['form_type'] ) {
 		case 'add_insight':
+			if( $USER->CAN['add'] === false ) die("error: you don't have permission to ADD records.");
+			
 			$r = insights_add_insight( $_POST );
 
 			$VOA->assign( 'entry_added', array(
@@ -35,10 +33,14 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 		break;
 		
 		case 'update_insight':
+			if( $USER->CAN['edit'] === false ) die("error: you don't have permission to EDIT records.");
+			
 			$r = insights_add_insight( $_POST, intval($_POST['entry_id']) );
 			
+			# if( $USER->CAN['star'] === false ) die("error: you don't have permission to STAR records.");
+			
 			// consider star for logged in users
-			if( $CAN['star'] === true ) {
+			if( $USER->CAN['star'] === true ) {
 				if( isset( $_POST['star'] ) ) {
 					insights_star( intval( $_POST['entry_id']), 'Yes' );
 				} else {
@@ -51,9 +53,6 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 				"returned" => $r
 			));
 			$VOA->assign( 'entry_updated', true );
-			# unset( $_GET['edit'] );
-			#echo "ok this is update_insight?<hr/>";
-			#pre( $_POST );
 		break;
 		
 		default:
@@ -77,10 +76,6 @@ foreach( $queries as $query => $data ) $VOA->assign( $query, $data );
 # hint entries for calendar (activity level)
 $VOA->assign( 'activity', insights_activity() );
 
-# entries and relevant metadata
-# $t = insights_get_entries("2013-12-06");
-#######					$entries = insights_get_entries("all");
-
 $entries = insights_get_entries($queries['today']);
 $all_maps = insights_get_all_maps( $entries );
 
@@ -92,10 +87,6 @@ if( isset( $_GET['show'] ) ) {
 	$VOA->assign( 'grouped_entries', $grouped_entries );
 }
 
-#pre( $sorted_entries );
-#pre( $all_maps, false );	pre( $entries );
-
-
 $VOA->assign( 'all_maps', $all_maps );
 $VOA->assign( 'entries', $entries );
 
@@ -106,30 +97,12 @@ $mode = '';
 if( isset( $_GET['mode'] ) ) $mode = $_GET['mode'];
 
 switch( $mode ) {
-	case 'admin':
-		$template = 'admin.tpl';
-	break;
-	
-	case 'divisions':
-		$template = 'divisions.tpl';
-	break;
-	
-	case 'services':
-		$template = 'services.tpl';
-	break;
-	
-	case 'beats':
-		$template = 'beats.tpl';
-	break;
-	
-	case 'reporters':
-		$template = 'reporters.tpl';
-	break;
-	
-	case 'editors':
-		$template = 'editors.tpl';
-	break;
-	
+	case 'admin': 		$template = 'admin.tpl'; break;
+	case 'divisions': 	$template = 'divisions.tpl'; break;	
+	case 'services':	$template = 'services.tpl'; break;
+	case 'beats':		$template = 'beats.tpl'; break;
+	case 'reporters':	$template = 'reporters.tpl'; break;
+	case 'editors':		$template = 'editors.tpl'; break;
 	default:
 		$template = 'home.tpl';
 		
@@ -159,11 +132,10 @@ if( isset( $_GET['delete'] ) ) {
 	pre( $_GET );
 }
 
-$VOA->assign( "CAN", $USER->CAN );
+$VOA->assign( "can", $USER->CAN );
 
 # ============================================================================
 # break caching, template compiling and display
 # ============================================================================
 $VOA->clearCompiledTemplate( $template );
 $VOA->display( $template );
-

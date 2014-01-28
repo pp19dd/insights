@@ -3,7 +3,7 @@
 	<label class="col-sm-2 control-label">{$label}</label>
 	<div class="col-sm-10">
 {if $optgroup}
-		<select name="{$name}" class="parse_select2" data-placeholder="{$placeholder}" style="{$style}" id="{$id}">
+		<select {if !$can.edit}disabled="disabled"{/if} name="{$name}" class="parse_select2" data-placeholder="{$placeholder}" style="{$style}" id="{$id}">
 {if $empty}
 			<option></option>
 {/if}
@@ -18,6 +18,7 @@
 {else}
 
 		<input 
+			{if !$can.edit}readonly="readonly"{/if}
 			type="hidden" 
 			name="{$name}" 
 			class="parse_select2b" 
@@ -40,7 +41,14 @@ $("#e8_2_set2").click(function () {
 
 	
 
-		<select name="{$name}" class="parse_select2" data-placeholder="{$placeholder}" style="{$style}" id="{$id}">
+		<select 
+			{if !$can.edit}disabled="disabled"{/if} 
+			name="{$name}" 
+			class="parse_select2" 
+			data-placeholder="{$placeholder}" 
+			style="{$style}" 
+			id="{$id}"
+		>
 {if $empty}
 			<option></option>
 {/if}

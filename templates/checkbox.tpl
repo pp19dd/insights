@@ -11,7 +11,8 @@
 		<label class="checkbox-inline">
 			<input 
 				name="{$name}" 
-				type="checkbox" 
+				type="checkbox"
+				{if !$can_edit}disabled="disabled"{/if} 
 				{if isset($value[$item.id])}checked="checked" {/if}
 				id="{$id}_{$item@index}" 
 				value="{$item.id}"

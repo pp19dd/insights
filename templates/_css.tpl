@@ -18,6 +18,11 @@ h1 { font-size: 18px; color: gray }
 .insights_slug { margin:0px; }
 .insights_description { color: silver; font-size: 10px }
 
+.insights_star_note { }
+.insights_star_note_starred { color: darkorange }
+.insights_star_note_empty { color: lightsteelblue }
+
+
 .more_view {}
 .more_view .insights_entries { line-height: 1.5em }
 

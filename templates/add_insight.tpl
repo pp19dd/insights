@@ -1,4 +1,14 @@
 
+{if $can.login}
+
+<div class="container" id="{$id|default:'id_add_entry'}">
+
+	<p>Sorry, you can't add or edit entries from outside of the VOA network.</p>
+	<p>To request remote access, please contact <a href="mailto:voadigital@voanews.com?subject=VOA+Insights">voadigital@voanews.com</a></p>
+</div>
+
+{else}
+
 <div class="container" id="{$id|default:'id_add_entry'}">
 
 	<form role="form" class="form-horizontal" method="post">
@@ -114,5 +124,7 @@
 	</p>
 
 </div>
+
+{/if}
 
 {/if}

@@ -19,26 +19,15 @@
 		<input type="hidden" name="return_to" value="{rewrite erase=edit}{/rewrite}" />
 		
 		<div class="form-group">
-			<label class="col-sm-2 control-label">Note</label>
-			<div class="col-sm-10">
-{if $entry.is_starred == 'Yes'}
-				This entry is highlighted and will show up on top lists.
-{else}
-				This entry is not highlighted by an assignment editor, and won't show up on top lists.
-{/if}
-			</div>
-		</div>
-		
-		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Slug</label>
 			<div class="col-sm-10">
-				<input name="slug" type="text" autocomplete="off" class="form-control" id="entry_input_slug" placeholder="Insight slug" value="{$entry.slug}" />
+				<input {if !$can.edit}readonly="readonly"{/if} name="slug" type="text" autocomplete="off" class="form-control" id="entry_input_slug" placeholder="Insight slug" value="{$entry.slug}" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Description</label>
 			<div class="col-sm-10">
-				<textarea name="description" class="form-control" id="entry_input_description" placeholder="Longer description of the story">{$entry.description}</textarea>
+				<textarea {if !$can.edit}readonly="readonly"{/if} name="description" class="form-control" id="entry_input_description" placeholder="Longer description of the story">{$entry.description}</textarea>
 			</div>
 		</div>
 		
@@ -49,12 +38,13 @@
 	id="entry_id_medium_"
 	data=$mediums
 	value=$entry.map.mediums
+	can_edit=$can.edit
 }
 
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Deadline</label>
 			<div class="col-sm-10">
-				<input name="deadline" type="text" autocomplete="off" class="form-control " style="width:20%" id="entry_deadline" value="{$entry.deadline|date_format:'m/d/Y'}" {*<!-- placeholder="{$actually_today|date_format:'Y-m-d'}" -->*} >
+				<input name="deadline" {if !$can.edit}readonly="readonly"{/if} type="text" autocomplete="off" class="form-control " style="width:20%" id="entry_deadline" value="{$entry.deadline|date_format:'m/d/Y'}" {*<!-- placeholder="{$actually_today|date_format:'Y-m-d'}" -->*} >
 			</div>
 		</div>
 	
@@ -69,6 +59,7 @@
 	optgroup=true 
 	data=$divisions_and_services
 	value=$entry.map.services
+	can_edit=$can.edit
 }
 
 {include 
@@ -82,6 +73,7 @@
 	optgroup=false 
 	data="reporters"
 	value=$entry.map.reporters
+	can_edit=$can.edit
 }
 
 {include 
@@ -95,6 +87,7 @@
 	optgroup=false 
 	data="editors"
 	value=$entry.map.editors
+	can_edit=$can.edit
 }
 
 {include
@@ -104,6 +97,7 @@
 	id="entry_id_beat_"
 	data=$beats
 	value=$entry.map.beats
+	can_edit=$can.edit
 }
 
 {include
@@ -113,6 +107,7 @@
 	id="entry_id_region_"
 	data=$regions
 	value=$entry.map.regions
+	can_edit=$can.edit
 }
 
 {if $can.star}
@@ -126,16 +121,38 @@ You're logged in as an admin.
 	name="star" 
 /><label for="id_star_this_item">&nbsp;Highlight this item for others (will show up on top lists).</label>
 
+{else}
+
+		<div class="form-group insights_star_note">
+			<label class="col-sm-2 control-label">&nbsp;</label>
+			<div class="col-sm-10">
+{if $entry.is_starred == 'Yes'}
+				<div class="insights_star_note_starred">
+					<span class="glyphicon glyphicon-star"></span>
+					<span>This entry is highlighted and will show up on top lists.</span>
+				</div>
+{else}
+				<div class="insights_star_note_empty">
+					<span class="glyphicon glyphicon-star-empty"></span>
+					<span>This entry is not highlighted by an assignment editor, and will not show up on top lists.</span>
+				</div>
+{/if}
+			</div>
+		</div>
+		
+
 {/if}
 	<hr/>
 
 	<div class="form-group">
 			<label class="col-sm-2 control-label">&nbsp;</label>
 			<div class="col-sm-10">
+{if $can.edit}
 				<button id="id_update_new_insight" name="update_insight" type="submit" class="btn btn-default">Update insight</button>
-{*<!--
-				<button id="id_cancel_new_insight" type="button" class="btn btn-cancel">Cancel</button>
--->*}
+{else}
+				<button onclick="window.location='?{rewrite erase='edit'}{/rewrite}'" type="button" class="btn btn-cancel">Go Back</button>
+
+{/if}			
 			</div>
 	</div>
 		
