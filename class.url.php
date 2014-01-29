@@ -21,15 +21,15 @@ class Rewrite_URL {
 	function split_parts() {
 		if( !isset( $this->frag["query"])) return;
 		
-		$e = explode("&", $this->frag["query"]);
-		array_walk($e, function($e) {
+		$e_arr = explode("&", $this->frag["query"]);
+		foreach( $e_arr as $e ) {
 			$p = explode("=", $e);
 			if( count($p) == 2 ) {
 				$this->set( urldecode($p[0]), urldecode($p[1]) );
 			} elseif( count($p) == 1 ) {
 				$this->set( urldecode($p[0]) );
 			}
-		});
+		}
 	}
 	
 	function set( $parm, $value = null ) {
