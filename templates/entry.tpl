@@ -21,13 +21,26 @@
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Slug</label>
 			<div class="col-sm-10">
-				<input {if !$can.edit}readonly="readonly"{/if} name="slug" type="text" autocomplete="off" class="form-control" id="entry_input_slug" placeholder="Insight slug" value="{$entry.slug}" />
+				<input 
+					{if !$can.edit}readonly="readonly"{/if} 
+					name="slug" type="text" 
+					autocomplete="off" 
+					class="form-control" 
+					id="entry_input_slug" 
+					placeholder="Insight slug" 
+					value="{$entry.slug}" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Description</label>
 			<div class="col-sm-10">
-				<textarea {if !$can.edit}readonly="readonly"{/if} name="description" class="form-control" id="entry_input_description" placeholder="Longer description of the story">{$entry.description}</textarea>
+				<textarea 
+					{if !$can.edit}readonly="readonly"{/if} 
+					name="description" 
+					class="form-control" 
+					id="entry_input_description" 
+					placeholder="Longer description of the story"
+				>{$entry.description}</textarea>
 			</div>
 		</div>
 		
@@ -44,7 +57,16 @@
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Deadline</label>
 			<div class="col-sm-10">
-				<input name="deadline" {if !$can.edit}readonly="readonly"{/if} type="text" autocomplete="off" class="form-control " style="width:20%" id="entry_deadline" value="{$entry.deadline|date_format:'m/d/Y'}" {*<!-- placeholder="{$actually_today|date_format:'Y-m-d'}" -->*} >
+				<input 
+					name="deadline" 
+					{if !$can.edit}readonly="readonly"{/if} 
+					type="text" 
+					autocomplete="off" 
+					class="form-control " 
+					style="width:20%" 
+					id="entry_deadline" 
+					value="{$entry.deadline|date_format:'m/d/Y'}"
+				/>
 			</div>
 		</div>
 	
@@ -148,9 +170,18 @@ You're logged in as an admin.
 			<label class="col-sm-2 control-label">&nbsp;</label>
 			<div class="col-sm-10">
 {if $can.edit}
-				<button id="id_update_new_insight" name="update_insight" type="submit" class="btn btn-default">Update insight</button>
+				<button
+					id="id_update_new_insight"
+					name="update_insight"
+					type="submit"
+					class="btn btn-default"
+				>Update insight</button>
 {else}
-				<button onclick="window.location='?{rewrite erase='edit'}{/rewrite}'" type="button" class="btn btn-cancel">Go Back</button>
+				<button 
+					onclick="window.location='?{rewrite erase='edit'}{/rewrite}'" 
+					type="button" 
+					class="btn btn-cancel"
+				>Go Back</button>
 
 {/if}			
 			</div>

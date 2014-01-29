@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{$title|default:"VOA Insights"}</title>
+{include file="title.tpl"}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{*<!--
-<link href="/voa.lib/bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="/voa.lib/bootstrap-libs/datepicker/css/datepicker.css" rel="stylesheet">
-<link href="/voa.lib/bootstrap-select2/select2-3.4.5/select2.css" rel="stylesheet">
--->*}
-
-<link href="bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="bootstrap-datepicker/css/datepicker.css" rel="stylesheet">
-<link href="bootstrap-select2-3.4.5/select2.css" rel="stylesheet">
-<link href="bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet">
+<link href="bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet" />
+<link href="bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+<link href="bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
+<link href="bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet" />
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -51,13 +45,6 @@
 
 <hr/>
 </div> <!-- /container -->
-
-{*<!--
-<script src="/voa.lib/bootstrap-jquery/jquery.js"></script>
-<script src="/voa.lib/bootstrap-3.0.2/js/bootstrap.min.js"></script>
-<script src="/voa.lib/bootstrap-libs/datepicker/js/bootstrap-datepicker.js"></script>
-<script src="/voa.lib/bootstrap-select2/select2-3.4.5/select2.min.js"></script>
--->*}
 
 <script src="bootstrap-jquery/jquery.js"></script>
 <script src="bootstrap-3.0.2/js/bootstrap.min.js"></script>

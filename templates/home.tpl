@@ -42,7 +42,7 @@
 	<tr>
 		<th>Slug</th>
 		<th>Description</th>
-		<th>Deadline</th>
+{*<!--<th>Deadline</th>-->*}
 		<th>Origin</th>
 		<th>Medium</th>
 		<th>Beat</th>
@@ -64,7 +64,7 @@
 <tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
 	<td>{$entry.slug}</td>
 	<td>{$entry.description}</td>
-	<td>{$entry.deadline}</td>
+	{*<!--<td>{$entry.deadline}</td>-->*}
 	<td>{map set=$entry.map.services}</td>
 	<td>{map set=$entry.map.mediums}</td>
 	<td>{map set=$entry.map.beats}</td>

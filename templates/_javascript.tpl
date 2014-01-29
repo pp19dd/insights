@@ -31,6 +31,32 @@ for( k in insights_data.activity.list )(function(k,v){
 })(k, insights_data.activity.list[k]);
 $("<style type='text/css'>" + rainbow_rules.join("\n") + "</style>").appendTo("head");
 
+function add_calendar_legend() {
+	var spans = [];
+	var segs = 5;
+
+	for( i = 0; i < segs; i++ ) {
+		var l = (i) * (insights_data.activity.range.max / segs);
+		var u = (i+1) * (insights_data.activity.range.max / segs);
+		var v = (i+1) * (insights_data.activity.range.max / segs);
+		var tx = l + "-" + u; 
+		spans.push(
+			"<span style='background-color:#" + rainbow.colourAt(v) + "'>" + tx + "</span>"
+		);
+	}
+
+	$(".datepicker.dropdown-menu").append(
+		"<div style='clear:both; margin-top:5px; height:15px; display:block' class='cal_legend'>" +
+			spans.join( "\n" ) +
+			"<span style='font-size:10px'> Entries</span>" +
+			//"<span class='cal_due'>Due</span>" +
+			//"<span class='cal_started'>Started</span>" +
+		"</div>"
+	);
+
+}
+
+
 function add_insight() {
 	$('#id_add_entry').slideToggle('fast');
 	$('#input_deadline').datepicker('hide');
@@ -69,6 +95,7 @@ $('#pick_date').datepicker({
 		return( '' );
 	}
 }).on('show', function(e) {
+	// add_calendar_legend();
 	/*
 	$(".dropdown-menu").css({
 		'margin-left': '-118px'
@@ -141,6 +168,7 @@ $('.parse_select2b').each( function(i,e) {
 	}
 });
 
+// escape key shortcut to add new insight
 $(document).keyup(function(e) {
 	if( e.keyCode == 27 ) {
 		$('#id_add_entry').slideToggle('fast');
@@ -148,44 +176,11 @@ $(document).keyup(function(e) {
 	}
 });
 
-function edit(d) {
-	add_insight();
-	$("#input_slug").val( d.slug );
-	$("#input_description").val( d.description );
-	
-	// medium - r - t - w
-	$("#input_deadline").datepicker('setValue', d.deadline );
-	
-	// origin
-	// reporter
-	// editor
-	// beats
-	// regions
-	
-}
-
-{*
-/*
-{if $smarty.get.edit}
-
-edit( insights_data.entry );
-
-{/if}
-*/
-*}
-
-/*
-$(".datepicker.dropdown-menu").append(
-	"<p class='cal_legend'>" +
-		"<span class='cal_due'>Due</span>" +
-		"<span class='cal_started'>Started</span>" +
-	"</p>"
-);
-*/
-
 $("#admin_login").click( function() {
 	return( false );
 });
+
+// add_calendar_legend();
 
 // debug	add_insight();
 // debug	$("#pick_date").click();

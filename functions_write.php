@@ -149,9 +149,12 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	
 	// lookup table
 	$services = insights_get_type( "services" );
-	$division_id = intval($services[$p['origin']]['division_id']);
-	insights_add_map( 'divisions', 	$entry_id, $division_id, 					$ret, false );
-	insights_add_map( 'services', 	$entry_id, $p['origin'], 					$ret, false );
-
+	
+	if( isset( $p['origin']) && isset($services[$p['origin']]) ) {
+		$division_id = intval($services[$p['origin']]['division_id']);
+		insights_add_map( 'divisions', 	$entry_id, $division_id, 					$ret, false );
+		insights_add_map( 'services', 	$entry_id, $p['origin'], 					$ret, false );
+	}
+	
 	return( $ret );
 }
