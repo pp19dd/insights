@@ -146,7 +146,7 @@
 		<p>
 			<a 
 				class="btn btn-default" 
-				href="?{rewrite more=$entry_group}{/rewrite}" 
+				href="?{rewrite more=$entry_group erase=deleted}{/rewrite}" 
 				role="button"
 			>View all ({$data.all|count}) &raquo;</a>
 		</p>

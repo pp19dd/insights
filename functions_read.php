@@ -82,7 +82,7 @@ function insights_get_entries( $date = null, $is_deleted = 'No' ) {
 		
 		case 'list':
 			$t = $VOA->query(
-				"select * from `{$tbl}entries` where `is_deleted`='%s' and `id` in (%s)",
+				"select * from `{$tbl}entries` where /*`is_deleted`='%s' and*/ `id` in (%s)",
 				$is_deleted,
 				implode(",", $ids),
 				array("noempty")

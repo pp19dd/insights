@@ -70,6 +70,16 @@ function insights_add_map( $try_type, $entry_id, $other_ids, &$ret, $add_new_ent
 	}
 }
 
+function insights_delete_entry( $entry_id ) {
+	global $VOA;
+	$tbl = TABLE_PREFIX;
+	
+	$VOA->query(
+		"update `{$tbl}entries` set `is_deleted`='Yes' where `id`=%s limit 1",
+		intval( $entry_id )
+	);
+}
+
 function insights_star( $entry_id, $star = 'Yes' ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -128,7 +138,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	}
 	
 	$VOA->query(
-		"update `{$tbl}entries` set `slug`='%s', `description`='%s', `deadline`='%s' where `id`=%s limit 1",
+		"update `{$tbl}entries` set `is_deleted`='No', `slug`='%s', `description`='%s', `deadline`='%s' where `id`=%s limit 1",
 		trim(strip_tags($p['slug'])),
 		trim(strip_tags($p['description'])),
 		date("Y-m-d", strtotime($p['deadline'])),

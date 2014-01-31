@@ -7,7 +7,7 @@
 <button 
 	type="button" 
 	class="btn btn-default {if isset($smarty.get.show) and $smarty.get.show==$parm}{*btn-primary*}active{/if}" 
-	onclick="window.location='?{rewrite show=$parm erase='edit,more,all,logout,login'}{/rewrite}';"
+	onclick="window.location='?{rewrite show=$parm erase='edit,more,all,logout,login,deleted'}{/rewrite}';"
 >{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</button>
 {/function}
 

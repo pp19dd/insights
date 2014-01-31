@@ -112,7 +112,8 @@ $(".deletion_button").click( function() {
 	if( $(this).hasClass( "btn-danger" ) ) {
 		// confirm deleting
 		var id = $(this).attr( 'record-id' );
-		window.open( '?delete=' + id, '_self' );
+		var deletion_target = $(this).attr( 'deletion-target' );
+		window.open( deletion_target, '_self' );
 	} else {
 		$(".deletion_button").removeClass( 'btn-danger' ).html( "Delete" );
 		$(this).addClass( 'btn-danger' ).html( "Really?") ;

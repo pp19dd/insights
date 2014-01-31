@@ -19,6 +19,19 @@ $ts_yesterday = strtotime("-1 day", $ts);
 # ============================================================================
 # ajax / post mode?
 # ============================================================================
+if( isset( $_GET['delete'] ) ) {
+	if( $USER->CAN['delete'] === false ) die( "error: you don't have permission to delete records");
+
+	insights_delete_entry( intval($_GET['delete']) );
+	$URL = new Rewrite_URL();
+	$URL->erase( "delete" );
+	$URL->erase( "edit" );
+	$URL->set( "deleted", intval( $_GET['delete']) );
+	header("location:" . (String)$URL);
+	die;
+	// $VOA->assign( 'entry_deleted', intval( $_GET['delete']) );
+}
+
 if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 	switch( $_POST['form_type'] ) {
 		case 'add_insight':
@@ -123,11 +136,6 @@ switch( $mode ) {
 		}
 
 	break;
-}
-
-
-if( isset( $_GET['delete'] ) ) {
-	pre( $_GET );
 }
 
 $VOA->assign( "can", $USER->CAN );

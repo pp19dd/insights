@@ -183,7 +183,23 @@ You're logged in as an admin.
 					class="btn btn-cancel"
 				>Go Back</button>
 
-{/if}			
+{/if}
+
+{if $can.delete}
+				<button 
+					type="button" 
+					class="btn btn-default deletion_button" 
+					record-id="{$entry.id}"
+					deletion-target="?{rewrite delete=$entry.id}{/rewrite}"
+				>Delete Insight</button>
+{/if}
+
+{if $entry.is_deleted == 'Yes'}
+<span class="insights_star_note_empty">
+	Note: This item is deleted. To undelete, click 'update'.
+</span>
+{/if}
+
 			</div>
 	</div>
 		

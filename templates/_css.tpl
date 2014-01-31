@@ -68,7 +68,7 @@ h1 { font-size: 18px; color: gray }
 textarea { resize:vertical }
 
 .select2-container { border:0 }
-.deletion_button { width:75px }
+.deletion_button { width:130px }
 .container_add_insight { padding-right: 0px; padding-left: 0px }
 
 </style>
