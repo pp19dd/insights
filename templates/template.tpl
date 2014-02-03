@@ -3,7 +3,7 @@
 <head>
 {include file="title.tpl"}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="robots" content="noindex" />
 <link href="bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet" />
 <link href="bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
 <link href="bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
