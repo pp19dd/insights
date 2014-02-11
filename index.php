@@ -1,5 +1,5 @@
 <?php
-require_once( 'init.php' );
+require( 'init.php' );
 
 # ============================================================================
 # auth
@@ -108,6 +108,8 @@ $mode = '';
 if( isset( $_GET['mode'] ) ) $mode = $_GET['mode'];
 
 switch( $mode ) {
+	case '404':			$template = '404.tpl'; break;
+	case '403':			$template = '403.tpl'; break;
 	case 'admin': 		$template = 'admin.tpl'; break;
 	case 'divisions': 	$template = 'divisions.tpl'; break;	
 	case 'services':	$template = 'services.tpl'; break;
