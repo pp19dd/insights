@@ -69,8 +69,22 @@
 				/>
 			</div>
 		</div>
+
+{include 
+	mode=1
+	file="select2.tpl" 
+	label="Time" 
+	name="deadline_time" 
+	id="entry_id_deadline_time" 
+	style="width:20%;" 
+	empty=true
+	data=$hours
+	can_edit=$can.edit
+	can_clear=true
+}
 	
 {include 
+	mode=2
 	file="select2.tpl" 
 	label="Origin (Div/Svc)" 
 	name="origin" 
@@ -85,6 +99,7 @@
 }
 
 {include 
+	mode=3
 	file="select2.tpl" 
 	label="Reporter" 
 	name="reporters" 
@@ -99,6 +114,7 @@
 }
 
 {include 
+	mode=3
 	file="select2.tpl" 
 	label="Editor" 
 	name="editors" 

@@ -33,12 +33,18 @@ class Insights_User {
 			isset( $_SESSION['logged_in'] ) && 
 			$_SESSION['logged_in'] === true
 		) {
+		
 			$this->login_flag( false, true );
 			
-			$this->CAN['add'] = true;
-			$this->CAN['edit'] = true;
-			$this->CAN['delete'] = true;
-			$this->CAN['star'] = true;
+			if( $_SESSION['access_level'] >= 5 ) {
+				$this->CAN['add'] = true;
+				$this->CAN['edit'] = true;
+				$this->CAN['delete'] = true;
+			}
+			
+			if( $_SESSION['access_level'] >= 10 ) {
+				$this->CAN['star'] = true;
+			}
 			
 			$this->notes["logged_in"] = true;
 		}
@@ -59,9 +65,13 @@ class Insights_User {
 	
 	function tryLogin() {
 		if( !isset( $_POST['password'] ) ) return( false );
-			
-		if( md5($_POST['password']) == TEMP_CONF_PWD) {
-			$this->doLogin();
+		
+		$requested_level = 0;
+		if( md5($_POST['password']) == TEMP_EDIT_PWD ) $requested_level = 5;
+		if( md5($_POST['password']) == TEMP_CONF_PWD ) $requested_level = 10;
+		
+		if( $requested_level > 0 ) {
+			$this->doLogin( $requested_level );
 			return( true );
 		} else {
 			$this->error = "Incorrect password.";
@@ -69,14 +79,24 @@ class Insights_User {
 		}
 	}
 	
-	function doLogin() {
+	/*
+		temporary schema. 
+		access level 0 = read-only
+		access level 5 = add/edit
+		access level 10 = add/edit/star
+	*/
+	function doLogin($level = 0) {
 		$_SESSION['logged_in'] = true;
+		$_SESSION['access_level'] = $level;
+		
 		$this->login_flag( false, true );
 	}
 	
 	function doLogout() {
 		$_SESSION['logged_in'] = false;
+		$_SESSION['access_level'] = 0;
 		unset( $_SESSION['logged_in'] );
+		unset( $_SESSION['access_level'] );
 		
 		$this->CAN = $this->default_CAN;
 	}

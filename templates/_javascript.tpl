@@ -121,12 +121,23 @@ $(".deletion_button").click( function() {
 });
 
 // these have inline values
-$('.parse_select2').select2();
+$('.parse_select2').each( function(i,e) {
+	
+	var cc = $(e).attr("data-can-clear");
+
+	if( typeof cc != "undefined" ) { 	
+		$(e).select2({ allowClear: true });
+	} else {
+		$(e).select2();
+	}
+
+});
 
 // data and preloads are stored/referenced in attrs
 $('.parse_select2b').each( function(i,e) {
 	
 	// used for both stages
+	var cc = $(e).attr("data-can-clear");
 	var t = $(e).attr("data-selected");
 	var data_key = $(e).attr("insights_data");
 

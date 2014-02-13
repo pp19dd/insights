@@ -164,6 +164,7 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 		"today" => date("Y-m-d", $ts),
 		"tomorrow" => date("Y-m-d", $ts_tomorrow),
 		"yesterday" => date("Y-m-d", $ts_yesterday),
+		"hours" => array(),
 		"services_full" => $VOA->query(
 			"select " .
 			"{$tbl}services.*, {$tbl}divisions.name as `division_name` " .
@@ -181,6 +182,12 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 	);
 
 	foreach( $ALLOW_TYPE as $type ) $queries[$type] = insights_get_type( $type );
+	
+	for( $h = 0; $h < 24; $h++ ) {
+		$ts_1 = strtotime("midnight +{$h} hour");
+		
+		$queries["hours"][] = sprintf( "%s (%s)", date("H:i", $ts_1 ), date("g a", $ts_1) );
+	}
 	
 	$queries['editors_reduced'] = array_values(array_map( function($e) {
 		return(array(

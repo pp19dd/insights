@@ -3,7 +3,7 @@
 
 {if $can.logout}
 	<div class="pull-right">
-		Logged in as Admin | <a href="?{rewrite logout=1}{/rewrite}">Logout</a>
+		Logged in as {if $can.star}Admin{else}Regular User{/if} | <a href="?{rewrite logout=1}{/rewrite}">Logout</a>
 	</div>
 
 {/if}

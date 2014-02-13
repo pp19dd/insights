@@ -1,9 +1,24 @@
 RewriteEngine on
 
-# deny from all
-# fixme: 403
-# ErrorDocument 403 /insights/index.php?mode=403
+### Order Deny,Allow
+### Deny from ALL
 
+### AuthName "VOA Insights"
+### AuthUserFile /home/insights/.htpasswd
+### AuthType Basic
+### Require valid-user
+### AuthGroupFile /dev/null
+### ALLOW FROM 152.75.
+### ALLOW FROM LOCALHOST
+### Satisfy Any
+
+<Files ~ "\.(css|js|woff|ttf|png|jpg|jpeg)$">
+    allow from all
+</Files>
+
+
+ErrorDocument 401 /insights/index.php?mode=403
+ErrorDocument 403 /insights/index.php?mode=403
 ErrorDocument 404 /insights/index.php?mode=404
 
 

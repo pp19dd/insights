@@ -5,6 +5,7 @@ config.php
 *.tpl.php
 _insights.sql
 backup.sh
+.htaccess
 
 #################
 ## Eclipse

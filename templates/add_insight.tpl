@@ -50,20 +50,35 @@
 }
 
 		<div class="form-group">
-			<label for="input_slug" class="col-sm-2 control-label">Deadline</label>
+			<label for="input_deadline" class="col-sm-2 control-label">Deadline (date)</label>
 			<div class="col-sm-10">
 				<input 
 					name="deadline" 
 					type="text" autocomplete="off" 
 					class="form-control " 
-					style="width:20%" 
+					style="width:20%; " 
 					id="input_deadline" 
 					placeholder="{$actually_today|date_format:'Y-m-d'}"
 				/>
 			</div>
 		</div>
+
+{include 
+	mode=1
+	file="select2.tpl" 
+	label="Time" 
+	name="deadline_time" 
+	id="id_deadline_time" 
+	style="width:20%;" 
+	empty=true
+	data=$hours
+	can_edit=$can.edit
+	can_clear=true
+}
+
 	
 {include 
+	mode=2
 	file="select2.tpl" 
 	label="Origin (Div/Svc)" 
 	name="origin" 
@@ -74,9 +89,11 @@
 	optgroup=true 
 	data=$divisions_and_services
 	can_edit=$can.edit
+	can_clear=true
 }
 
 {include 
+	mode=3
 	file="select2.tpl" 
 	label="Reporter" 
 	name="reporters" 
@@ -90,6 +107,7 @@
 }
 
 {include 
+	mode=3
 	file="select2.tpl" 
 	label="Editor" 
 	name="editors" 

@@ -4,6 +4,7 @@
 # ============================================================================
 
 define( 'TEMP_CONF_PWD', "md5-hash-of-temp-admin-pwd" );
+define( 'TEMP_EDIT_PWD', "md5-hash-of-temp-user-pwd" );
 
 if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	
