@@ -1,6 +1,8 @@
 
 <script type="text/javascript">
 
+{include file="_data.tpl"}
+
 function ymd( e ) {
 	function pad( n ) {
 		return( (n <= 9 ? '0' : '' ) + n);
@@ -11,13 +13,6 @@ function ymd( e ) {
 	
 	return( y + "-" + pad(m) + "-" + pad(d) );
 }
-
-var insights_data = {
-	editors: { results: {$editors_reduced|json_encode} },
-	reporters: { results: {$reporters_reduced|json_encode} },
-	activity: {$activity|json_encode},
-	entry: {if isset($entry)}{$entry|json_encode}{else}null{/if}
-};
 
 var rainbow = new Rainbow();
 rainbow.setNumberRange(0, insights_data.activity.range.max);

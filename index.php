@@ -20,64 +20,15 @@ $ts_yesterday = strtotime("-1 day", $ts);
 # ajax / post mode?
 # ============================================================================
 if( isset( $_GET['delete'] ) ) {
-	if( $USER->CAN['delete'] === false ) die( "error: you don't have permission to delete records");
-
-	insights_delete_entry( intval($_GET['delete']) );
-	$URL = new Rewrite_URL();
-	$URL->erase( "delete" );
-	$URL->erase( "edit" );
-	$URL->set( "deleted", intval( $_GET['delete']) );
-	header("location:" . (String)$URL);
-	die;
-	// $VOA->assign( 'entry_deleted', intval( $_GET['delete']) );
+	insights_action_delete();
 }
 
 if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
-	switch( $_POST['form_type'] ) {
-		case 'add_insight':
-			if( $USER->CAN['add'] === false ) die("error: you don't have permission to ADD records.");
-			
-			$r = insights_add_insight( $_POST );
-
-			$VOA->assign( 'entry_added', array(
-				"posted" => $_POST,
-				"returned" => $r
-			));
-		break;
-		
-		case 'update_insight':
-			if( $USER->CAN['edit'] === false ) die("error: you don't have permission to EDIT records.");
-			
-			$r = insights_add_insight( $_POST, intval($_POST['entry_id']) );
-			
-			# if( $USER->CAN['star'] === false ) die("error: you don't have permission to STAR records.");
-			
-			// consider star for logged in users
-			if( $USER->CAN['star'] === true ) {
-				if( isset( $_POST['star'] ) ) {
-					insights_star( intval( $_POST['entry_id']), 'Yes' );
-				} else {
-					insights_star( intval( $_POST['entry_id']), 'No' );
-				}
-			}
-			
-			$VOA->assign( 'entry_added', array(
-				"posted" => $_POST,
-				"returned" => $r
-			));
-			$VOA->assign( 'entry_updated', true );
-		break;
-		
-		default:
-			pre( $_POST );
-			die;
-		break;
-	}
+	insights_action_add_update();
 }
 
-
 # ============================================================================
-# common queries, entries and activity
+# assume view mode: provide common queries, entries and activity
 # ============================================================================
 
 if( defined('VOA_DISABLE_FOOTER') ) $VOA->assign('disable_footer', true);
@@ -106,10 +57,16 @@ $VOA->assign( 'entries', $entries );
 # ============================================================================
 $mode = '';
 if( isset( $_GET['mode'] ) ) $mode = $_GET['mode'];
+if( $USER->CAN['view'] === false ) $mode = "403";
 
 switch( $mode ) {
 	case '404':			$template = '404.tpl'; break;
-	case '403':			$template = '403.tpl'; break;
+	
+	case '403':			
+		header( "HTTP/1.0 403 Forbidden" );
+		$template = "403.tpl";
+	break;
+	
 	case 'admin': 		$template = 'admin.tpl'; break;
 	case 'divisions': 	$template = 'divisions.tpl'; break;	
 	case 'services':	$template = 'services.tpl'; break;
@@ -139,8 +96,6 @@ switch( $mode ) {
 
 	break;
 }
-
-$VOA->assign( "can", $USER->CAN );
 
 # ============================================================================
 # break caching, template compiling and display

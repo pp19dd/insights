@@ -7,7 +7,7 @@ class Insights_User {
 		"login" => true,		// login routine inverts
 		"logout" => false,		// these two
 
-		"view" => true,			// default
+		"view" => false,		// default
 			
 		"add" => false,			// whitelisted / logged in
 		"edit" => false,
@@ -37,6 +37,7 @@ class Insights_User {
 			$this->login_flag( false, true );
 			
 			if( $_SESSION['access_level'] >= 5 ) {
+				$this->CAN['view'] = true;
 				$this->CAN['add'] = true;
 				$this->CAN['edit'] = true;
 				$this->CAN['delete'] = true;

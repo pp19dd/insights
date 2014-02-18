@@ -1,25 +1,19 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jan 22, 2014 at 06:31 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Feb 18, 2014 at 06:23 PM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
 -- Database: `toolsvoa_t2`
 --
-CREATE DATABASE IF NOT EXISTS `toolsvoa_t2` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `toolsvoa_t2` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `toolsvoa_t2`;
 
 -- --------------------------------------------------------
@@ -61,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `insights_editors` (
   `service_id` int(10) unsigned NOT NULL,
   `is_deleted` enum('Yes','No') COLLATE utf8_unicode_ci DEFAULT 'No',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=55 ;
 
 -- --------------------------------------------------------
 
@@ -78,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `insights_entries` (
   `is_deleted` enum('Yes','No') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'No',
   `is_starred` enum('Yes','No') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'No',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=273 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=808 ;
 
 -- --------------------------------------------------------
 
@@ -93,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `insights_map` (
   `other_id` int(10) unsigned NOT NULL,
   `is_deleted` enum('Yes','No') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'No',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1268 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5485 ;
 
 -- --------------------------------------------------------
 
@@ -134,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `insights_reporters` (
   `service_id` int(10) unsigned NOT NULL,
   `is_deleted` enum('Yes','No') COLLATE utf8_unicode_ci DEFAULT 'No',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=58 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=202 ;
 
 -- --------------------------------------------------------
 
@@ -150,6 +144,14 @@ CREATE TABLE IF NOT EXISTS `insights_services` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=65 ;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `insights__config`
+--
+
+CREATE TABLE IF NOT EXISTS `insights__config` (
+  `symbol` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `value` text COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `symbol` (`symbol`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

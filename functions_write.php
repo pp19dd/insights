@@ -137,11 +137,13 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 		$entry_id = intval( $requesting_entry_id );
 	}
 	
+	// zero-time?
 	$VOA->query(
-		"update `{$tbl}entries` set `is_deleted`='No', `slug`='%s', `description`='%s', `deadline`='%s' where `id`=%s limit 1",
+		"update `{$tbl}entries` set `is_deleted`='No', `slug`='%s', `description`='%s', `deadline`='%s %s:00:00' where `id`=%s limit 1",
 		trim(strip_tags($p['slug'])),
 		trim(strip_tags($p['description'])),
 		date("Y-m-d", strtotime($p['deadline'])),
+		str_pad(intval($p["deadline_time"]), 2, "0", STR_PAD_LEFT),
 		$entry_id
 	);
 	

@@ -7,6 +7,11 @@
 
 <p><strong>URL: </strong>{$base_url}{$smarty.server["REQUEST_URI"]|ltrim:"/"}</p>
 
-<p>If you believe you're seeing this page in error, please contact an administrator.</p>
+<hr/>
+
+<p>You must be logged in to view this page from outside of the VOA network.</p>
+
+<p>For access credentials, please contact <a href="mailto:voadigital@voanews.com?subject=VOA+Insights">voadigital@voanews.com</a></p> 
+
 
 {/block}

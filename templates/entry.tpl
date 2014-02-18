@@ -81,6 +81,7 @@
 	data=$hours
 	can_edit=$can.edit
 	can_clear=true
+	value=array_flip(array($entry.deadline|date_format:'G'))
 }
 	
 {include 
