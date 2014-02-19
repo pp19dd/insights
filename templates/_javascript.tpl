@@ -121,9 +121,9 @@ $('.parse_select2').each( function(i,e) {
 	var cc = $(e).attr("data-can-clear");
 
 	if( typeof cc != "undefined" ) { 	
-		$(e).select2({ allowClear: true });
+		$(e).select2({ allowClear: true, separator: ";" });
 	} else {
-		$(e).select2();
+		$(e).select2({ separator: ";" });
 	}
 
 });
@@ -138,6 +138,7 @@ $('.parse_select2b').each( function(i,e) {
 
 	// stage 1: pipe to data source
 	$(e).select2({
+		separator: ";",
 		data: insights_data[data_key],
 		createSearchChoice: function(term, data) {
 			var f = $(data).filter( function() {

@@ -39,6 +39,7 @@ function insights_action_add_update() {
 
 	switch( $_POST['form_type'] ) {
 		case 'add_insight':
+			
 			if( $USER->CAN['add'] === false ) {
 				die("error: you don't have permission to ADD records.");
 			}

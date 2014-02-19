@@ -178,8 +178,8 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	insights_clear_map( $entry_id );
 
 	#					table													 	  insert new entry?
-	insights_add_map( 'reporters', 	$entry_id, explode(",", $p['reporters']), 	$ret, true );
-	insights_add_map( 'editors', 	$entry_id, explode(",", $p['editors']), 	$ret, true );
+	insights_add_map( 'reporters', 	$entry_id, explode(";", $p['reporters']), 	$ret, true );
+	insights_add_map( 'editors', 	$entry_id, explode(";", $p['editors']), 	$ret, true );
 	
 	insights_add_map( 'beats', 		$entry_id, $p['beats'], 					$ret, false );
 	insights_add_map( 'mediums', 	$entry_id, $p['mediums'], 					$ret, false );

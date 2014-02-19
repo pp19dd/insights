@@ -17,6 +17,7 @@
 	name="{$name}" 
 	class="parse_select2" 
 	style="{$style}" 
+	separator=";"
 {if isset($can_clear)}
 	data-can-clear="true"
 {/if}
@@ -39,6 +40,7 @@
 	name="{$name}" 
 	class="parse_select2" 
 	style="{$style}" 
+	separator=";"
 {if isset($can_clear)}
 	data-can-clear="true"
 {/if}
@@ -64,7 +66,8 @@
 	id="{$id}" 
 	type="hidden" 
 	name="{$name}" 
-	class="parse_select2b" 
+	class="parse_select2b"
+	separator=";" 
 	style="{$style}" 
 {if isset($can_clear)}
 	data-can-clear="true"
