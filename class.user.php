@@ -1,5 +1,14 @@
 <?php
 
+
+/**
+ * temporary user schema
+ * 
+ * access level  0 = no access
+ * access level  5 = view/add/edit
+ * access level 10 = view/add/edit/star
+ */
+
 class Insights_User {
 	
 	var $CAN = array();
@@ -8,8 +17,7 @@ class Insights_User {
 		"logout" => false,		// these two
 
 		"view" => false,		// default
-			
-		"add" => false,			// whitelisted / logged in
+		"add" => false,
 		"edit" => false,
 		"delete" => false,
 
@@ -18,6 +26,7 @@ class Insights_User {
 
 	var $notes = array();
 	var $error = "";
+	var $level = 0;
 	
 	function __construct() {
 		session_start();
@@ -34,6 +43,7 @@ class Insights_User {
 			$_SESSION['logged_in'] === true
 		) {
 		
+			$this->level = $_SESSION['access_level'];
 			$this->login_flag( false, true );
 			
 			if( $_SESSION['access_level'] >= 5 ) {
@@ -79,14 +89,11 @@ class Insights_User {
 			return( false );
 		}
 	}
-	
-	/*
-		temporary schema. 
-		access level 0 = read-only
-		access level 5 = add/edit
-		access level 10 = add/edit/star
-	*/
+
 	function doLogin($level = 0) {
+		
+		$this->level = $level;
+		
 		$_SESSION['logged_in'] = true;
 		$_SESSION['access_level'] = $level;
 		
@@ -96,6 +103,9 @@ class Insights_User {
 	function doLogout() {
 		$_SESSION['logged_in'] = false;
 		$_SESSION['access_level'] = 0;
+		
+		$this->level = 0;
+		
 		unset( $_SESSION['logged_in'] );
 		unset( $_SESSION['access_level'] );
 		
@@ -106,6 +116,8 @@ class Insights_User {
 		$allowed = explode('/', WHITELIST);
 		foreach( $allowed as $allow ) {
 			if( strpos($_SERVER['REMOTE_ADDR'], $allow) === 0 ) {
+				
+				$this->CAN['view'] = true;
 				$this->CAN['edit'] = true;
 				$this->CAN['add'] = true;
 				$this->CAN['delete'] = true;

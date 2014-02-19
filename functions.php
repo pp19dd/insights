@@ -1,8 +1,8 @@
 <?php
 
-/*
-given a list of all entries, organize by map type
-*/
+/**
+ * given a list of all entries, organize by map type
+ */
 
 function insights_group_by( $map_type, &$entries ) {
 	$r = array();
@@ -34,16 +34,16 @@ function insights_group_by( $map_type, &$entries ) {
 			$r[$key]['all'][] = $map['entry_id'];
 		}
 		
-		#pre( $entry['map'][$map_type], false );
 	}
 
 	return( $r );
 }
 
 
-/*
-find a list of all origins, targets, beats and mediums from an entries list
-*/
+/**
+ * find a list of all origins, targets, beats and mediums from an entries list
+ */
+
 function insights_increment_if_exists( &$a, $map ) {
 	$type = $map['type'];
 	if( isset($map['resolved']) && isset($map['resolved']['name']) ) { 
@@ -60,6 +60,13 @@ function insights_increment_if_exists( &$a, $map ) {
 		$a[$type][$entry]++;
 	}
 }
+
+/**
+ * loops through insight entries and returns a list of unique maps
+ * ex: beats / divisions / editors / mediums / etc
+ * 
+ * @var $entries Object
+ */
 
 function insights_get_all_maps( $entries ) {
 	global $ALLOW_TYPE;
@@ -88,19 +95,26 @@ function insights_get_all_maps( $entries ) {
 
 
 
-/*
-hints for calendar
-*/
+/**
+ * provides hints for calendar - entries per day 
+ * 
+ * @return array containing list (date => count), range (min, max)
+ */
 function insights_activity() {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 
 	$t = $VOA->query(
-		"select id, date(deadline) as `day`, " .
-		"count(date(deadline)) as `count` " .
-		"from {$tbl}entries " .
-		"where is_deleted='No' " .
-		"group by `deadline`",
+		"select 
+			id, 
+			date(deadline) as `day`, 
+			count(date(deadline)) as `count` 
+		from 
+			{$tbl}entries 
+		where 
+			is_deleted='No' 
+		group by 
+			`deadline`",
 		array("noempty", "index" => "day")
 	);
 
@@ -109,15 +123,6 @@ function insights_activity() {
 		return( $e['count'] );
 	}, $t);
 
-/*
-$t = Array
-(
-    [2013-12-06] => 2
-    [2014-01-10] => 2
-    [2014-01-17] => 1
-)
-*/
-
 	return(array(
 		"list" => $t,
 		"range" => array(
@@ -125,35 +130,36 @@ $t = Array
 			"max" => max( $t )
 		)
 	));
-	return( $t );
-	
-/*
-	$t = $VOA->query(
-		"select id, date(deadline) as `day` from {$tbl}entries " .
-		"where month(deadline)=month(now())",
-		array("noempty")
-	);
-	
-	
-	pre( $t );
-	
-	return( array_count_values( array_keys( $t ) ) );
-*/	
-
 }
 
+/**
+ * helper function, queries metadata associated with an entry.
+ * 
+ * @param $type String table name, beats / services / etc
+ */
 function insights_get_type( $type ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 
 	$ret = $VOA->query(
-		"select * from {$tbl}{$type} where is_deleted='No' order by `name`",
+		"select 
+			* 
+		from 
+			{$tbl}{$type} 
+		where 
+			is_deleted='No' 
+		order by 
+			`name`",
 		array("index"=>"id", "noempty")
 	);
 	
 	return( $ret );
 }
 
+/**
+ * returns helper items for the templating system.
+ * navigation helpers, names of services, config
+ */
 function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 	global $VOA;
 	global $ALLOW_TYPE;
@@ -166,12 +172,17 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 		"yesterday" => date("Y-m-d", $ts_yesterday),
 		"hours" => array(),
 		"services_full" => $VOA->query(
-			"select " .
-			"{$tbl}services.*, {$tbl}divisions.name as `division_name` " .
-			"from {$tbl}services " .
-			"left join {$tbl}divisions " .
-			"on {$tbl}services.division_id = {$tbl}divisions.id " .
-			"where {$tbl}services.is_deleted='No'",
+			"select 
+				{$tbl}services.*,
+				{$tbl}divisions.name as `division_name` 
+			from 
+				{$tbl}services 
+			left join 
+				{$tbl}divisions 
+			on 
+				{$tbl}services.division_id = {$tbl}divisions.id 
+			where 
+				{$tbl}services.is_deleted='No'",
 			array("index"=>"id")
 		),
 		"divisions_and_services" => array(),
@@ -181,8 +192,11 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 		)
 	);
 
-	foreach( $ALLOW_TYPE as $type ) $queries[$type] = insights_get_type( $type );
+	foreach( $ALLOW_TYPE as $type ) {
+		$queries[$type] = insights_get_type( $type );
+	}
 	
+	# hours for a selector dropdown
 	for( $h = 0; $h < 24; $h++ ) {
 		$ts_1 = strtotime("midnight +{$h} hour");
 		
@@ -203,7 +217,7 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 		));
 	}, $queries['reporters'] ));
 	
-	// used for a pretty dropdown
+	# used for a pretty dropdown
 	foreach( $queries['divisions'] as $division_id => $division ) {
 		$key = $queries['divisions'][$division_id]['name'];
 		$values = $VOA->query(
@@ -217,7 +231,6 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 		}
 	}
 	
-	#pre( $queries );
 	return( $queries );
 }
 

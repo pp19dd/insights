@@ -31,9 +31,15 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 # assume view mode: provide common queries, entries and activity
 # ============================================================================
 
-if( defined('VOA_DISABLE_FOOTER') ) $VOA->assign('disable_footer', true);
+if( defined('VOA_DISABLE_FOOTER') ) {
+	$VOA->assign('disable_footer', true);
+}
+
 $queries = insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday );
-foreach( $queries as $query => $data ) $VOA->assign( $query, $data );
+
+foreach( $queries as $query => $data ) {
+	$VOA->assign( $query, $data );
+}
 
 # hint entries for calendar (activity level)
 $VOA->assign( 'activity', insights_activity() );
@@ -41,9 +47,12 @@ $VOA->assign( 'activity', insights_activity() );
 $entries = insights_get_entries($queries['today']);
 $all_maps = insights_get_all_maps( $entries );
 
+
+
 # perform filtration by-group
 # 		entries contains entire list
-#			we only want entries organized by [beats, divisions, editors, mediums, regions]
+#			we only want entries organized by 
+#			[beats, divisions, editors, mediums, regions]
 if( isset( $_GET['show'] ) ) {
 	$grouped_entries = insights_group_by( $_GET['show'], $entries );
 	$VOA->assign( 'grouped_entries', $grouped_entries );
@@ -73,6 +82,7 @@ switch( $mode ) {
 	case 'beats':		$template = 'beats.tpl'; break;
 	case 'reporters':	$template = 'reporters.tpl'; break;
 	case 'editors':		$template = 'editors.tpl'; break;
+	
 	default:
 		$template = 'home.tpl';
 		
@@ -80,7 +90,11 @@ switch( $mode ) {
 
 			# single entry
 			$entry = insights_get_entries( array(intval($_GET['edit'])) );
-			if( is_array( $entry ) && !empty( $entry ) ) $entry = array_shift( $entry );
+			
+			if( is_array( $entry ) && !empty( $entry ) ) {
+				$entry = array_shift( $entry );
+			}
+			
 			$VOA->assign( 'entry', $entry );
 			
 			$template = 'entry.tpl';

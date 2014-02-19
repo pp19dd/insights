@@ -1,7 +1,12 @@
 <?php
-/*
 
-*/
+/**
+ * retrieves full listing for an entry from a metadata table
+ * 
+ * @param $table String Partial table ex: beats, services, etc
+ * @param $is_deleted String Yes or No
+ * @param $id Integer table.id
+ */
 function resolve_map($table, $id, $is_deleted = 'No') {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -17,23 +22,33 @@ function resolve_map($table, $id, $is_deleted = 'No') {
 	return( $t );
 }
 
-/*
-insights_map
-	id			
-	type		reporters | beats | divisions | services | beats
-	entry_id
-	other_id
-*/
+/**
+ * returns metadata for a particular entry (reporters, beats, divisions, etc)
+ * 
+ * @param $entry_id int corresponds to insights_entry.id
+ * @param $is_deleted String "Yes" or "No"
+ */
+
 function insights_map($entry_id, $is_deleted = 'No') {
 	global $VOA;
 	global $ALLOW_TYPE;
 	$tbl = TABLE_PREFIX;
 
 	$t = $VOA->query(
-		"select * from `{$tbl}map` where `entry_id`=%s and `is_deleted`='%s'",
+		"select 
+			* 
+		from 
+			`{$tbl}map` 
+		where 
+			`entry_id`=%s and `is_deleted`='%s'",
 		intval( $entry_id ),
 		$is_deleted,
-		array("noempty", "index" => "type", "deep", "index2" => "other_id")
+		array(
+			"noempty", 
+			"index" => "type",
+			"deep",
+			"index2" => "other_id"
+		)
 	);
 	
 	// mapping routine should show all pertinent types
@@ -58,6 +73,14 @@ function insights_map($entry_id, $is_deleted = 'No') {
 	return( $t );
 }
 
+/**
+ * retrieves entries
+ * 
+ * @param $date 		null 		queries today's entries
+ * @param $date 		String 		queries entries for a specific Y-m-d date.
+ * @param $date 		Array 		queries specific ids
+ * @param $is_deleted 	String 		Yes or No 
+ */
 function insights_get_entries( $date = null, $is_deleted = 'No' ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -99,6 +122,7 @@ function insights_get_entries( $date = null, $is_deleted = 'No' ) {
 		break;
 	}
 	
+	# get metadata for the entries
 	foreach( $t as $k => $v ) {
 		$t[$k]['map'] = insights_map( $v['id'], $is_deleted );
 	}

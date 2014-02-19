@@ -5,11 +5,14 @@
  * 
  * required: previously constructed $USER, $_GET['delete'] 
  */
+
 function insights_action_delete() {
 	
 	global $USER;
 	
-	if( $USER->CAN['delete'] === false ) die( "error: you don't have permission to delete records");
+	if( $USER->CAN['delete'] === false ) {
+		die( "error: you don't have permission to delete records");
+	}
 	
 	insights_delete_entry( intval($_GET['delete']) );
 	
@@ -21,7 +24,6 @@ function insights_action_delete() {
 	header("location:" . (String)$URL);
 	
 	die;
-	// $VOA->assign( 'entry_deleted', intval( $_GET['delete']) );
 	
 }
 
@@ -37,7 +39,9 @@ function insights_action_add_update() {
 
 	switch( $_POST['form_type'] ) {
 		case 'add_insight':
-			if( $USER->CAN['add'] === false ) die("error: you don't have permission to ADD records.");
+			if( $USER->CAN['add'] === false ) {
+				die("error: you don't have permission to ADD records.");
+			}
 				
 			$r = insights_add_insight( $_POST );
 	
@@ -48,11 +52,11 @@ function insights_action_add_update() {
 			break;
 	
 		case 'update_insight':
-			if( $USER->CAN['edit'] === false ) die("error: you don't have permission to EDIT records.");
+			if( $USER->CAN['edit'] === false ) {
+				die("error: you don't have permission to EDIT records.");
+			}
 				
 			$r = insights_add_insight( $_POST, intval($_POST['entry_id']) );
-				
-			# if( $USER->CAN['star'] === false ) die("error: you don't have permission to STAR records.");
 				
 			// consider star for logged in users
 			if( $USER->CAN['star'] === true ) {
