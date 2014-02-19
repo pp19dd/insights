@@ -4,6 +4,7 @@ require_once( 'functions.php' );
 require_once( 'functions_read.php' );
 require_once( 'functions_write.php' );
 require_once( 'functions_action.php' );
+require_once( 'functions_history.php' );
 require_once( 'class.url.php' );
 require_once( 'class.user.php');
 

@@ -9,7 +9,7 @@
 
 <div class="row">
 
-<hr/>
+{include file="history.tpl"}
 
 <div class="container" id="entry_add_entry">
 

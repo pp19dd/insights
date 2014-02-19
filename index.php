@@ -89,13 +89,17 @@ switch( $mode ) {
 		if( isset( $_GET['edit'] ) ) {
 
 			# single entry
-			$entry = insights_get_entries( array(intval($_GET['edit'])) );
+			$entry_id = intval($_GET['edit']);
+			$entry = insights_get_entries( array($entry_id) );
 			
 			if( is_array( $entry ) && !empty( $entry ) ) {
 				$entry = array_shift( $entry );
 			}
 			
 			$VOA->assign( 'entry', $entry );
+			
+			$history = insights_get_history( $entry_id );
+			$VOA->assign( 'history', $history );
 			
 			$template = 'entry.tpl';
 			

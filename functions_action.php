@@ -56,15 +56,28 @@ function insights_action_add_update() {
 			if( $USER->CAN['edit'] === false ) {
 				die("error: you don't have permission to EDIT records.");
 			}
-				
-			$r = insights_add_insight( $_POST, intval($_POST['entry_id']) );
-				
-			// consider star for logged in users
+			
+			$posted_entry_id = intval( $_POST['entry_id'] );
+
+			# before updating, look at previous version
+			$old_entry = insights_get_entries( array($posted_entry_id) );
+			$old_entry = array_shift( $old_entry );
+
+			# make the update
+			$r = insights_add_insight( $_POST, $posted_entry_id );
+			
+			// consider star only for logged in users
 			if( $USER->CAN['star'] === true ) {
+				
+				// only update star if needed
 				if( isset( $_POST['star'] ) ) {
-					insights_star( intval( $_POST['entry_id']), 'Yes' );
+					$wanted_star_state = "Yes";
 				} else {
-					insights_star( intval( $_POST['entry_id']), 'No' );
+					$wanted_star_state = "No";
+				}
+				
+				if( $old_entry["is_starred"] != $wanted_star_state ) {
+					insights_star( $posted_entry_id, $wanted_star_state );
 				}
 			}
 				

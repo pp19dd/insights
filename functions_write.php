@@ -6,6 +6,7 @@
  * 
  * @param $try_type String partial table name (ex: reporters, editors, beats)
  * @param $entry_id Integer entries.id
+ * @param $action_id Integer _history.id
  * @param $other_ids Integer associates existing meta entry
  * @param $other_ids String  adds new meta entry, associates
  * @param $other_ids Array  can contain integer / string combinations
@@ -13,7 +14,7 @@
  * @param $add_new_entry boolean True/False - beats are hardcoded, but editors and reporters might get added
  */
 
-function insights_add_map( $try_type, $entry_id, $other_ids, &$ret, $add_new_entry = true ) {
+function insights_add_map( $try_type, $entry_id, $action_id, $other_ids, &$ret, $add_new_entry = true ) {
 	global $VOA;
 	global $ALLOW_TYPE;
 	
@@ -57,9 +58,10 @@ function insights_add_map( $try_type, $entry_id, $other_ids, &$ret, $add_new_ent
 	
 		$VOA->query(
 			"insert into `{$tbl}map` 
-				(`type`, `entry_id`, `other_id`)
+				(`action_id`, `type`, `entry_id`, `other_id`)
 			values
-				('%s', '%s', '%s')",
+				(%s, '%s', '%s', '%s')",
+			intval( $action_id ),
 			$type,
 			intval( $entry_id ),
 			intval( $other_id )
@@ -84,6 +86,8 @@ function insights_delete_entry( $entry_id ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 	
+	insights_history($entry_id, "delete");
+	
 	$VOA->query(
 		"update `{$tbl}entries` set `is_deleted`='Yes' where `id`=%s limit 1",
 		intval( $entry_id )
@@ -97,6 +101,8 @@ function insights_star( $entry_id, $star = 'Yes' ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 
+	insights_history($entry_id, "star", $star);
+	
 	$VOA->query(
 		"update `{$tbl}entries` set `is_starred`='%s' where `id`=%s limit 1",
 		$star,
@@ -106,6 +112,8 @@ function insights_star( $entry_id, $star = 'Yes' ) {
 
 /**
  * when updating entries, delete old metadata (mark is_deleted to Yes)
+ * 
+ * @param $entry_id entries.id
  */
 function insights_clear_map( $entry_id ) {
 	global $VOA;
@@ -150,9 +158,14 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 			"insert into `{$tbl}entries` (id) values (null)"
 		);
 		$entry_id = mysql_insert_id();
+		$action_type = "add";
 	} else {
 		$entry_id = intval( $requesting_entry_id );
+		$action_type = "update";
 	}
+	
+	// snag an action id for later notes
+	$action_id = insights_history($entry_id, $action_type);
 	
 	// zero-time?
 	$VOA->query(
@@ -175,16 +188,16 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	
 	$ret["entries"][] = $entry_id;
 	
-	insights_clear_map( $entry_id );
+	insights_clear_map( $entry_id, $action_id );
 
-	#					table													 	  insert new entry?
-	insights_add_map( 'reporters', 	$entry_id, explode(";", $p['reporters']), 	$ret, true );
-	insights_add_map( 'editors', 	$entry_id, explode(";", $p['editors']), 	$ret, true );
+	#					table													 	  			  insert new entry?
+	insights_add_map( 'reporters', 	$entry_id, $action_id, explode(";", $p['reporters']), 	$ret, true );
+	insights_add_map( 'editors', 	$entry_id, $action_id, explode(";", $p['editors']), 	$ret, true );
 	
-	insights_add_map( 'beats', 		$entry_id, $p['beats'], 					$ret, false );
-	insights_add_map( 'mediums', 	$entry_id, $p['mediums'], 					$ret, false );
+	insights_add_map( 'beats', 		$entry_id, $action_id, $p['beats'], 					$ret, false );
+	insights_add_map( 'mediums', 	$entry_id, $action_id, $p['mediums'], 					$ret, false );
 	
-	insights_add_map( 'regions', 	$entry_id, $p['regions'], 					$ret, false );
+	insights_add_map( 'regions', 	$entry_id, $action_id, $p['regions'], 					$ret, false );
 	
 	// lookup table
 	$services = insights_get_type( "services" );
@@ -192,8 +205,8 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 	if( isset( $p['origin']) && isset($services[$p['origin']]) ) {
 		$division_id = intval($services[$p['origin']]['division_id']);
 		
-		insights_add_map( 'divisions', 	$entry_id, $division_id, 					$ret, false );
-		insights_add_map( 'services', 	$entry_id, $p['origin'], 					$ret, false );
+		insights_add_map( 'divisions', 	$entry_id, $action_id, $division_id, 				$ret, false );
+		insights_add_map( 'services', 	$entry_id, $action_id, $p['origin'], 				$ret, false );
 	}
 	
 	return( $ret );
