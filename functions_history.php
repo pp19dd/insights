@@ -1,5 +1,7 @@
 <?php
 
+require( "simplediff.php" );
+
 /**
  * stores change information, copies original entry
  * 
@@ -37,6 +39,32 @@ function insights_history( $entry_id, $action, $note = '' ) {
 }
 
 /**
+ * given a detailed map array, returns a simple english version
+ */
+function insights_simplified_map( $map ) {
+	$s = array();
+	
+	# first pass, collect data
+	foreach( $map as $k => $v ) {
+		if( !isset($s[$v['type']]) ) $s[$v['type']] = array();
+		$s[$v['type']][] = $v['resolved']['name'];
+	}
+	ksort( $s );
+	
+	# second pass, sort sub-keys
+	foreach( $s as $k => $v ) {
+		ksort( $s[$k] );
+	}
+	
+	# third pass, implode to a simple string
+	foreach( $s as $k => $v ) {
+		$s[$k] = implode(", ", $v);
+	}
+
+	return( $s );
+}
+
+/**
  * returns all known information about an item 
  */
 function insights_get_history( $entry_id ) {
@@ -46,12 +74,45 @@ function insights_get_history( $entry_id ) {
 	$r = array();
 	$r['history'] = $VOA->query(
 		"select * from `{$tbl}_history` where `entry_id`=%s order by `id` desc",
-		$entry_id
+		$entry_id,
+		array("noempty")
 	);
 	
 	foreach( $r['history'] as $k => $v ) {
-		#$r['history'][$k] = 
+		$r['history'][$k]['map'] = $VOA->query(
+			"select * from `{$tbl}map` where `action_id`=%s order by `id` asc",
+			$v["id"],
+			array("noempty")	
+		);
+		
+		$resolved = array();
+		
+		# assume that is_deleted will match
+		foreach( $r['history'][$k]['map'] as $k2 => $map ) {
+			$map = resolve_map(
+				$map["type"],
+				$map["other_id"],
+				"No"
+			);
+	
+			$r['history'][$k]['map'][$k2]['resolved'] = $map;
+		}
+		
+		# make a simple list for a text-based diff
+		$r['history'][$k]['simple'] = insights_simplified_map( $r['history'][$k]['map'] );
 	}
 
+	$simple = array();
+	foreach( $r['history'] as $k => $v ) {
+		$simple[] = $v['simple']; 
+	}
+	$simple = array_reverse($simple);
+	$diff = array();
+	
+	#for( $i = 0; $i < count($simple)-1; $i++ ) {
+		#pre( $simple[$i], false); pre( $simple[$i+1]);
+		######$diff[] = htmlDiff( $simple[$i], $simple[$i+1]);
+		######pre( $diff );
+	#}
 	return( $r );
 }

@@ -1,4 +1,13 @@
 
+{function name=map}
+<ul>
+{foreach from=$map key=key item=item}
+	<li>{$key|capitalize} = {$item}</li>
+{/foreach}
+</ul>
+
+{/function}
+
 <div class="container clearfix" style="margin-bottom:1em">
 	<div class="pull-right">
 		<a href="#" onclick="$('#id_history').slideToggle('fast'); return(false);">Change Log</a>
@@ -26,7 +35,7 @@
 	<td>{$row.stamp}</td>
 	<td>{$row.ip}</td>
 	<td>{$row.action|capitalize}</td>
-	<td>{$row.note}</td>
+	<td>{$row.note}{map map=$row.simple}</td>
 </tr>
 {/foreach}
 </tbody>

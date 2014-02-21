@@ -5,6 +5,7 @@
 
 define( 'TEMP_CONF_PWD', "md5-hash-of-temp-admin-pwd" );
 define( 'TEMP_EDIT_PWD', "md5-hash-of-temp-user-pwd" );
+define( 'API_KEY', 		 "md5-hash-of-api-pwd" );
 
 if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	
@@ -14,6 +15,9 @@ if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'VOA_DISABLE_FOOTER', 	true );
 	define( 'WHITELIST',			'127.0.0.1/::1' );
 	#define( 'WHITELIST',			'notfound' );
+
+	define( "INSIGHTS_DEVELOPMENT", true );
+	define( "SYNC_URL", "http://tools.voanews.com/insights/api.php" );
 	
 } else {
 	

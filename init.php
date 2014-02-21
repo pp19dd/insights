@@ -5,10 +5,19 @@ require_once( 'functions_read.php' );
 require_once( 'functions_write.php' );
 require_once( 'functions_action.php' );
 require_once( 'functions_history.php' );
+require_once( 'class.api.php' );
 require_once( 'class.url.php' );
 require_once( 'class.user.php');
 
-// fundamental configurations for project
+// table name fragments: main portion
+$INSIGHTS_TABLES = array(
+	'entries',
+	'map',
+	'_config',
+	'_history'
+);
+
+// table name fragments: fundamental configurations for project
 $ALLOW_TYPE = array(
 	'reporters',
 	'editors',
