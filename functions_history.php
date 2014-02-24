@@ -3,7 +3,7 @@
 require( "simplediff.php" );
 
 /**
- * stores change information, copies original entry
+ * stores change information, copies original entry as a deleted item
  * 
  *  @param $entry_id integer entries.id
  *  @param $action String (add, update, delete, star)
@@ -15,7 +15,42 @@ function insights_history( $entry_id, $action, $note = '' ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 
-	# phase one: get action id, record info about user and action
+	# phase one: make copies of all data associated with this $action_id
+	if( $action === 'update' ) {
+
+		# old entry, before changing
+		$old = $VOA->query(
+			"select * from `{$tbl}entries` where `id`=%s limit 1",
+			intval($entry_id),
+			array("flat")
+		);
+		
+		# insert a copy, as a deleted entry
+		unset( $old["id"] );
+		unset( $old["last_update"] );
+		$keys = array();
+		$values = array();
+		$old["is_deleted"] = "Yes";
+		
+		# sanitize
+		foreach( $old as $k => $v ) {
+			$keys[] = mysql_real_escape_string($k);
+			$values[] = mysql_real_escape_string($v);
+		}
+		$keys = implode("`, `", $keys);
+		$values = implode("', '", $values);
+		
+		# this routine normally sanitizes parameters, bypass it with our own
+		$VOA->query(
+			"insert into `{$tbl}entries` (`{$keys}`) values ('{$values}');"
+		);
+		$copy_id = mysql_insert_id();
+		
+		# override $note to point to the old entry
+		$note = "~" . $copy_id;
+	}
+	
+	# phase two: get action id, record info about user and action
 	
 	$VOA->query(
 		"insert into `{$tbl}_history` 
@@ -30,11 +65,6 @@ function insights_history( $entry_id, $action, $note = '' ) {
 
 	$action_id = mysql_insert_id();
 
-	# phase two: make copies of all data associated with this $action_id 
-	if( $action === 'update' ) {
-		
-	}
-	
 	return( $action_id );
 }
 
@@ -79,10 +109,23 @@ function insights_get_history( $entry_id ) {
 	);
 	
 	foreach( $r['history'] as $k => $v ) {
+		
+		# if this is an update, get copy of older version entry
+		if( $v['action'] === 'update' && substr($v['note'], 0, 1) === '~' ) {
+			$old_entry_id = (substr( $v['note'], 1 ));
+		
+			$r['history'][$k]['entry'] = $VOA->query(
+				"select * from `{$tbl}entries` where `id`=%s limit 1",
+				$old_entry_id,
+				array("noempty", "flat")
+			);
+		}
+		
+		# find map for entry
 		$r['history'][$k]['map'] = $VOA->query(
 			"select * from `{$tbl}map` where `action_id`=%s order by `id` asc",
 			$v["id"],
-			array("noempty")	
+			array("noempty")
 		);
 		
 		$resolved = array();
@@ -114,5 +157,7 @@ function insights_get_history( $entry_id ) {
 		######$diff[] = htmlDiff( $simple[$i], $simple[$i+1]);
 		######pre( $diff );
 	#}
+	
+	#pre($r);
 	return( $r );
 }
