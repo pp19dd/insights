@@ -14,8 +14,8 @@
 
 {function name=entry}
 {diffrow key="slug" a="slug" b=$entry.slug}
-{diffrow key="description" a="description" b=$entry.slug}
-{diffrow key="deadline" a="deadline" b=$entry.slug}
+{diffrow key="description" a="description" b=$entry.description}
+{diffrow key="deadline" a="deadline" b=$entry.deadline}
 {/function}
 
 {function name=map}

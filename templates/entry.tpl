@@ -97,6 +97,7 @@
 	data=$divisions_and_services
 	value=$entry.map.services
 	can_edit=$can.edit
+	can_clear=true
 }
 
 {include 
