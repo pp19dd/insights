@@ -126,6 +126,20 @@ function insights_clear_map( $entry_id ) {
 }
 
 /**
+ * returns only the hour-resembling portion of a string 
+ * @param string $time ex: "text 04:00 text"
+ * @return boolean|string ex: false or "04:00"
+ */
+function insights_filter_time( $time ) {
+	$try = preg_match( "/([0-9|:]+)/", $time, $r );
+	if( $try === false ) return( false );
+	if( empty($try) ) return( false );
+
+	return( $r[0] );
+}
+
+
+/**
  * adds a new entry, returns an array of entries (and meta)
  * 
  * @param $p Array contains $_POST parameters (slug, description, deadline, etc)
@@ -172,7 +186,13 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
     // snag an action id for later notes
     $action_id = insights_history($entry_id, "update");
     
-    // zero-time?
+    // sanitized time string - can be either null or a value in db
+    $time_string = "null";
+    $time = insights_filter_time( $p["deadline_time"] );
+    if( $time !== false ) {
+    	$time_string = "'{$time}'";
+    }
+    
     $VOA->query(
         "update 
             `{$tbl}entries` 
@@ -180,14 +200,14 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             `is_deleted`='No',
             `slug`='%s',
             `description`='%s',
-            `deadline`='%s %s:00:00'
+            `deadline`='%s',
+            `deadline_time`={$time_string}
         where
             `id`=%s
         limit 1",
         trim(strip_tags($p['slug'])),
         trim(strip_tags($p['description'])),
         date("Y-m-d", strtotime($p['deadline'])),
-        str_pad(intval($p["deadline_time"]), 2, "0", STR_PAD_LEFT),
         $entry_id
     );
     

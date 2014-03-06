@@ -81,9 +81,9 @@
 	data=$hours
 	can_edit=$can.edit
 	can_clear=true
-	value=array_flip(array($entry.deadline|date_format:'G'))
+	value=array_flip(array($entry.deadline_time|default:"time could be null"|date_format:'H:i'))
 }
-	
+
 {include 
 	mode=2
 	file="select2.tpl" 

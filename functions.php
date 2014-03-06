@@ -107,7 +107,7 @@ function insights_activity() {
 	$t = $VOA->query(
 		"select 
 			id, 
-			date(deadline) as `day`, 
+			`deadline` as `day`, 
 			count(date(deadline)) as `count` 
 		from 
 			{$tbl}entries 
@@ -117,7 +117,6 @@ function insights_activity() {
 			`deadline`",
 		array("noempty", "index" => "day")
 	);
-
 	
 	$t = array_map( function( $e ) {
 		return( $e['count'] );
@@ -199,10 +198,12 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 	# hours for a selector dropdown
 	for( $h = 0; $h < 24; $h++ ) {
 		$ts_1 = strtotime("midnight +{$h} hour");
+		$value = sprintf( "%s", date("H:i", $ts_1));
+		$friendly = sprintf( "%s (%s)", date("H:i", $ts_1 ), date("g a", $ts_1) );
 		
-		$queries["hours"][] = sprintf( "%s (%s)", date("H:i", $ts_1 ), date("g a", $ts_1) );
+		$queries["hours"][$value] = $friendly;
 	}
-	
+
 	$queries['editors_reduced'] = array_values(array_map( function($e) {
 		return(array(
 			"id" => $e['id'],
