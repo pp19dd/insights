@@ -18,11 +18,16 @@ var rainbow = new Rainbow();
 rainbow.setNumberRange(0, insights_data.activity.range.max);
 rainbow.setSpectrum('#e6e6e6', '#FF8000', '#DC143C');
 var rainbow_rules = [];
+var rainbow_rule_exists = {};
 for( k in insights_data.activity.list )(function(k,v){
 	var hexColour = rainbow.colourAt(v);
-	rainbow_rules.push(
-		".today_" + v + " { background-color: #" + hexColour + " !important; }"
-	);
+
+	if( typeof rainbow_rule_exists[v] == 'undefined' ) {
+		rainbow_rule_exists[v] = true;
+		rainbow_rules.push(
+			".today_" + v + " { background-color: #" + hexColour + " !important; color: white !important }"
+		);
+	}
 })(k, insights_data.activity.list[k]);
 $("<style type='text/css'>" + rainbow_rules.join("\n") + "</style>").appendTo("head");
 
@@ -192,5 +197,6 @@ $("#admin_login").click( function() {
 
 // debug	add_insight();
 // debug	$("#pick_date").click();
+// debug	$(".changelog_toggler").click();
 </script>
 

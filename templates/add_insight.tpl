@@ -50,20 +50,21 @@
 }
 
 		<div class="form-group">
-			<label for="input_deadline" class="col-sm-2 control-label">Deadline (date)</label>
+			<label for="input_deadline" class="col-sm-2 control-label">Deadline (date/time)</label>
 			<div class="col-sm-10">
 				<input 
 					name="deadline" 
 					type="text" autocomplete="off" 
 					class="form-control " 
-					style="width:20%; " 
+					style="width:20%; float:left; margin-right:10px;" 
 					id="input_deadline" 
 					placeholder="{$actually_today|date_format:'Y-m-d'}"
 				/>
-			</div>
-		</div>
 
-{include 
+Time
+
+{include
+	skip_container=true 
 	mode=1
 	file="select2.tpl" 
 	label="Time" 
@@ -76,6 +77,8 @@
 	can_clear=true
 }
 
+			</div>
+		</div>
 	
 {include 
 	mode=2

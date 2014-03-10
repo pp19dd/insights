@@ -8,6 +8,8 @@
 		mode = 1
 		mode = 2
 		mode = 3
+
+	optional parameter: $skip_container = true
 -->*}
 
 {function select_mode_1}
@@ -81,9 +83,11 @@
 {/function}
 
 
+{if !isset($skip_container)}
 <div class="form-group">
 	<label class="col-sm-2 control-label">{$label}</label>
 	<div class="col-sm-10">
+{/if}
 
 {if $mode === 1}
 	{select_mode_1}
@@ -93,7 +97,7 @@
 	{select_mode_3}
 {/if}
 
+{if !isset($skip_container)}
 	</div>
 </div>
-		
-
+{/if}		

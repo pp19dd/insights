@@ -41,7 +41,6 @@ h1 { font-size: 18px; color: gray }
 
 .left-most { width: 70px }
 .right-most { text-align: right; width:200px }
-.datepicker-days .disabled { color: silver }
 
 /*
 .datepicker-days .today { border:1px dashed blue }
@@ -53,9 +52,16 @@ h1 { font-size: 18px; color: gray }
 
 .pseudo-active { border:1px dashed blue }
 
+/* calendar */
+.datepicker-days .disabled { color: silver }
 .cal_legend { }
 .cal_due { color: red}
 .cal_started { color: green }
+.day {
+	border: 2px solid white;
+	border-radius:0px !important;
+} 
+
 
 #id_add_entry {
 	background-color: rgb(230,230,230);
@@ -70,5 +76,9 @@ textarea { resize:vertical }
 .select2-container { border:0 }
 .deletion_button { width:130px }
 .container_add_insight { padding-right: 0px; padding-left: 0px }
+
+/* time field fixes */
+.select2-container .select2-choice { height:32px; }
+.select2-chosen { margin-top: 3px; }
 
 </style>

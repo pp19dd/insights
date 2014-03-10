@@ -199,7 +199,7 @@ function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
 	for( $h = 0; $h < 24; $h++ ) {
 		$ts_1 = strtotime("midnight +{$h} hour");
 		$value = sprintf( "%s", date("H:i", $ts_1));
-		$friendly = sprintf( "%s (%s)", date("H:i", $ts_1 ), date("g a", $ts_1) );
+		$friendly = sprintf( "%s (%s) EST", date("H:i", $ts_1 ), date("g a", $ts_1) );
 		
 		$queries["hours"][$value] = $friendly;
 	}

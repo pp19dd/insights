@@ -12,10 +12,6 @@
 {/function}
 
 <div class="btn-group insights_show_by_menu">
-	<span class="btn btn-inactive">
-		<div class="insights_today_date">{$today|date_format:'M d, Y'}</div>
-		{*<!--<div class="insights_number_entries">{$entries|count} {if $entries|count == 1}entry{else}entries{/if}</div>-->*}
-	</span>
 	<span class="btn btn-inactive">Show by:</span>
 {insights_show parm="regions" label="Region" count=count($all_maps['regions'])}
 {insights_show parm="beats" label="Beat" count=count($all_maps['beats'])}

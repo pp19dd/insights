@@ -27,12 +27,12 @@
 
 <div class="container clearfix" style="margin-bottom:1em">
 	<div class="pull-right">
-		<a href="#" onclick="$('#id_history').slideToggle('fast'); return(false);">Change Log</a>
+		<a class="changelog_toggler" href="#" onclick="$('#id_history').slideToggle('fast'); return(false);">Change Log</a>
 	</div>
 </div>
 
 <div class="container clearfix ">
-	<div class="panel panel-default" id="id_history" style="xdisplay:none">
+	<div class="panel panel-default" id="id_history" style="display:none">
 		<div class="panel-body" style="background-color:#F7F2F7">
 
 <div style="height:300px; overflow-y:auto">

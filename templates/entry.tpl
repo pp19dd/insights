@@ -63,14 +63,15 @@
 					type="text" 
 					autocomplete="off" 
 					class="form-control " 
-					style="width:20%" 
+					style="width:20%; float:left; margin-right:10px" 
 					id="entry_deadline" 
 					value="{$entry.deadline|date_format:'m/d/Y'}"
 				/>
-			</div>
-		</div>
+
+Time
 
 {include 
+	skip_container=true
 	mode=1
 	file="select2.tpl" 
 	label="Time" 
@@ -83,6 +84,10 @@
 	can_clear=true
 	value=array_flip(array($entry.deadline_time|default:"time could be null"|date_format:'H:i'))
 }
+
+			</div>
+		</div>
+
 
 {include 
 	mode=2
