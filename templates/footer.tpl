@@ -18,5 +18,20 @@
 	</div>
 {/if}
 
+{if $can.view}
+<div style="margin-bottom:20px">
+	<form method="get" action="{$base_url}?">
+		<label>Keywords:</label>
+		<input style="" type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
+		<input type="submit" name="search" value="Search" />
+	</form>
+</div>
+{/if}
+
+<hr/>
+
+<div>
 	<p>Problems, questions? Contact <a href="mailto:voadigital@voanews.com?subject=VOA+Insights">voadigital@voanews.com</a></p>
+</div>
+
 </footer>

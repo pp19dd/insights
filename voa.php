@@ -149,44 +149,13 @@ class VOA extends Smarty {
 		}
 	}
 	
-	function query() {
-		// be careful with global options
-		$this->options = $this->sticky_options;
-		
-		$c = func_num_args();
-		if( $c === 0 ) return( false );
-		
-		/* generate SQL line, escape if needed, apply any given options */
-		if( $c === 1 ) {
-			$this->sql = func_get_arg(0);
-		} else {
-			$a = array();
-			for( $i = 0; $i < $c; $i++ ) {
-				if( is_array( func_get_arg($i) ) ) {
-					$this->options = array_merge( $this->options, func_get_arg($i) );
-				} else {
-					$a[] = func_get_arg($i);
-				}
-			}
-			$b = array_shift($a);
-			if( !in_array( "noescape", $this->options ) ) {
-				foreach( $a as $k => $v ) {
-					$a[$k] = mysql_real_escape_string( $v );
-				}
-			}
-			$this->sql = @vsprintf( $b, $a );
-		}
-
-		/* one start, many stops */
-		if( in_array( "debug", $this->options ) ) {
-			$this->queries[] = array("sql" => $this->sql, "start" => microtime());
-		}
+	function query_raw() {
 		
 		/* return directly instead of returning contents as array */
 		$this->t = @mysql_query( $this->sql );
 		if( in_array( "nofetch", $this->options ) ) {
 			$this->stop_debug();
-			
+				
 			if( !$this->t ) {
 				$this->error = mysql_error();
 				return( false );
@@ -221,9 +190,9 @@ class VOA extends Smarty {
 				if( in_array( "deep", $this->options ) ) {
 					if( is_object($r) ) {
 						if( isset( $this->options["index2"] ) ) {
-						
+		
 							// fixme: never did the object part
-						
+		
 						} else {
 							$key = $r->{$this->options['index']};
 							$retarr[$key][] = $this->query_fetch_reduce($r);
@@ -232,7 +201,7 @@ class VOA extends Smarty {
 						if( isset( $this->options["index2"] ) ) {
 							$key = $r[$this->options['index']];
 							$key2 = $r[$this->options['index2']];
-							
+								
 							$retarr[$key][$key2] = $this->query_fetch_reduce($r);
 						} else {
 							$key = $r[$this->options['index']];
@@ -252,6 +221,43 @@ class VOA extends Smarty {
 		}
 		$this->stop_debug();
 		return( $retarr );
+	}
+	
+	function query() {
+		
+		// be careful with global options
+		$this->options = $this->sticky_options;
+		
+		$c = func_num_args();
+		if( $c === 0 ) return( false );
+		
+		/* generate SQL line, escape if needed, apply any given options */
+		if( $c === 1 ) {
+			$this->sql = func_get_arg(0);
+		} else {
+			$a = array();
+			for( $i = 0; $i < $c; $i++ ) {
+				if( is_array( func_get_arg($i) ) ) {
+					$this->options = array_merge( $this->options, func_get_arg($i) );
+				} else {
+					$a[] = func_get_arg($i);
+				}
+			}
+			$b = array_shift($a);
+			if( !in_array( "noescape", $this->options ) ) {
+				foreach( $a as $k => $v ) {
+					$a[$k] = mysql_real_escape_string( $v );
+				}
+			}
+			$this->sql = @vsprintf( $b, $a );
+		}
+
+		/* one start, many stops */
+		if( in_array( "debug", $this->options ) ) {
+			$this->queries[] = array("sql" => $this->sql, "start" => microtime());
+		}
+		
+		return( $this->query_raw() );
 	}
 }
 

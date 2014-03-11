@@ -138,6 +138,19 @@ function insights_filter_time( $time ) {
 	return( $r[0] );
 }
 
+/**
+ * returns only the date-resembling portion of a string 
+ * @param string $date ex: "text 2014-03-02 text"
+ * @return boolean|string ex: false or "2014-03-02"
+ */
+function insights_filter_date( $date ) {
+	$try = preg_match( "/([0-9|-]+)/", $date, $r );
+	if( $try === false ) return( false );
+	if( empty($try) ) return( false );
+	
+	return( $r[0] );
+}
+
 
 /**
  * adds a new entry, returns an array of entries (and meta)

@@ -46,7 +46,12 @@ $VOA->assign( 'activity', insights_activity() );
 
 $query_entries = array();
 
-if( isset( $_GET['until']) ) {
+if( isset( $_GET['keywords']) ) {
+	
+	$words = explode(" ", trim(strip_tags($_GET['keywords'])));
+	$query_entries["search"] = $words;
+	
+} elseif( isset( $_GET['until']) ) {
 
 	// single date mode
 	$query_entries["from"] = $_GET['day'];
@@ -82,6 +87,7 @@ $VOA->assign( 'entries', $entries );
 # ============================================================================
 $mode = '';
 if( isset( $_GET['mode'] ) ) $mode = $_GET['mode'];
+if( isset( $_GET['search']) ) $mode = "search";
 if( $USER->CAN['view'] === false ) $mode = "403";
 
 switch( $mode ) {
@@ -92,6 +98,7 @@ switch( $mode ) {
 		$template = "403.tpl";
 	break;
 	
+	case 'search':		$template = 'search.tpl'; break;
 	case 'admin': 		$template = 'admin.tpl'; break;
 	case 'divisions': 	$template = 'divisions.tpl'; break;	
 	case 'services':	$template = 'services.tpl'; break;
@@ -125,7 +132,11 @@ switch( $mode ) {
 		} else {
 
 			// default mode
-			if( !isset( $_GET['show'] ) && !isset( $_GET['all'] ) ) {
+			if( 
+				!isset( $_GET['show'] ) &&
+				!isset( $_GET['all'] ) &&
+				!isset( $_GET['search'] ) 
+			) {
 				header( "location:?{$_SERVER['QUERY_STRING']}&show=regions" );
 				die;
 			}

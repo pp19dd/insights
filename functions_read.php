@@ -97,26 +97,46 @@ function insights_get_entries( $options = array() ) {
 	
 	// $date = Array (YYYY-mm-dd, ...)
 	if( isset( $options["date"]) ) {
+		
+		foreach( $options["date"] as $k => $v ) {
+			$options["date"][$k] = insights_filter_date($v);
+		}
+		
 		$where[] = sprintf( "`deadline` in ('%s')", implode("','", $options["date"]) );
 	}
 
 	// $range = Array( "from" => "YYYY-mm-dd", "to" => "YYYY-mm-dd" )
 	if( isset( $options["from"]) && isset($options["to"]) ) {
-		$where[] = sprintf( "`deadline` >= '%s'", $options["from"] );
-		$where[] = sprintf( "`deadline` <= '%s'", $options["to"] );
+		$where[] = sprintf( "`deadline` >= '%s'", insights_filter_date($options["from"]) );
+		$where[] = sprintf( "`deadline` <= '%s'", insights_filter_date($options["to"]) );
+	}
+	
+	// $search = Array( "word", "word2..." );
+	if( isset( $options["search"]) ) {
+		
+		$keywords_sql = array();
+		foreach( $options["search"] as $k => $v ) {
+			$keywords_sql[] = sprintf( "`slug` like '%%%s%%' or `description` like '%%%s%%'", $v, $v );
+		}
+		$where[] = implode(") and (", $keywords_sql );
+		
 	}
 	
 	# unified query
 	$where_flat = implode( ") and (", $where);
-	$t = $VOA->query(
-		"select * from `{$tbl}entries` where ({$where_flat})",
-		array("noempty", "index"=>"id")
-	);
+	$VOA->sql = "select * from `{$tbl}entries` where ({$where_flat})";
+	
+	
+	$VOA->options = array();		# preserve options, since this is a manual query
+	$VOA->options[] = "noempty";
+	$VOA->options["index"] = "id";
+	$t = $VOA->query_raw();
+	$VOA->options = array();		# restore options
 	
 	# get metadata for the entries
 	foreach( $t as $k => $v ) {
 		$t[$k]['map'] = insights_map( $v['id']/*, $is_deleted*/ );
 	}
-
+	
 	return( $t );
 }
