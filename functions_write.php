@@ -175,16 +175,19 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             "insert into `{$tbl}entries` (id) values (null)"
         );
         $entry_id = mysql_insert_id();
+        
+        // snag an action id for later notes
         $action_id = insights_history($entry_id, "add", "", true);
         
     } else {
         
         // update only
         $entry_id = intval( $requesting_entry_id );
+    
+    	// snag an action id for later notes
+    	$action_id = insights_history($entry_id, "update");
     }
     
-    // snag an action id for later notes
-    $action_id = insights_history($entry_id, "update");
     
     // sanitized time string - can be either null or a value in db
     $time_string = "null";
@@ -230,7 +233,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
     if( isset( $p['origin']) && isset($services[$p['origin']]) ) {
         $division_id = intval($services[$p['origin']]['division_id']);
         
-        insights_add_map( 'divisions',     $entry_id, $action_id, $division_id,           $ret, false );
+        insights_add_map( 'divisions',    $entry_id, $action_id, $division_id,            $ret, false );
         insights_add_map( 'services',     $entry_id, $action_id, $p['origin'],            $ret, false );
     }
     

@@ -122,7 +122,7 @@ function insights_get_history( $entry_id ) {
         
         # if this is an update, get copy of older version entry
         if( $v['action'] === 'update' && substr($v['note'], 0, 1) === '~' ) {
-            $old_entry_id = (substr( $v['note'], 1 ));
+            $old_entry_id = intval(substr( $v['note'], 1 ));
         
             $r['history'][$k]['entry'] = $VOA->query(
                 "select * from `{$tbl}entries` where `id`=%s limit 1",

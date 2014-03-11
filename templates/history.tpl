@@ -25,11 +25,19 @@
 
 {/function}
 
+{if $can.star == true}
+
 <div class="container clearfix" style="margin-bottom:1em">
 	<div class="pull-right">
 		<a class="changelog_toggler" href="#" onclick="$('#id_history').slideToggle('fast'); return(false);">Change Log</a>
 	</div>
 </div>
+
+{else}
+
+<br/>
+
+{/if}
 
 <div class="container clearfix ">
 	<div class="panel panel-default" id="id_history" style="display:none">
