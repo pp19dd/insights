@@ -60,7 +60,11 @@ function insights_action_add_update() {
 			$posted_entry_id = intval( $_POST['entry_id'] );
 
 			# before updating, look at previous version
-			$old_entry = insights_get_entries( array($posted_entry_id) );
+			# $old_entry = insights_get_entries( array($posted_entry_id) );
+			$old_entry = insights_get_entries(array(
+				"id" => array($posted_entry_id)
+			));
+				
 			$old_entry = array_shift( $old_entry );
 
 			# make the update

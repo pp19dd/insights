@@ -44,7 +44,23 @@ foreach( $queries as $query => $data ) {
 # hint entries for calendar (activity level)
 $VOA->assign( 'activity', insights_activity() );
 
-$entries = insights_get_entries($queries['today']);
+$query_entries = array();
+
+if( isset( $_GET['until']) ) {
+
+	// single date mode
+	$query_entries["from"] = $_GET['day'];
+	$query_entries["to"] = $_GET['until'];
+	
+} else {
+	
+	// date range
+	$query_entries["date"] = array( $queries["today"] );
+
+}
+
+# $entries = insights_get_entries($queries['today']);
+$entries = insights_get_entries($query_entries);
 $all_maps = insights_get_all_maps( $entries );
 
 
@@ -90,7 +106,10 @@ switch( $mode ) {
 
 			# single entry
 			$entry_id = intval($_GET['edit']);
-			$entry = insights_get_entries( array($entry_id) );
+			#$entry = insights_get_entries( array($entry_id) );
+			$entry = insights_get_entries(array(
+				"id" => array($entry_id)
+			));
 			
 			if( is_array( $entry ) && !empty( $entry ) ) {
 				$entry = array_shift( $entry );

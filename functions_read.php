@@ -76,55 +76,46 @@ function insights_map($entry_id, $is_deleted = 'No') {
 /**
  * retrieves entries
  * 
- * @param $date 		null 		queries today's entries
- * @param $date 		String 		queries entries for a specific Y-m-d date.
- * @param $date 		Array 		queries specific ids
- * @param $is_deleted 	String 		Yes or No 
+ * @param $options		Array		("mode" => "all", "range", "ids", "today", "custom")
+ * @param $options		Array		("list" => array(1,3,4,5...))
+ * @param $options		Array		("from" => "YYYY-MM-DD", "to" => "YYYY-MM-DD")
  */
-function insights_get_entries( $date = null, $is_deleted = 'No' ) {
+
+function insights_get_entries( $options = array() ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
+	$where = array("1");
 	
-	// default: today
-	if( is_null($date) ) $date = date("Y-m-d");
+	if( isset( $options["mode"]) ) {
+		return( false );
+	}
+	
+	// $id = Array( 1, 2, 3, ... )
+	if( isset( $options["id"]) ) {
+		$where[] = sprintf( "`id` in (%s)", implode(",", $options["id"]) );
+	}
+	
+	// $date = Array (YYYY-mm-dd, ...)
+	if( isset( $options["date"]) ) {
+		$where[] = sprintf( "`deadline` in ('%s')", implode("','", $options["date"]) );
+	}
 
-	// array = specific request
-	if( is_array($date) ) {
-		$ids = $date;
-		$date = 'list';
+	// $range = Array( "from" => "YYYY-mm-dd", "to" => "YYYY-mm-dd" )
+	if( isset( $options["from"]) && isset($options["to"]) ) {
+		$where[] = sprintf( "`deadline` >= '%s'", $options["from"] );
+		$where[] = sprintf( "`deadline` <= '%s'", $options["to"] );
 	}
 	
-	switch( $date ) {
-		case 'all':
-			$t = $VOA->query(
-				"select * from `{$tbl}entries` where `is_deleted`='%s'",
-				$is_deleted,
-				array("noempty", "index"=>"id")
-			);
-		break;
-		
-		case 'list':
-			$t = $VOA->query(
-				"select * from `{$tbl}entries` where /*`is_deleted`='%s' and*/ `id` in (%s)",
-				$is_deleted,
-				implode(",", $ids),
-				array("noempty")
-			);
-		break;
-		
-		default:
-			$t = $VOA->query(
-				"select * from `{$tbl}entries` where date(`deadline`)='%s' and `is_deleted`='%s'",
-				$date,
-				$is_deleted,
-				array("noempty", "index"=>"id")
-			);
-		break;
-	}
+	# unified query
+	$where_flat = implode( ") and (", $where);
+	$t = $VOA->query(
+		"select * from `{$tbl}entries` where ({$where_flat})",
+		array("noempty", "index"=>"id")
+	);
 	
 	# get metadata for the entries
 	foreach( $t as $k => $v ) {
-		$t[$k]['map'] = insights_map( $v['id'], $is_deleted );
+		$t[$k]['map'] = insights_map( $v['id']/*, $is_deleted*/ );
 	}
 
 	return( $t );
