@@ -81,4 +81,37 @@ textarea { resize:vertical }
 .select2-container .select2-choice { height:32px; }
 .select2-chosen { margin-top: 3px; }
 
+/* table */
+.entry_field { font-size: 12px; }
+.entry_slug { }
+.entry_description { }
+.entry_deadline { }
+.entry_services { }
+.entry_mediums { }
+.entry_beats { }
+.entry_regions { }
+.entry_reporters { }
+.entry_editors { }
+.entry_edit { }
+
+/* range helper */
+
+.range { margin-bottom:10px }
+.range td { text-align: center; font-size:12px; }
+.range_active { background-color: cornflowerblue; color: white }
+
+.insights_range { margin-bottom:1em }
+
+.btn_range { text-align: center }
+.btn_range_day { width:100px }
+.btn_range_week { width:200px }
+.btn_range_month { width:400px }
+
+.btn_range_sm { text-align: center }
+.btn_range_day_sm { width:75px }
+.btn_range_week_sm { width:150px }
+.btn_range_month_sm { width:200px }
+
+.after_range { margin-bottom:20px }
+
 </style>

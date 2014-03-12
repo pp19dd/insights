@@ -49,7 +49,13 @@ $query_entries = array();
 if( isset( $_GET['keywords']) ) {
 	
 	$words = explode(" ", trim(strip_tags($_GET['keywords'])));
-	$query_entries["search"] = $words;
+	$words = array_filter( $words );
+
+	if( count($words) == 0 ) {
+		$query_entries["stop"] = array("Warning: Empty search string");
+	} else {
+		$query_entries["search"] = $words;
+	}
 	
 } elseif( isset( $_GET['until']) ) {
 
@@ -131,7 +137,9 @@ switch( $mode ) {
 			
 		} else {
 
-			// default mode
+			// update: no such thing as default mode
+			
+			/*
 			if( 
 				!isset( $_GET['show'] ) &&
 				!isset( $_GET['all'] ) &&
@@ -140,6 +148,8 @@ switch( $mode ) {
 				header( "location:?{$_SERVER['QUERY_STRING']}&show=regions" );
 				die;
 			}
+			
+			*/
 		}
 
 	break;

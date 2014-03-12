@@ -86,8 +86,13 @@ function insights_get_entries( $options = array() ) {
 	$tbl = TABLE_PREFIX;
 	$where = array("1");
 	
+	/* supposed to be not set?
 	if( isset( $options["mode"]) ) {
 		return( false );
+	}*/
+	
+	if( isset( $options["stop"]) ) {
+		return( array() );
 	}
 	
 	// $id = Array( 1, 2, 3, ... )

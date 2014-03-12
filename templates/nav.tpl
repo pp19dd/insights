@@ -12,12 +12,27 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a title="Click or hit ESC key to show" class="btn btn-sm " role="button" id="pick_add_insight">Add insight...</a></li>
-{if $can.view == true}
-				<li class="{*active*}"><a title="Previous day" class="btn btn-primaryx btn-md" role="button" id="pick_date_prev"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
-				<li class=""><a title="Pick from calendar" class="btn btn-primaryx btn-md" role="button" id="pick_date" data-date="{$today|date_format:'Y-m-d'}" data-date-format="yyyy-mm-dd"><span class="glyphicon glyphicon-calendar"></span>&nbsp;{$today|date_format:'M d, Y'}</a></li>
-				<li class=""><a title="Next day" class="btn btn-primaryx btn-md" role="button" id="pick_date_next"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+
+{if $can.view}
+<li>
+<span class="btn btn-sm">
+	<form method="get" action="{$base_url}?" class="btn btn-sm">
+		<span style="color:silver">Keywords:&nbsp;</span>
+		<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
+		<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
+
+		<input 
+			title="Click or hit ESC key to show" 
+			class="btn btn-xs" type="button" 
+			value="Add insight..."
+			role="button" id="pick_add_insight"
+		/>
+
+	</form>
+</span>
+</li>
 {/if}
+
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>

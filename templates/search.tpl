@@ -3,7 +3,9 @@
 
 {block name='content'}
 
-<h1>Search: {$smarty.get.keywords}</h1>
+{include file="home_menu.tpl"}
+
+<h1>Search: {$smarty.get.keywords|default:"(Empty search string)"}</h1>
 
 <p>{$entries|count} result{if $entries|count != 1}s{/if}.</p>
 

@@ -5,7 +5,7 @@
 
 <h2>403 error: access denied</h2>
 
-<p><strong>URL: </strong>{$base_url}{$smarty.server["REQUEST_URI"]|ltrim:"/"}</p>
+<p><strong>URL: </strong>{$smarty.server["REQUEST_URI"]|ltrim:"/"}</p>
 
 <hr/>
 

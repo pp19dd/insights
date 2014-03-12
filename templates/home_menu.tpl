@@ -1,3 +1,43 @@
+{*<!-- ------------------------------------------------------------------
+       range rendered several times for variable screen sizes
+       ------------------------------------------------------------------ -->*}
+
+{function name=all_buttons}
+
+<div class="btn-group insights_range {$classes}">
+	<span class="btn btn-inactive">Date range:</span>
+	<button class="btn btn-default btn_range{$suffix} btn_range_day{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'day'}active{/if}" onclick="window.location='?{rewrite range=day}{/rewrite}';" type="button">Day</button>
+	<button class="btn btn-default btn_range{$suffix} btn_range_week{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'week'}active{/if}" onclick="window.location='?{rewrite range=week}{/rewrite}';" type="button">Week</button>
+	<button class="btn btn-default btn_range{$suffix} btn_range_month{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'month'}active{/if}" onclick="window.location='?{rewrite range=month}{/rewrite}';" type="button">Month</button>
+	<button class="btn btn-default btn_range{$suffix} btn_range_custom{$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';" type="button">Custom</button>
+</div>
+
+{/function}
+
+{all_buttons classes="visible-xs visible-sm" suffix="_sm"}
+{all_buttons classes="visible-lg visible-md" suffix=""}
+
+
+{*<!--
+{if $can.view == true}
+<li class=""><a title="Previous day" class="btn btn-primaryx btn-md" role="button" id="pick_date_prev"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+<li class=""><a title="Pick from calendar" class="btn btn-primaryx btn-md" role="button" id="pick_date" data-date="{$today|date_format:'Y-m-d'}" data-date-format="yyyy-mm-dd"><span class="glyphicon glyphicon-calendar"></span>&nbsp;{$today|date_format:'M d, Y'}</a></li>
+<li class=""><a title="Next day" class="btn btn-primaryx btn-md" role="button" id="pick_date_next"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+{/if}
+-->*}
+
+<div class="clearfix after_range"></div>
+
+{*<!--
+<div class="btn-group insights_range_definition">
+	<span class="btn btn-inactive">Showing:</span>
+
+	{$today}
+</div>
+
+<div class="clearfix after_range"></div>
+-->*}
+
 
 {*<!-- ------------------------------------------------------------------
        menu buttons for different map filters

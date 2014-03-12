@@ -1,19 +1,23 @@
 {*<!-- ------------------------------------------------------------------
        traverse a related-items map and display as single lines
        ------------------------------------------------------------------ -->*}
-{function name=map}
+{function name=map}{strip}
 	{if $set}
 		{if $set|count > 0}
 			{foreach from=$set item=item}
-			{$item.resolved.name}{if not $item@last},{/if}
+				{if isset($item.resolved) && isset($item.resolved.name)}
+					{$item.resolved.name}{if not $item@last},{/if}
+				{/if}
 			{/foreach}
 		{else}
 			{foreach from=$set item=item}
-				{$item.resolved.name}
+				{if isset($item.resolved) && isset($item.resolved.name)}
+					{$item.resolved.name}
+				{/if}
 			{/foreach}
 		{/if}
 	{/if}
-{/function}
+{/strip}{/function}
 
 {*<!-- ------------------------------------------------------------------
        show one entry line
@@ -22,16 +26,16 @@
 {$entry = $entries[$entry_id]}
 
 <tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
-	<td>{$entry.slug}</td>
-	<td>{$entry.description}</td>
-	<td>{$entry.deadline} {$entry.deadline_time}</td>
-	<td>{map set=$entry.map.services}</td>
-	<td>{map set=$entry.map.mediums}</td>
-	<td>{map set=$entry.map.beats}</td>
-	<td>{map set=$entry.map.regions}</td>
-	<td>{map set=$entry.map.reporters}</td>
-	<td>{map set=$entry.map.editors}</td>
-	<td>
+	<td class="entry_field entry_slug">{$entry.slug}</td>
+	<td class="entry_field entry_description">{$entry.description}</td>
+	<td class="entry_field entry_deadline">{$entry.deadline} {$entry.deadline_time}</td>
+	<td class="entry_field entry_services">{map set=$entry.map.services}</td>
+	<td class="entry_field entry_mediums">{map set=$entry.map.mediums}</td>
+	<td class="entry_field entry_beats">{map set=$entry.map.beats}</td>
+	<td class="entry_field entry_regions">{map set=$entry.map.regions}</td>
+	<td class="entry_field entry_reporters">{map set=$entry.map.reporters}</td>
+	<td class="entry_field entry_editors">{map set=$entry.map.editors}</td>
+	<td class="entry_field entry_edit">
 		<div class="btn-group">
 			<button 
 				onclick="window.location='?{rewrite edit=$entry.id}{/rewrite}'" 
