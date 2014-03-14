@@ -63,9 +63,10 @@ function add_insight() {
 }
 
 $('#pick_add_insight').click( function() { add_insight(); });
-$('#pick_date_prev').click( function() { window.open( '?{rewrite day=$yesterday erase=edit}{/rewrite}', '_self' ); });
-// $('#pick_date_today').click( function() { window.open( '?', '_self' ); });
-$('#pick_date_next').click( function() { window.open( '?{rewrite day=$tomorrow erase=edit}{/rewrite}', '_self' ); });
+{*
+// $('#pick_date_prev').click( function() { window.open( '?{rewrite day=$yesterday erase=edit}{/rewrite}', '_self' ); });
+// $('#pick_date_next').click( function() { window.open( '?{rewrite day=$tomorrow erase=edit}{/rewrite}', '_self' ); });
+*}
 $('#id_cancel_new_insight').click( function() {	$('#id_add_entry').slideToggle('fast'); });
 $('#id_submit_new_insight').click( function() { });
 
@@ -85,7 +86,7 @@ $('#entry_deadline').datepicker({
 
 $('#pick_date').datepicker({
 	onRender: function(e) {
-		// if( ymd(e) == '{$actually_today}' ) return( 'today' );
+		// if( ymd(e) == '{$range->actually_today|date_format:'Y-m-d'}' ) return( 'today' );
 		
 		if( typeof insights_data.activity.list[ymd(e)] != 'undefined' ) {
 			var cal_css_class = 'today_' + insights_data.activity.list[ymd(e)];

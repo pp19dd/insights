@@ -29,13 +29,19 @@ $VOA->assign( 'error', $USER->error );
 # ============================================================================
 # calendar navigation / general queries
 # ============================================================================
-$RANGE = new Insights_Range(
-	(isset( $_GET['day']) ? $_GET['day'] : date("Y-m-d")),	// today
-	$_GET['range'],											// range mode
-	$_GET['day'],											// start
-	(isset( $_GET['until']) ? $_GET['until'] : null)		// end
-);
-pre( $RANGE );
+$RANGE = new Insights_Range( $_GET['day'] );
+$RANGE->active = $RANGE->{$_GET['range']};
+$VOA->assign( 'range', $RANGE );
+
+// pre( $RANGE );
+// $RANGE = new Insights_Range(
+// 	(isset( $_GET['day']) ? $_GET['day'] : date("Y-m-d")),	// today
+// 	$_GET['range'],											// range mode
+// 	$_GET['day'],											// start
+// 	(isset( $_GET['until']) ? $_GET['until'] : null)		// end
+// );
+
+
 // $ts = time();
 // if( isset( $_GET['day'] ) ) $ts = strtotime($_GET['day']);
 // $ts_tomorrow = strtotime("+1 day", $ts);
@@ -60,7 +66,8 @@ if( defined('VOA_DISABLE_FOOTER') ) {
 	$VOA->assign('disable_footer', true);
 }
 
-$queries = insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday );
+// $queries = insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday );
+$queries = insights_get_common_queries();
 
 foreach( $queries as $query => $data ) {
 	$VOA->assign( $query, $data );
@@ -74,6 +81,8 @@ $VOA->assign( 'activity', insights_activity() );
 # query routine
 # ============================================================================
 $query_entries = array();
+$query_entries["stop"] = true;
+##############$query_entries["from"] = $RANGE->day->range_start
 
 if( isset( $_GET['keywords']) ) {
 	
@@ -85,19 +94,20 @@ if( isset( $_GET['keywords']) ) {
 	} else {
 		$query_entries["search"] = $words;
 	}
-	
-} elseif( isset( $_GET['until']) ) {
+}	
+// } elseif( isset( $_GET['until']) ) {
 
-	// single date mode
-	$query_entries["from"] = $_GET['day'];
-	$query_entries["to"] = $_GET['until'];
+// 	// single date mode
+// 	$query_entries["from"] = $_GET['day'];
+// 	$query_entries["to"] = $_GET['until'];
 	
-} else {
+// } else {
 	
-	// date range
-	$query_entries["date"] = array( $queries["today"] );
+// 	// date range
+// 	// $query_entries["date"] = array( $queries["today"] );
+// 	$query_entries["date"] = array( $RANGE->day->range_start_human );
 
-}
+// }
 
 # $entries = insights_get_entries($queries['today']);
 $entries = insights_get_entries($query_entries);

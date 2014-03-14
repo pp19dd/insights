@@ -58,7 +58,7 @@
 					class="form-control " 
 					style="width:20%; float:left; margin-right:10px;" 
 					id="input_deadline" 
-					placeholder="{$actually_today|date_format:'Y-m-d'}"
+					placeholder="{$range->actually_today|date_format:'Y-m-d'}"
 				/>
 
 Time

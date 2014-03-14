@@ -159,16 +159,16 @@ function insights_get_type( $type ) {
  * returns helper items for the templating system.
  * navigation helpers, names of services, config
  */
-function insights_get_common_queries( $ts, $ts_tomorrow, $ts_yesterday) {
+function insights_get_common_queries() {
 	global $VOA;
 	global $ALLOW_TYPE;
 	$tbl = TABLE_PREFIX;
 	
 	$queries = array(
-		"actually_today" => date("Y-m-d"),
-		"today" => date("Y-m-d", $ts),
-		"tomorrow" => date("Y-m-d", $ts_tomorrow),
-		"yesterday" => date("Y-m-d", $ts_yesterday),
+		//"actually_today" => date("Y-m-d"),
+		//"today" => date("Y-m-d", $ts),
+		//"tomorrow" => date("Y-m-d", $ts_tomorrow),
+		//"yesterday" => date("Y-m-d", $ts_yesterday),
 		"hours" => array(),
 		"services_full" => $VOA->query(
 			"select 

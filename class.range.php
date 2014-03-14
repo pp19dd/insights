@@ -17,19 +17,19 @@ class Insights_Range_Day {
 	var $range_end_human;
 
 	function beforeCompute() { }
-	function computeStart() { }
 	function afterCompute() { }
 	
-	function computeEnd() {
-		$this->range_end = strtotime( "+1 day", $this->range_start );
+	function computeStart() {
+		$this->range_start = $this->today_timestamp;
 	}
 	
-	function __construct( $today, $range_start, $range_end ) {
+	function computeEnd() {
+		$this->range_end = $this->range_start;
+	}
+	
+	function __construct( $today, $range_start = null, $range_end = null ) {
 		$this->today = $today;
 		$this->today_timestamp = strtotime($this->today );
-
-		$this->range_start = strtotime($range_start);
-		$this->range_end = strtotime($range_end);
 
 		$this->beforeCompute();
 		$this->computeStart();
@@ -75,15 +75,34 @@ class Insights_Range_Custom extends Insights_Range_Day {
 #$ts_yesterday = strtotime("-1 day", $ts);
 
 class Insights_Range {
+	var $actually_today;
+	
 	var $day;
 	var $week;
 	var $month;
 	var $custom;
 
-	function __construct( $today, $range_start, $range_end ) {
-		$this->day = 	new Insights_Range_Day( $today, $range_start, $range_end );
-		$this->week = 	new Insights_Range_Week( $today, $range_start, $range_end );
-		$this->month = 	new Insights_Range_Month( $today, $range_start, $range_end );
-		$this->custom = new Insights_Range_Custom( $today, $range_start, $range_end );
+	function d( $str, $ts ) {
+		return( date( "Y-m-d", strtotime($str, $ts) ) );
+	}
+	
+	function __construct( $today = null, $range_start = null, $range_end = null ) {
+		$this->actually_today = date("Y-m-d");
+		if( is_null( $today )) $today = $this->actually_today;
+		
+		$this->day = 			new Insights_Range_Day( $today );
+		$this->day->prev =  	new Insights_Range_Day( $this->d("-1 day", $this->day->today_timestamp) );
+		$this->day->next =  	new Insights_Range_Day( $this->d("+1 day", $this->day->today_timestamp) );
+		
+		$this->week = 			new Insights_Range_Week( $today );
+		$this->week->prev = 	new Insights_Range_Week( $this->d("-7 day", $this->day->today_timestamp) );
+		$this->week->next = 	new Insights_Range_Week( $this->d("+7 day", $this->day->today_timestamp) );
+		
+		$this->month = 			new Insights_Range_Month( $today );
+		$this->month->prev = 	new Insights_Range_Month( $this->d("-1 month", $this->day->today_timestamp ) );
+		$this->month->next = 	new Insights_Range_Month( $this->d("+1 month", $this->day->today_timestamp ) );
+		
+		#$this->custom = 		new Insights_Range_Custom( $today, $range_start, $range_end );
+		#$this->custom->next = 	new Insights_Range_Custom( $today, $range_start, $range_end );
 	}
 }

@@ -78,7 +78,7 @@
 </div>
 
 {if isset($smarty.get.all)}
-<h1>Showing all entries for {$today|date_format:"M d, Y"}</h1>
+<h1>Showing all entries for {$range->day->range_start_human|date_format:"M d, Y"}</h1>
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}
 

@@ -21,7 +21,7 @@
 {*<!--
 {if $can.view == true}
 <li class=""><a title="Previous day" class="btn btn-primaryx btn-md" role="button" id="pick_date_prev"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
-<li class=""><a title="Pick from calendar" class="btn btn-primaryx btn-md" role="button" id="pick_date" data-date="{$today|date_format:'Y-m-d'}" data-date-format="yyyy-mm-dd"><span class="glyphicon glyphicon-calendar"></span>&nbsp;{$today|date_format:'M d, Y'}</a></li>
+<li class=""><a title="Pick from calendar" class="btn btn-primaryx btn-md" role="button" id="pick_date" data-date="{$range->day->range_start_human|date_format:'Y-m-d'}" data-date-format="yyyy-mm-dd"><span class="glyphicon glyphicon-calendar"></span>&nbsp;{$range->day->range_start_human|date_format:'M d, Y'}</a></li>
 <li class=""><a title="Next day" class="btn btn-primaryx btn-md" role="button" id="pick_date_next"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
 {/if}
 -->*}
@@ -32,7 +32,7 @@
 <div class="btn-group insights_range_definition">
 	<span class="btn btn-inactive">Showing:</span>
 
-	{$today}
+	{$range->day->range_start_human}
 </div>
 
 <div class="clearfix after_range"></div>
@@ -65,8 +65,8 @@
 {insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
 	<span class="btn btn-inactive">
 		<a 
-			href="?all&day={$today}" 
-			title="Show all entries for {$today|date_format:'M d, Y'} in list form"
+			href="?all&day={$range->day->range_start_human}" 
+			title="Show all entries for {$range->day->range_start_human|date_format:'M d, Y'} in list form"
 		>
 			All ({$entries|count} {if $entries|count == 1}entry{else}entries{/if})
 		</a>
