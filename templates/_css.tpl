@@ -65,7 +65,8 @@ h1 { font-size: 18px; color: gray }
 
 #id_add_entry {
 	background-color: rgb(230,230,230);
-	box-shadow:0 0 1em rgb(230,230,230);
+	/* box-shadow:0 0 1em rgb(230,230,230); */
+	border: 1px solid gray; 
 	border-radius:1em;
 	padding-top:1em;
 	margin-bottom:1em;

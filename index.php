@@ -2,6 +2,24 @@
 require( 'init.php' );
 
 # ============================================================================
+# bare minimum required for navigation: range, and day (date_start)
+# ============================================================================
+$URL = new Rewrite_URL();
+if( !isset( $_GET['range'] )) 	$URL->set( "range", "day" );
+if( !isset( $_GET['day'] )) 	$URL->set( "day", date("Y-m-d") );
+
+if( !isset($_GET['range']) || !isset($_GET['day']) ) {
+	header("location:" . (String)$URL);
+	die;
+}
+
+if( $_GET['range'] === 'week' && !isset($_GET['until']) ) {
+	$URL->set( "until", date("Y-m-d", strtotime("+7 day", strtotime( $_GET['day']) ) ));
+	header("location:" . (String)$URL);
+	die;
+}
+
+# ============================================================================
 # auth
 # ============================================================================
 $USER = new Insights_User();
@@ -11,10 +29,17 @@ $VOA->assign( 'error', $USER->error );
 # ============================================================================
 # calendar navigation / general queries
 # ============================================================================
-$ts = time();
-if( isset( $_GET['day'] ) ) $ts = strtotime($_GET['day']);
-$ts_tomorrow = strtotime("+1 day", $ts);
-$ts_yesterday = strtotime("-1 day", $ts);
+$RANGE = new Insights_Range(
+	(isset( $_GET['day']) ? $_GET['day'] : date("Y-m-d")),	// today
+	$_GET['range'],											// range mode
+	$_GET['day'],											// start
+	(isset( $_GET['until']) ? $_GET['until'] : null)		// end
+);
+pre( $RANGE );
+// $ts = time();
+// if( isset( $_GET['day'] ) ) $ts = strtotime($_GET['day']);
+// $ts_tomorrow = strtotime("+1 day", $ts);
+// $ts_yesterday = strtotime("-1 day", $ts);
 
 # ============================================================================
 # ajax / post mode?
@@ -44,6 +69,10 @@ foreach( $queries as $query => $data ) {
 # hint entries for calendar (activity level)
 $VOA->assign( 'activity', insights_activity() );
 
+
+# ============================================================================
+# query routine
+# ============================================================================
 $query_entries = array();
 
 if( isset( $_GET['keywords']) ) {
@@ -92,13 +121,14 @@ $VOA->assign( 'entries', $entries );
 # template picker, routed from .htaccess / mod_rewrite
 # ============================================================================
 $mode = '';
-if( isset( $_GET['mode'] ) ) $mode = $_GET['mode'];
-if( isset( $_GET['search']) ) $mode = "search";
+if( isset( $_GET['mode'] ) ) 	$mode = $_GET['mode'];
+if( isset( $_GET['search']) ) 	$mode = "search";
+if( isset( $_GET['edit']) ) 	$mode = "edit";
+
 if( $USER->CAN['view'] === false ) $mode = "403";
 
 switch( $mode ) {
 	case '404':			$template = '404.tpl'; break;
-	
 	case '403':			
 		header( "HTTP/1.0 403 Forbidden" );
 		$template = "403.tpl";
@@ -111,29 +141,30 @@ switch( $mode ) {
 	case 'beats':		$template = 'beats.tpl'; break;
 	case 'reporters':	$template = 'reporters.tpl'; break;
 	case 'editors':		$template = 'editors.tpl'; break;
-	
+	case 'edit':
+		# single entry
+		$entry_id = intval($_GET['edit']);
+		#$entry = insights_get_entries( array($entry_id) );
+		$entry = insights_get_entries(array(
+			"id" => array($entry_id)
+		));
+			
+		if( is_array( $entry ) && !empty( $entry ) ) {
+			$entry = array_shift( $entry );
+		}
+			
+		$VOA->assign( 'entry', $entry );
+			
+		$history = insights_get_history( $entry_id );
+		$VOA->assign( 'history', $history );
+			
+		$template = 'entry.tpl';
+		break;
+		
 	default:
 		$template = 'home.tpl';
 		
 		if( isset( $_GET['edit'] ) ) {
-
-			# single entry
-			$entry_id = intval($_GET['edit']);
-			#$entry = insights_get_entries( array($entry_id) );
-			$entry = insights_get_entries(array(
-				"id" => array($entry_id)
-			));
-			
-			if( is_array( $entry ) && !empty( $entry ) ) {
-				$entry = array_shift( $entry );
-			}
-			
-			$VOA->assign( 'entry', $entry );
-			
-			$history = insights_get_history( $entry_id );
-			$VOA->assign( 'history', $history );
-			
-			$template = 'entry.tpl';
 			
 		} else {
 
