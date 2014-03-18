@@ -80,8 +80,12 @@ $VOA->assign( 'activity', insights_activity() );
 # ============================================================================
 # query routine
 # ============================================================================
-$query_entries = array();
-$query_entries["stop"] = true;
+$query_entries = array(
+	"from" => $RANGE->active->range_start_human,
+	"to" => $RANGE->active->range_end_human
+);
+
+#$query_entries["stop"] = true;
 ##############$query_entries["from"] = $RANGE->day->range_start
 
 if( isset( $_GET['keywords']) ) {

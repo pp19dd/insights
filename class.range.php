@@ -24,7 +24,7 @@ class Insights_Range_Day {
 	}
 	
 	function computeEnd() {
-		$this->range_end = $this->range_start;
+		$this->range_end = strtotime( "+1 day", $this->range_start );
 	}
 	
 	function __construct( $today, $range_start = null, $range_end = null ) {

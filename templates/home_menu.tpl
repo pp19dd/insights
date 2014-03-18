@@ -6,10 +6,25 @@
 
 <div class="btn-group insights_range {$classes}">
 	<span class="btn btn-inactive">Date range:</span>
-	<button class="btn btn-default btn_range{$suffix} btn_range_day{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'day'}active{/if}" onclick="window.location='?{rewrite range=day erase=until}{/rewrite}';" type="button">Day</button>
-	<button class="btn btn-default btn_range{$suffix} btn_range_week{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'week'}active{/if}" onclick="window.location='?{rewrite range=week}{/rewrite}';" type="button">Week</button>
-	<button class="btn btn-default btn_range{$suffix} btn_range_month{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'month'}active{/if}" onclick="window.location='?{rewrite range=month}{/rewrite}';" type="button">Month</button>
-	<button class="btn btn-default btn_range{$suffix} btn_range_custom{$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';" type="button">Custom</button>
+	
+	<button 
+		class="btn btn-default btn_range{$suffix} btn_range_day{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'day'}active{/if}" 
+		onclick="window.location='?{rewrite range=day erase=until}{/rewrite}';" 
+	>Day</button>
+
+	<button 
+		class="btn btn-default btn_range{$suffix} btn_range_week{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'week'}active{/if}" 
+		onclick="window.location='?{rewrite range=week}{/rewrite}';" 
+	>Week</button>
+
+	<button 
+		class="btn btn-default btn_range{$suffix} btn_range_month{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'month'}active{/if}"
+		onclick="window.location='?{rewrite range=month}{/rewrite}';"
+	>Month</button>
+
+	<button 
+		class="btn btn-default btn_range{$suffix} btn_range_custom{$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
+	>Custom</button>
 </div>
 
 {/function}

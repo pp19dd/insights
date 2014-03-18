@@ -73,6 +73,8 @@ function insights_map($entry_id, $is_deleted = 'No') {
 	return( $t );
 }
 
+
+
 /**
  * retrieves entries
  * 
@@ -82,6 +84,15 @@ function insights_map($entry_id, $is_deleted = 'No') {
  */
 
 function insights_get_entries( $options = array() ) {
+	$t = insights_get_entries_rich( $options );
+
+	// possible error
+	if( empty($t) ) return( $t );
+	
+	return( $t["results"] );
+}
+
+function insights_get_entries_rich( $options = array() ) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
 	$where = array("1");
@@ -111,9 +122,10 @@ function insights_get_entries( $options = array() ) {
 	}
 
 	// $range = Array( "from" => "YYYY-mm-dd", "to" => "YYYY-mm-dd" )
+	// assume range is +1 day. for a single day query, from = 2014-03-18, to = 2014-03-19
 	if( isset( $options["from"]) && isset($options["to"]) ) {
 		$where[] = sprintf( "`deadline` >= '%s'", insights_filter_date($options["from"]) );
-		$where[] = sprintf( "`deadline` <= '%s'", insights_filter_date($options["to"]) );
+		$where[] = sprintf( "`deadline` < '%s'", insights_filter_date($options["to"]) );
 	}
 	
 	// $search = Array( "word", "word2..." );
@@ -143,5 +155,9 @@ function insights_get_entries( $options = array() ) {
 		$t[$k]['map'] = insights_map( $v['id']/*, $is_deleted*/ );
 	}
 	
-	return( $t );
+	return( array(
+		"results" => $t,
+		"where" => $where,
+		"sql" => $VOA->sql			
+	));
 }
