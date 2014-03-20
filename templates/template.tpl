@@ -10,13 +10,13 @@
 <link href="{$base_url}js/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
 <link href="{$base_url}js/bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
 <link href="{$base_url}js/bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet" />
+<link href="{$base_url}insights.css" rel="stylesheet" />
+
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
-
-{include file='_css.tpl'}
 
 {block name='head'}
 {/block}
@@ -56,7 +56,9 @@
 <script src="{$base_url}js/bootstrap-sortable/Scripts/bootstrap-sortable.js"></script>
 <script src="{$base_url}js/bootstrap-sortable/Scripts/moment.min.js"></script>
 
-{include file='_javascript.tpl'}
+{include file="_data.tpl"}
+
+<script type="text/javascript" src="{$base_url}insights.js"></script>
 
 {block name='footer'}{/block}
 

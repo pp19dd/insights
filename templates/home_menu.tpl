@@ -4,6 +4,7 @@
 
 {function name=all_buttons}
 
+{*
 <div class="btn-group insights_range {$classes}">
 	<span class="btn btn-inactive">Date range:</span>
 	
@@ -26,12 +27,57 @@
 		class="btn btn-default btn_range{$suffix} btn_range_custom{$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
 	>Custom</button>
 </div>
+*}
 
 {/function}
 
+<div class="insights_range">
+<table style="width:100%" border="0" class="">
+	<tr>
+		<td colspan="3"></td>
+		<td colspan="3">
+			<div style="border-bottom:1px solid rgb(230,230,230)">Date Range</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:20px"></td>
+		<td>nav</td>
+		<td style="width:20px"></td>
+		<td style="width:60px">
+			<a 
+				title="Pick from calendar" 
+				class="btn btn-primaryx btn-xs pick_date" 
+				role="button" 
+				data-date="2014-03-20" 
+				data-date-format="yyyy-mm-dd"
+			>
+				<span class="glyphicon glyphicon-calendar"></span>&nbsp;From:<br/>
+				<span class="display_date" id="id_range_from">{$range->active->range_start|date_format:"Y-m-d"}</span>
+			</a>
+		</td>
+		<td style="width:60px">
+			<a 
+				title="Pick from calendar" 
+				class="btn btn-primaryx btn-xs pick_date" 
+				role="button" 
+				data-date="2014-03-20" 
+				data-date-format="yyyy-mm-dd"
+			>
+				<span class="glyphicon glyphicon-calendar"></span>&nbsp;Until:<br/>
+				<span class="display_date" id="id_range_until">{$range->active->range_end|date_format:"Y-m-d"}</span>
+			</a>
+		</td>
+		<td style="width:20px">
+			<button id="id_go_button" class="go_button btn btn-xs btn-default" url="?{rewrite erase='edit,day,until' range='custom'}{/rewrite}" style="height:40px;width:35px;">Go</button>
+		</td>
+	</tr>
+</table>
+</div>
+
+{*
 {all_buttons classes="visible-xs visible-sm" suffix="_sm"}
 {all_buttons classes="visible-lg visible-md" suffix=""}
-
+*}
 
 {*<!--
 {if $can.view == true}

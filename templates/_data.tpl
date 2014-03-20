@@ -1,4 +1,6 @@
 
+<script type="text/javascript">
+
 {if $can.view == true}
 
 var insights_data = {
@@ -20,6 +22,6 @@ var insights_data = {
 	entry: null
 };
 
-
-
 {/if}
+
+</script>

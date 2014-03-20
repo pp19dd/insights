@@ -29,7 +29,11 @@ $VOA->assign( 'error', $USER->error );
 # ============================================================================
 # calendar navigation / general queries
 # ============================================================================
-$RANGE = new Insights_Range( $_GET['day'] );
+$RANGE = new Insights_Range(
+	$_GET['day'],
+	(isset($_GET['day']) ? $_GET['day'] : null),
+	(isset($_GET['until']) ? $_GET['until'] : null)
+);
 $RANGE->active = $RANGE->{$_GET['range']};
 $VOA->assign( 'range', $RANGE );
 

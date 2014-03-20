@@ -17,16 +17,19 @@
 <li>
 <span class="btn btn-sm">
 	<form method="get" action="{$base_url}?" class="btn btn-sm">
-		<span style="color:silver">Keywords:&nbsp;</span>
-		<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
-		<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
 
 		<input 
 			title="Click or hit ESC key to show" 
 			class="btn btn-xs" type="button" 
 			value="Add insight..."
 			role="button" id="pick_add_insight"
+			style="margin-right:20px"
 		/>
+
+		<span style="color:silver">Keywords:&nbsp;</span>
+		<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
+		<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
+
 
 	</form>
 </span>

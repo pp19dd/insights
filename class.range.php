@@ -31,6 +31,9 @@ class Insights_Range_Day {
 		$this->today = $today;
 		$this->today_timestamp = strtotime($this->today );
 
+		if( !is_null( $range_start )) $this->range_start = $range_start;
+		if( !is_null( $range_end )) $this->range_end = $range_end;
+		
 		$this->beforeCompute();
 		$this->computeStart();
 		$this->computeEnd();
@@ -60,12 +63,12 @@ class Insights_Range_Month extends Insights_Range_Day {
 }
 
 class Insights_Range_Custom extends Insights_Range_Day {
-// 	function computeStart() {
-// 		$this->range_start = strtotime( "first day of this month", $this->today_timestamp );
-// 	}
-// 	function computeEnd() {
-// 		$this->range_end = strtotime( "last day of this month", $this->today_timestamp );
-// 	}
+	function computeStart() {
+		$this->range_start = strtotime($this->range_start);
+	}
+	function computeEnd() {
+		$this->range_end = strtotime($this->range_end);
+	}
 }
 
 # replaces:
@@ -81,7 +84,7 @@ class Insights_Range {
 	var $week;
 	var $month;
 	var $custom;
-
+	
 	function d( $str, $ts ) {
 		return( date( "Y-m-d", strtotime($str, $ts) ) );
 	}
@@ -102,7 +105,6 @@ class Insights_Range {
 		$this->month->prev = 	new Insights_Range_Month( $this->d("-1 month", $this->day->today_timestamp ) );
 		$this->month->next = 	new Insights_Range_Month( $this->d("+1 month", $this->day->today_timestamp ) );
 		
-		#$this->custom = 		new Insights_Range_Custom( $today, $range_start, $range_end );
-		#$this->custom->next = 	new Insights_Range_Custom( $today, $range_start, $range_end );
+		$this->custom = 		new Insights_Range_Custom( $today, $range_start, $range_end );
 	}
 }
