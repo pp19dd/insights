@@ -125,7 +125,7 @@ function insights_get_entries_rich( $options = array() ) {
 	// assume range is +1 day. for a single day query, from = 2014-03-18, to = 2014-03-19
 	if( isset( $options["from"]) && isset($options["to"]) ) {
 		$where[] = sprintf( "`deadline` >= '%s'", insights_filter_date($options["from"]) );
-		$where[] = sprintf( "`deadline` < '%s'", insights_filter_date($options["to"]) );
+		$where[] = sprintf( "`deadline` <= '%s'", insights_filter_date($options["to"]) );
 	}
 	
 	// $search = Array( "word", "word2..." );

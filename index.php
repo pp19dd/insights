@@ -19,6 +19,16 @@ if( $_GET['range'] === 'week' && !isset($_GET['until']) ) {
 	die;
 }
 
+if( 
+	!isset($_GET['all']) &&
+	!isset($_GET['more']) &&
+	!isset($_GET['show'])
+) {
+	$URL->set("show", "regions");
+	header("location:" . (String)$URL);
+	die;
+}
+
 # ============================================================================
 # auth
 # ============================================================================
@@ -102,6 +112,18 @@ if( isset( $_GET['keywords']) ) {
 	} else {
 		$query_entries["search"] = $words;
 	}
+	
+	// search removal tips
+	#pre( $words );
+	
+	
+	$tips = array();
+	foreach( $words as $word ) {
+		$words_as_keys = array_flip( $words );
+		unset( $words_as_keys[$word]);
+		$tips[$word] = implode(" ", array_keys($words_as_keys));
+	}
+	$VOA->assign( "search_tips", $tips);
 }	
 // } elseif( isset( $_GET['until']) ) {
 

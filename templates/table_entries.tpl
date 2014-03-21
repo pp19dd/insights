@@ -6,7 +6,7 @@
 		{if $set|count > 0}
 			{foreach from=$set item=item}
 				{if isset($item.resolved) && isset($item.resolved.name)}
-					{$item.resolved.name}{if not $item@last},{/if}
+					{$item.resolved.name}{if not $item@last}, {/if}
 				{/if}
 			{/foreach}
 		{else}
@@ -51,6 +51,8 @@
 
 {/function}
 {*<!-- ------------------------------------------------------------------ -->*}
+
+<div class="row">
 
 <div class="panel panel-default">
 	<table class="table sortable">

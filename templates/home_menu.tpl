@@ -2,32 +2,34 @@
        range rendered several times for variable screen sizes
        ------------------------------------------------------------------ -->*}
 
+{function name="button_class"}{strip}
+btn btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$suffix} {if isset($smarty.get.range) && $smarty.get.range == $range}active{/if}
+{/strip}{/function}
+
 {function name=all_buttons}
 
-{*
-<div class="btn-group insights_range {$classes}">
+<div class="btn-group btn-group-sm insights_range {$classes}">
 	<span class="btn btn-inactive">Date range:</span>
 	
 	<button 
-		class="btn btn-default btn_range{$suffix} btn_range_day{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'day'}active{/if}" 
+		class="{button_class range=day suffix=$suffix}" 
 		onclick="window.location='?{rewrite range=day erase=until}{/rewrite}';" 
 	>Day</button>
 
 	<button 
-		class="btn btn-default btn_range{$suffix} btn_range_week{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'week'}active{/if}" 
+		class="{button_class range=week suffix=$suffix}" 
 		onclick="window.location='?{rewrite range=week}{/rewrite}';" 
 	>Week</button>
 
 	<button 
-		class="btn btn-default btn_range{$suffix} btn_range_month{$suffix} {if isset($smarty.get.range) && $smarty.get.range == 'month'}active{/if}"
+		class="{button_class range=month suffix=$suffix}"
 		onclick="window.location='?{rewrite range=month}{/rewrite}';"
 	>Month</button>
 
 	<button 
-		class="btn btn-default btn_range{$suffix} btn_range_custom{$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
+		class="{button_class range=custom suffix=$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
 	>Custom</button>
 </div>
-*}
 
 {/function}
 
@@ -36,12 +38,15 @@
 	<tr>
 		<td colspan="3"></td>
 		<td colspan="3">
-			<div style="border-bottom:1px solid rgb(230,230,230)">Date Range</div>
+			<div style="border-bottom:1px solid rgb(230,230,230)">Custom Range</div>
 		</td>
 	</tr>
 	<tr>
 		<td style="width:20px"></td>
-		<td>nav</td>
+		<td>
+			{all_buttons classes="visible-xs visible-sm" suffix="_sm"}
+			{all_buttons classes="visible-lg visible-md" suffix=""}
+		</td>
 		<td style="width:20px"></td>
 		<td style="width:60px">
 			<a 
@@ -68,7 +73,12 @@
 			</a>
 		</td>
 		<td style="width:20px">
-			<button id="id_go_button" class="go_button btn btn-xs btn-default" url="?{rewrite erase='edit,day,until' range='custom'}{/rewrite}" style="height:40px;width:35px;">Go</button>
+			<button 
+				id="id_go_button" 
+				class="go_button btn btn-xs btn-default" 
+				url="?{rewrite erase='edit,day,until' range='custom'}{/rewrite}"
+				style="height:40px;width:35px;"
+			>Go</button>
 		</td>
 	</tr>
 </table>
@@ -99,6 +109,7 @@
 <div class="clearfix after_range"></div>
 -->*}
 
+{if !isset($smarty.get.keywords)}
 
 {*<!-- ------------------------------------------------------------------
        menu buttons for different map filters
@@ -112,7 +123,7 @@
 >{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</button>
 {/function}
 
-<div class="btn-group insights_show_by_menu">
+<div class="btn-group btn-group-sm insights_show_by_menu">
 	<span class="btn btn-inactive">Show by:</span>
 {insights_show parm="regions" label="Region" count=count($all_maps['regions'])}
 {insights_show parm="beats" label="Beat" count=count($all_maps['beats'])}
@@ -126,10 +137,12 @@
 {insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
 	<span class="btn btn-inactive">
 		<a 
-			href="?all&day={$range->day->range_start_human}" 
+			href="?{rewrite all=1 erase='more,show'}{/rewrite}" 
 			title="Show all entries for {$range->day->range_start_human|date_format:'M d, Y'} in list form"
 		>
 			All ({$entries|count} {if $entries|count == 1}entry{else}entries{/if})
 		</a>
 	</span>
 </div>
+
+{/if}

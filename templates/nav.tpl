@@ -8,7 +8,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="{$base_url}" class="navbar-brand voa-insights-brand" href="">Insights</a>
+			<a href="{$base_url}" title="Home / Today" class="navbar-brand voa-insights-brand">Insights</a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
@@ -17,6 +17,10 @@
 <li>
 <span class="btn btn-sm">
 	<form method="get" action="{$base_url}?" class="btn btn-sm">
+
+		<input type="hidden" name="day" id="id_search_form_date_start" value="{$range->active->range_start_human}" />
+		<input type="hidden" name="until" id="id_search_form_date_end" value="{$range->active->range_end_human}" />
+		<input type="hidden" name="range" id="id_search_form_date_range" value="{$smarty.get.range}" />
 
 		<input 
 			title="Click or hit ESC key to show" 
