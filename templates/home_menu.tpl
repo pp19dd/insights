@@ -3,11 +3,85 @@
        ------------------------------------------------------------------ -->*}
 
 {function name="button_class"}{strip}
-btn btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$suffix} {if isset($smarty.get.range) && $smarty.get.range == $range}active{/if}
+btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$suffix} {if isset($smarty.get.range) && $smarty.get.range == $range}active{/if}
 {/strip}{/function}
+
+{function name="human_range"}{strip}
+{capture assign=a}{$selrange->range_start_human|date_format:$format}{/capture}
+{capture assign=b}{$selrange->range_end_human|date_format:$format}{/capture}
+{if $a == $b}{$a}{else}{$a}-{$b}{/if}
+{/strip}{/function}
+
+{function name="prev_next"}
+
+<table class="calendar_nav_hint" style="width:100%">
+	<tr>
+		<td style="text-align:left">
+			<a 
+				title="Previous {$smarty.get.range}" 
+				class="btn btn-primaryx btn-xs" 
+				role="button" 
+				href="?{rewrite day=$selrange->prev->range_start_human until=$selrange->prev->range_end_human}{/rewrite}"
+			><span class="glyphicon glyphicon-arrow-left"></span> {human_range selrange=$selrange->prev format=$format}</a>
+		</td>
+		<td></td>
+		<td style="text-align:right">
+			<a 
+				title="Next {$smarty.get.range}" 
+				class="btn btn-primaryx btn-xs" 
+				role="button" 
+				href="?{rewrite day=$selrange->next->range_start_human until=$selrange->next->range_end_human}{/rewrite}"
+			>{human_range selrange=$selrange->next format=$format} <span class="glyphicon glyphicon-arrow-right"></span></a>
+		</td>
+	</tr>
+</table>
+
+{/function}
 
 {function name=all_buttons}
 
+<table border="0" style="width:100%">
+<tr>
+	<td style="width:10%">
+		<a 
+			class="{button_class range=day suffix=$suffix}" 
+			style="width:100%"
+			href="?{rewrite range=day erase='edit,until'}{/rewrite}" 
+		>Day ({$range->day->range_start_human|date_format:"n/d"})</a>
+	</td>
+	<td style="width:20%">
+		<a
+			class="{button_class range=week suffix=$suffix}" 
+			style="width:100%"
+			href="?{rewrite range=week erase='edit,until'}{/rewrite}" 
+		>Week ({$range->week->range_start_human|date_format:"n/d"} - {$range->week->range_end_human|date_format:"n/d"})</a>
+	</td>
+	<td style="width:60%">
+		<a 
+			class="{button_class range=month suffix=$suffix}" 
+			style="width:100%"
+			href="?{rewrite range=month erase='edit,until'}{/rewrite}" 
+		>Month ({$range->month->range_start_human|date_format:"F"})</a>
+	</td>
+	<td style="">
+{if $smarty.get.range == 'custom'}
+		<a 
+			title="Use the date dropdown on the right"
+			class="{button_class range=custom suffix=$suffix}" 
+			style="width:100%"
+		>Custom</a>
+{/if}
+	</td>
+</tr>
+<tr>
+	<td>{if $smarty.get.range == 'day'}{prev_next selrange=$range->day format="n/d"}{/if}</td>
+	<td>{if $smarty.get.range == 'week'}{prev_next selrange=$range->week format="n/d"}{/if}</td>
+	<td>{if $smarty.get.range == 'month'}{prev_next selrange=$range->month format="F Y"}{/if}</td>
+	<td></td>
+</tr>
+</table>
+
+{*<!--
 <div class="btn-group btn-group-sm insights_range {$classes}">
 	<span class="btn btn-inactive">Date range:</span>
 	
@@ -30,24 +104,22 @@ btn btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$suffix} 
 		class="{button_class range=custom suffix=$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
 	>Custom</button>
 </div>
+-->*}
 
 {/function}
 
 <div class="insights_range">
 <table style="width:100%" border="0" class="">
 	<tr>
-		<td colspan="3"></td>
+		<td rowspan="2">
+			{all_buttons classes="" suffix="_sm"}
+		</td>
 		<td colspan="3">
 			<div style="border-bottom:1px solid rgb(230,230,230)">Custom Range</div>
 		</td>
 	</tr>
 	<tr>
-		<td style="width:20px"></td>
-		<td>
-			{all_buttons classes="visible-xs visible-sm" suffix="_sm"}
-			{all_buttons classes="visible-lg visible-md" suffix=""}
-		</td>
-		<td style="width:20px"></td>
+		<td style=""></td>
 		<td style="width:60px">
 			<a 
 				title="Pick from calendar" 

@@ -47,10 +47,19 @@ class Insights_Range_Day {
 
 class Insights_Range_Week extends Insights_Range_Day {
 	function computeStart() {
-		$this->range_start = strtotime( "last Saturday", $this->today_timestamp );
+		// 0 = sun, ... 6 = sat
+		$day_of_week = date("w", $this->today_timestamp);
+		
+		// $this->range_start = strtotime( "sunday this week", $this->today_timestamp );
+		$this->range_start = strtotime( "-{$day_of_week} day", $this->today_timestamp);
 	}
 	function computeEnd() {
-		$this->range_end = strtotime( "next Sunday", $this->today_timestamp );
+		// 0 = sun, ... 6 = sat
+		$day_of_week = date("w", $this->today_timestamp);
+		$diff = 6 - $day_of_week;
+		
+		// $this->range_end = strtotime( "saturday this week", $this->today_timestamp );
+		$this->range_end = strtotime( "+{$diff} day", $this->today_timestamp);
 	}
 }
 
@@ -101,7 +110,7 @@ class Insights_Range {
 		$this->week = 			new Insights_Range_Week( $today );
 		$this->week->prev = 	new Insights_Range_Week( $this->d("-7 day", $this->day->today_timestamp) );
 		$this->week->next = 	new Insights_Range_Week( $this->d("+7 day", $this->day->today_timestamp) );
-		
+
 		$this->month = 			new Insights_Range_Month( $today );
 		$this->month->prev = 	new Insights_Range_Month( $this->d("-1 month", $this->day->today_timestamp ) );
 		$this->month->next = 	new Insights_Range_Month( $this->d("+1 month", $this->day->today_timestamp ) );

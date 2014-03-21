@@ -13,11 +13,11 @@ if( !isset($_GET['range']) || !isset($_GET['day']) ) {
 	die;
 }
 
-if( $_GET['range'] === 'week' && !isset($_GET['until']) ) {
-	$URL->set( "until", date("Y-m-d", strtotime("+7 day", strtotime( $_GET['day']) ) ));
-	header("location:" . (String)$URL);
-	die;
-}
+// if( $_GET['range'] === 'week' && !isset($_GET['until']) ) {
+// 	$URL->set( "until", date("Y-m-d", strtotime("+7 day", strtotime( $_GET['day']) ) ));
+// 	header("location:" . (String)$URL);
+// 	die;
+// }
 
 if( 
 	!isset($_GET['all']) &&
@@ -47,7 +47,7 @@ $RANGE = new Insights_Range(
 $RANGE->active = $RANGE->{$_GET['range']};
 $VOA->assign( 'range', $RANGE );
 
-// pre( $RANGE );
+// pre( $RANGE->week );
 // $RANGE = new Insights_Range(
 // 	(isset( $_GET['day']) ? $_GET['day'] : date("Y-m-d")),	// today
 // 	$_GET['range'],											// range mode

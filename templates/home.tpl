@@ -76,7 +76,13 @@
 
 
 {if isset($smarty.get.all)}
-<h1>Showing all entries for {$range->day->range_start_human|date_format:"M d, Y"}</h1>
+
+{if $range->active->range_start_human == $range->active->range_end_human}
+<h1>Showing all entries for {$range->active->range_start_human|date_format:"M d, Y"}</h1>
+{else}
+<h1>Showing all entries for {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
+{/if}
+
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}
 

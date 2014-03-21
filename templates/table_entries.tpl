@@ -39,7 +39,7 @@
 		<div class="btn-group">
 			<button 
 				onclick="window.location='?{rewrite edit=$entry.id}{/rewrite}'" 
-				class="btn btn-default" 
+				class="btn btn-default btn-sm" 
 				type="button"
 			>
 			<span class="glyphicon {if $entry.is_starred=='Yes'}glyphicon-star insights_star_note_starred{else}glyphicon-star-empty{/if}"></span>
