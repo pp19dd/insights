@@ -13,16 +13,25 @@ if( !isset($_GET['range']) || !isset($_GET['day']) ) {
 	die;
 }
 
-// if( $_GET['range'] === 'week' && !isset($_GET['until']) ) {
-// 	$URL->set( "until", date("Y-m-d", strtotime("+7 day", strtotime( $_GET['day']) ) ));
-// 	header("location:" . (String)$URL);
-// 	die;
-// }
+// is start > end?
+if( isset($_GET['until']) ) {
+	
+	$a = strtotime($_GET['day']);
+	$b = strtotime($_GET['until']);
+	
+	if( $a > $b ) {
+		$URL->set("until", date("Y-m-d", $a));
+		$URL->set("day", date("Y-m-d", $b));
+
+		header("location:" . (String)$URL);
+		die;
+	}
+}
 
 if( 
-	!isset($_GET['all']) &&
-	!isset($_GET['more']) &&
-	!isset($_GET['show'])
+	isset($_GET['all']) === false &&
+	isset($_GET['more']) === false &&
+	isset($_GET['show']) === false
 ) {
 	$URL->set("show", "regions");
 	header("location:" . (String)$URL);
