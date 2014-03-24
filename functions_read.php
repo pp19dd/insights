@@ -106,6 +106,11 @@ function insights_get_entries_rich( $options = array() ) {
 		return( array() );
 	}
 	
+	// is_deleted
+	if( isset( $options["deleted"]) ) {
+		$where[] = sprintf( "`is_deleted`='%s'", $options["deleted"] );
+	}
+	
 	// $id = Array( 1, 2, 3, ... )
 	if( isset( $options["id"]) ) {
 		$where[] = sprintf( "`id` in (%s)", implode(",", $options["id"]) );

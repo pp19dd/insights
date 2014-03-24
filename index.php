@@ -104,6 +104,7 @@ $VOA->assign( 'activity', insights_activity() );
 # query routine
 # ============================================================================
 $query_entries = array(
+	"deleted" => "No",
 	"from" => $RANGE->active->range_start_human,
 	"to" => $RANGE->active->range_end_human
 );
