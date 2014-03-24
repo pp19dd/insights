@@ -31,6 +31,12 @@
 
 <p>{$entries|count} result{if $entries|count != 1}s{/if}.</p>
 
+{if $range->active->range_start_human == $range->active->range_end_human}
+<h1>Search date includes {$range->active->range_start_human|date_format:"M d, Y"}</h1>
+{else}
+<h1>Search dates include {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
+{/if}
+
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}
 
 {/if}

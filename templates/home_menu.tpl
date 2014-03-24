@@ -209,7 +209,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 {insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
 	<span class="btn btn-inactive">
 		<a 
-			href="?{rewrite all=1 erase='more,show'}{/rewrite}" 
+			href="?{rewrite all=1 erase='more,show,edit'}{/rewrite}" 
 			title="Show all entries for {$range->day->range_start_human|date_format:'M d, Y'} in list form"
 		>
 			All ({$entries|count} {if $entries|count == 1}entry{else}entries{/if})

@@ -8,7 +8,11 @@
 
 {if $can.view}
 
-	{if isset($smarty.get.edit)}
+	{if isset($smarty.get.keywords)}
+
+<title>VOA Insights - {range_title} - Search {$smarty.get.keywords}</title>
+
+	{elseif isset($smarty.get.edit)}
 
 		{if $can.edit == true}
 
