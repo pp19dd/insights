@@ -81,5 +81,5 @@ switch( $mode ) {
 # ============================================================================
 # break caching, template compiling and display
 # ============================================================================
-$VOA->clearCompiledTemplate( $template );
+// $VOA->clearCompiledTemplate( $template );
 $VOA->display( $template );

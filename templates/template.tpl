@@ -51,6 +51,7 @@
 </div> <!-- /container -->
 
 <script src="{$base_url}js/bootstrap-jquery/jquery.js"></script>
+<script src="{$base_url}js/jquery.cookie.js"></script>
 <script src="{$base_url}js/bootstrap-3.0.2/js/bootstrap.min.js"></script>
 <script src="{$base_url}js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="{$base_url}js/bootstrap-select2-3.4.5/select2.min.js"></script>
@@ -63,7 +64,11 @@
 <script type="text/javascript" src="{$base_url}insights.js"></script>
 {/if}
 
+<!-- footer block -->
+
 {block name='footer'}{/block}
+
+<!-- end footer block -->
 
 {if isset($disable_footer) && !$disable_footer}
 {$config.footer.value}

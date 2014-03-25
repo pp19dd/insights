@@ -13,32 +13,34 @@
 <br/>
 {/if}
 
-<style>
-.row_count_0 { display: none }
-</style>
-
-<p><a href="#" onclick="$('.row_count_0').toggle(); return(false);">Toggle hidden rows.</a></p>
+<p style="margin-left:40px">
+	Filter: <input type="text" autocomplete="off" id="filter_name" value="" />
+	<label><input id="show_empty_rows" type="checkbox" onclick="toggle_hidden(this);" /> Show empty rows.</label>
+</p> 
 
 <div class="panel panel-default">
-	<table class="table sortable">
+	<table class="table sortable" id="sortable_admin_table">
 		<thead>
 			<tr>
 {foreach from=$first key=field item=dummy}
 {if !$hide || !in_array($field,$hide)}
-				<th class="{if $field=='id'}left-most{/if}">{$field}</th>
+				<th class="{if $field=='id'}left-most {/if} th_{$field}">{$field}</th>
 {/if}
 {/foreach}
 {if $editable}
+				<th></th>
+{/if}
+{if $list}
 				<th></th>
 {/if}
 			</tr>
 		</thead>
 		<tbody>
 {foreach from=$data item=row}
-			<tr class="row_count_{$row.count}">
+			<tr class="admin_row row_count_{$row.count}">
 {foreach from=$row key=field item=cell}
 {if !$hide || !in_array($field,$hide)}
-				<td class="{if $field=='id'}left-most{/if}">{$cell}</td>
+				<td class="{if $field=='id'}left-most {/if}td_{$field}">{$cell}</td>
 {/if}
 {/foreach}
 {if $editable}
@@ -62,3 +64,4 @@
 	</table>
 
 </div>
+
