@@ -10,7 +10,7 @@
 
 {block name='content'}
 
-{include file='menu.tpl'}
-{include file='table.tpl' table_title='VOA Services' add=true editable=true hide=array('is_deleted', 'division_id') data=$services_full}
+{include file='admin__menu.tpl'}
+{include file='admin__table.tpl' list='editors' table_title='Editors' add=false editable=false hide=array('is_deleted') data=$editors}
 
 {/block}

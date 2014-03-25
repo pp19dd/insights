@@ -1,4 +1,5 @@
 <?php
+if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
 /**
  * given a list of all entries, organize by map type
@@ -142,17 +143,50 @@ function insights_get_type( $type ) {
 
 	$ret = $VOA->query(
 		"select 
-			* 
-		from 
+			`{$tbl}{$type}`.*,
+			(
+				select 
+					count(`{$tbl}map`.`entry_id`) 
+				from 
+					`{$tbl}map`
+				where 
+					`{$tbl}map`.`type`='{$type}' and 
+					`{$tbl}map`.`other_id`=`{$tbl}{$type}`.`id` and
+					`{$tbl}map`.`is_deleted`='No'
+			) as `count` 
+		from
 			{$tbl}{$type} 
 		where 
-			is_deleted='No' 
+			`{$tbl}{$type}`.`is_deleted`='No' 
 		order by 
 			`name`",
 		array("index"=>"id", "noempty")
 	);
-	
+
 	return( $ret );
+}
+
+/**
+ * filters editors / reporters
+ * @param unknown $input
+ */
+function insights_autocomplete_filter( $input ) {
+	$ret = array();
+	foreach( $input as $k => $v ) {
+		if( $v["count"] == 0 ) continue;
+		
+		$ret[] = array("id" => $v["id"], "text" => $v["name"] );
+	}
+	return( $ret );
+}
+
+/**
+ * Returns filtered array containing elements where count > 0 
+ * @param Array $arr
+ */
+function insights_nonzero_count_filter( $element ) {
+	if( $element["count"] <= 0 ) return( false );
+	return( true );
 }
 
 /**
@@ -204,19 +238,30 @@ function insights_get_common_queries() {
 		$queries["hours"][$value] = $friendly;
 	}
 
-	$queries['editors_reduced'] = array_values(array_map( function($e) {
-		return(array(
-			"id" => $e['id'],
-			"text" => $e['name']
-		));
-	}, $queries['editors'] ));
+	$queries["editors_reduced"] = insights_autocomplete_filter( $queries["editors"] );
+	$queries["reporters_reduced"] = insights_autocomplete_filter( $queries["reporters"] );
 	
-	$queries['reporters_reduced'] = array_values(array_map( function($e) {
-		return(array(
-			"id" => $e['id'],
-			"text" => $e['name']
-		));
-	}, $queries['reporters'] ));
+// 	$queries['editors_reduced'] = array_values(array_map( function($e) {
+// 		return(array(
+// 			"id" => $e['id'],
+// 			"text" => $e['name'],
+// 			"count" => $e['count']
+// 		));
+// 	}, $queries['editors'] ));
+	
+// 	$queries['reporters_reduced'] = array_values(array_map( function($e) {
+// 		return(array(
+// 			"id" => $e['id'],
+// 			"text" => $e['name'],
+// 			"count" => $e['count']
+// 		));
+// 	}, $queries['reporters'] ));
+
+// 	# allow only non-zero counts, for autocomplete
+// 	$queries["reporters_reduced"] = array_filter( $queries["reporters_reduced"], 'insights_nonzero_count_filter' );
+// 	$queries["editors_reduced"] = array_filter( $queries["editors_reduced"], 'insights_nonzero_count_filter' );
+	
+	//pre( $queries["reporters_reduced"]) ;
 	
 	# used for a pretty dropdown
 	foreach( $queries['divisions'] as $division_id => $division ) {

@@ -74,15 +74,23 @@
 
 {/if}
 
+{function name="visible_range"}{strip}
+{capture assign=a}{$range->active->range_start_human|date_format:"M d, Y"}{/capture}
+{capture assign=b}{$range->active->range_end_human|date_format:"M d, Y"}{/capture}
+{if $a == $b}{$a}{else}{$a} to {$b}{/if}
+{/strip}{/function}
 
 {if isset($smarty.get.all)}
 
-{if $range->active->range_start_human == $range->active->range_end_human}
-<h1>Showing all entries for {$range->active->range_start_human|date_format:"M d, Y"}</h1>
-{else}
-<h1>Showing all entries for {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
-{/if}
+{if isset($smarty.get.term_type)}
+<h1>
+	Showing all entries for {$smarty.get.term_type} / id # {$smarty.get.term_id} ({${$smarty.get.term_type}[$smarty.get.term_id].name|default:"Blank Entry"})
+	<a href="?{rewrite erase='term_type,term_id'}{/rewrite}">[Remove]</a>
+</h1>
 
+{else}
+<h1>Showing all entries for {visible_range}</h1>
+{/if}
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}
 

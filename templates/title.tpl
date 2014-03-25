@@ -1,10 +1,15 @@
-{strip}
-
 {function name="range_title"}{strip}
 {capture assign=a}{$range->active->range_start_human}{/capture}
 {capture assign=b}{$range->active->range_end_human}{/capture}
 {if $a == $b}{$a}{else}{$a} to {$b} ({$smarty.get.range}){/if}
 {/strip}{/function}
+{strip}
+
+{if $is_admin}
+
+<title>Admin</title>
+
+{else}
 
 {if $can.view}
 
@@ -49,6 +54,8 @@
 {else}
 
 <title>VOA Insights - Restricted Access</title>
+
+{/if}
 
 {/if}
 

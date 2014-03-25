@@ -37,14 +37,14 @@
 	<td class="entry_field entry_editors">{map set=$entry.map.editors}</td>
 	<td class="entry_field entry_edit">
 		<div class="btn-group">
-			<button 
-				onclick="window.location='?{rewrite edit=$entry.id}{/rewrite}'" 
+			<a
+				href="?{rewrite edit=$entry.id}{/rewrite}" 
 				class="btn btn-default btn-sm" 
 				type="button"
 			>
 			<span class="glyphicon {if $entry.is_starred=='Yes'}glyphicon-star insights_star_note_starred{else}glyphicon-star-empty{/if}"></span>
 			{if $can.edit}Edit{else}View{/if}
-			</button>
+			</a>
 		</div>
 	</td>
 </tr>

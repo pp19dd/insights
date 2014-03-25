@@ -21,14 +21,14 @@ ErrorDocument 401 /insights/index.php?mode=403
 ErrorDocument 403 /insights/index.php?mode=403
 ErrorDocument 404 /insights/index.php?mode=404
 
+RewriteRule admin/beats/ index.php?mode=admin&page=beats [QSA,NC]
+RewriteRule admin/services/ index.php?mode=admin&page=services [QSA,NC]
+RewriteRule admin/divisions/ index.php?mode=admin&page=divisions [QSA,NC]
+RewriteRule admin/reporters/ index.php?mode=admin&page=reporters [QSA,NC]
+RewriteRule admin/editors/ index.php?mode=admin&page=editors [QSA,NC]
+RewriteRule admin/ index.php?mode=admin&page=admin [QSA,NC]
 
 # RewriteRule access/ index.php?mode=access[QSA,NC]
-# RewriteRule admin/beats/ index.php?mode=beats [QSA,NC]
-# RewriteRule admin/services/ index.php?mode=services [QSA,NC]
-# RewriteRule admin/divisions/ index.php?mode=divisions [QSA,NC]
-# RewriteRule admin/reporters/ index.php?mode=reporters [QSA,NC]
-# RewriteRule admin/editors/ index.php?mode=editors [QSA,NC]
-# RewriteRule admin/ index.php?mode=admin [QSA,NC]
 
 # SetEnv example val
 # SetEnvIf ?

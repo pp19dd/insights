@@ -1,4 +1,5 @@
 <?php
+if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
 /**
  * retrieves full listing for an entry from a metadata table

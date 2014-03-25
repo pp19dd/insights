@@ -29,10 +29,12 @@
 
 <div class="clearfix"></div>
 
+{if !$is_admin}
 <div class="container container_add_insight">
 {include file='add_insight.tpl'}
 </div>
 <div class="clearfix"></div>
+{/if}
 
 <div class="container container_content">
 {block name='content'}{/block}
@@ -56,13 +58,14 @@
 <script src="{$base_url}js/bootstrap-sortable/Scripts/bootstrap-sortable.js"></script>
 <script src="{$base_url}js/bootstrap-sortable/Scripts/moment.min.js"></script>
 
+{if !$is_admin}
 {include file="_data.tpl"}
-
 <script type="text/javascript" src="{$base_url}insights.js"></script>
+{/if}
 
 {block name='footer'}{/block}
 
-{if !$disable_footer}
+{if isset($disable_footer) && !$disable_footer}
 {$config.footer.value}
 {else}
 <!-- additional footer disabled -->

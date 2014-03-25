@@ -10,7 +10,7 @@
 
 {block name='content'}
 
-{include file='menu.tpl'}
-{include file='table.tpl' table_title='Beats' add=true editable=true hide=array('is_deleted') data=$beats}
+{include file='admin__menu.tpl'}
+{include file='admin__table.tpl' list='reporters' table_title='Reporters' add=false editable=false hide=array('is_deleted') data=$reporters}
 
 {/block}

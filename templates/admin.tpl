@@ -10,7 +10,7 @@
 
 {block name='content'}
 
-{include file='menu.tpl'}
+{include file='admin__menu.tpl'}
 
 <div class="row">
 

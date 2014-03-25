@@ -13,7 +13,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
 
-{if $can.view}
+{if $can.view && !$is_admin}
 <li>
 <span class="btn btn-sm">
 	<form method="get" action="{$base_url}?" class="btn btn-sm">

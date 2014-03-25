@@ -1,4 +1,5 @@
 <?php
+if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
 /*
     Paul's Simple Diff Algorithm v 0.1
