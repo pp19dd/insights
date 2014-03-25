@@ -11,7 +11,7 @@
 <link href="{$base_url}js/bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
 <link href="{$base_url}js/bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet" />
 <link href="{$base_url}insights.css" rel="stylesheet" />
-<link rel="shortcut icon" type="image/x-icon" href="{$base_url}/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="{$base_url}favicon.ico" />
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
