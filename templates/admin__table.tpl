@@ -16,6 +16,7 @@
 
 <p style="margin-left:40px">
 	Filter: <input type="text" autocomplete="off" id="filter_name" value="" />
+	<label><input id="filter_name_invert" type="checkbox" /> Invert name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<label><input id="filter_empty" type="checkbox" /> Show empty rows.</label>
 </p> 
 

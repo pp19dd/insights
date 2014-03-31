@@ -91,6 +91,7 @@ function rename_term( term_id, that, term_type ) {
 
 var filters = {
 	show_empty: false,
+	name_invert: false,
 	name: ""
 };
 
@@ -117,7 +118,12 @@ function apply_filters() {
 		// partial name match
 		var row_name = $("td.td_name", $(e)).text().toLowerCase();
 		var p = row_name.indexOf(filters.name);
-		if( p == -1 ) hide_count++;
+		
+		if( filters.name_invert == false ) {
+			if( p == -1 ) hide_count++;
+		} else {
+			if( p != -1 ) hide_count++;
+		}
 		
 		// show empty rows?
 		var row_count = parseInt($("td.td_count", $(e)).text().toLowerCase());
@@ -134,7 +140,7 @@ function apply_filters() {
 }
 
 // apply filter if needed
-$("#filter_name, #filter_empty").bind("click change keydown keyup keypress", function() {
+$("#filter_name, #filter_empty, #filter_name_invert").bind("click change keydown keyup keypress", function() {
 	var old_filters = {};	
 
 	for( var k in filters )(function(k,v) {
@@ -142,6 +148,7 @@ $("#filter_name, #filter_empty").bind("click change keydown keyup keypress", fun
 	})(k, filters[k]);
 
 	filters.show_empty = $("#filter_empty")[0].checked;
+	filters.name_invert = $("#filter_name_invert")[0].checked;
 	filters.name = $("#filter_name").val();
 
 	if( filter_same(filters, old_filters) == false ) {	
