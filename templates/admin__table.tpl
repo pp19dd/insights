@@ -4,6 +4,7 @@
 {/capture}
 
 {if !isset($list)}{$list = false}{/if}
+{if !isset($rename)}{$rename = false}{/if}
 
 {if $add}
 <div class="btn-group">
@@ -15,7 +16,7 @@
 
 <p style="margin-left:40px">
 	Filter: <input type="text" autocomplete="off" id="filter_name" value="" />
-	<label><input id="show_empty_rows" type="checkbox" onclick="toggle_hidden(this);" /> Show empty rows.</label>
+	<label><input id="filter_empty" type="checkbox" /> Show empty rows.</label>
 </p> 
 
 <div class="panel panel-default">
@@ -37,7 +38,7 @@
 		</thead>
 		<tbody>
 {foreach from=$data item=row}
-			<tr class="admin_row row_count_{$row.count}">
+			<tr class="admin_row row_count_{$row.count} row_id_{$row.id}">
 {foreach from=$row key=field item=cell}
 {if !$hide || !in_array($field,$hide)}
 				<td class="{if $field=='id'}left-most {/if}td_{$field}">{$cell}</td>
@@ -53,8 +54,13 @@
 					</div>
 				</td>
 {/if}
+{if $rename}
+				<td class="right-most" style="width:125px">
+					<a href="#" onclick="rename_term({$row.id}, this, '{$list}'); return(false);" type="button" class="btn btn-default btn-sm" record-id="{$row.id}">Rename</a>
+				</td>
+{/if}
 {if $list}
-				<td class="right-most">
+				<td class="right-most" style="width:125px">
 					<a href="{$base_url}?all&term_type={$list}&term_id={$row.id}" type="button" class="btn btn-default btn-sm" record-id="{$row.id}">List Records</a>
 				</td>
 {/if}
