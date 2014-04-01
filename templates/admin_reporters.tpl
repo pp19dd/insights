@@ -2,6 +2,6 @@
 
 {block name='content' append}
 
-{include file='admin__table.tpl' rename=true list='reporters' table_title='Reporters' add=false editable=false hide=array('is_deleted') data=$reporters}
+{include file='admin__table.tpl' merge=true rename=true list='reporters' table_title='Reporters' add=false editable=false hide=array('is_deleted') data=$reporters}
 
 {/block}

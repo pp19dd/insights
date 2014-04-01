@@ -3,8 +3,9 @@
 {$first = $data|array_slice:0:1|array_shift}
 {/capture}
 
-{if !isset($list)}{$list = false}{/if}
+{if !isset($list)}{$list = false}{else}<script>var list = "{$list}";</script>{/if}
 {if !isset($rename)}{$rename = false}{/if}
+{if !isset($merge)}{$merge = false}{/if}
 
 {if $add}
 <div class="btn-group">
@@ -15,8 +16,7 @@
 {/if}
 
 <p style="margin-left:40px">
-	Filter: <input type="text" autocomplete="off" id="filter_name" value="" />
-	<label><input id="filter_name_invert" type="checkbox" /> Invert name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	Filter: <input type="text" autocomplete="off" id="filter_name" value="" style="width:300px" />
 	<label><input id="filter_empty" type="checkbox" /> Show empty rows.</label>
 </p> 
 
@@ -29,12 +29,10 @@
 				<th class="{if $field=='id'}left-most {/if} th_{$field}">{$field}</th>
 {/if}
 {/foreach}
-{if $editable}
-				<th></th>
-{/if}
-{if $list}
-				<th></th>
-{/if}
+{if $merge}<th style="width:50px">Merge</th>{/if}
+{if $editable}<th></th>{/if}
+{if $rename}<th></th>{/if}
+{if $list}<th></th>{/if}
 			</tr>
 		</thead>
 		<tbody>
@@ -45,6 +43,11 @@
 				<td class="{if $field=='id'}left-most {/if}td_{$field}">{$cell}</td>
 {/if}
 {/foreach}
+{if $merge}
+				<td style="width:50px; text-align:center">
+					<input type="checkbox" class="merge" record-id="{$row.id} " title="Select several items to merge" />
+				</td>
+{/if}
 {if $editable}
 				<td class="right-most">
 					<div class="btn-group">
@@ -70,5 +73,12 @@
 		</tbody>
 	</table>
 
+
 </div>
 
+
+{if $merge}
+<p>Selected items to merge: <span id="merge_count">0</span></p>
+<button onclick="merge_items()" class="btn btn-default">Merge Checked Items...</button>
+<button onclick="clear_merge_terms()" class="btn btn-default">Clear Selection</button>
+{/if}
