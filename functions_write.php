@@ -209,7 +209,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
     if( $time !== false ) {
     	$time_string = "'{$time}'";
     }
-    
+
     $VOA->query(
         "update 
             `{$tbl}entries` 
@@ -217,6 +217,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             `is_deleted`='No',
             `slug`='%s',
             `description`='%s',
+            `camera_assigned`='%s',
             `deadline`='%s',
             `deadline_time`={$time_string}
         where
@@ -224,6 +225,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
         limit 1",
         trim(strip_tags($p['slug'])),
         trim(strip_tags($p['description'])),
+        (isset($p["camera_assigned"]) ? 'Yes' : 'No' ),
         date("Y-m-d", strtotime($p['deadline'])),
         $entry_id
     );

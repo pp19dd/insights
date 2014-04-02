@@ -43,7 +43,20 @@
 				>{$entry.description}</textarea>
 			</div>
 		</div>
-		
+
+{capture assign=camera_equipment}
+		<label class="checkbox-inline insights_checkbox_label" style="margin-left:70px">
+			<input 
+				name="camera_assigned" 
+				type="checkbox"
+{if $entry.camera_assigned=='Yes'}
+				checked="checked"
+{/if}
+				class="insights_checkbox"
+			><span class="glyphicon glyphicon-camera"></span> Camera equipment assigned 
+		</label>
+{/capture}
+
 {include
 	file="checkbox.tpl"
 	label="Mediums"
@@ -52,6 +65,7 @@
 	data=$mediums
 	value=$entry.map.mediums
 	can_edit=$can.edit
+	append_html=$camera_equipment
 }
 
 		<div class="form-group">
@@ -111,7 +125,7 @@ Time
 	label="Reporter" 
 	name="reporters" 
 	id="entry_id_reporter" 
-	placeholder="Reporter" 
+	placeholder="Reporter (Last name, First)" 
 	style="width:50%" 
 	empty=true 
 	optgroup=false 
@@ -126,7 +140,7 @@ Time
 	label="Editor" 
 	name="editors" 
 	id="entry_id_editor" 
-	placeholder="Editor" 
+	placeholder="Editor (Last name, First)" 
 	style="width:50%" 
 	empty=true 
 	optgroup=false 

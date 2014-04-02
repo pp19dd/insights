@@ -20,6 +20,11 @@
 			> {$item.name}
 		</label>
 {/foreach}
+
+{if isset($append_html)}
+{$append_html}
+{/if}
+
 	</div>
 </div>
 
