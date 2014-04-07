@@ -26,6 +26,7 @@ RewriteRule admin/services/ index.php?mode=admin&page=services [QSA,NC]
 RewriteRule admin/divisions/ index.php?mode=admin&page=divisions [QSA,NC]
 RewriteRule admin/reporters/ index.php?mode=admin&page=reporters [QSA,NC]
 RewriteRule admin/editors/ index.php?mode=admin&page=editors [QSA,NC]
+RewriteRule admin/cameras/ index.php?mode=admin&page=cameras [QSA,NC]
 RewriteRule admin/ index.php?mode=admin&page=admin [QSA,NC]
 
 # RewriteRule access/ index.php?mode=access[QSA,NC]

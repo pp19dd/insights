@@ -8,5 +8,6 @@
 		<li class="{if $smarty.get.page == 'beats'}active{/if}"><a href="{$base_url}admin/beats/">Beats</a></li>
 		<li class="{if $smarty.get.page == 'reporters'}active{/if}"><a href="{$base_url}admin/reporters/">Reporters</a></li>
 		<li class="{if $smarty.get.page == 'editors'}active{/if}"><a href="{$base_url}admin/editors/">Editors</a></li>
+		<li class="{if $smarty.get.page == 'cameras'}active{/if}"><a href="{$base_url}admin/cameras/">Cameras</a></li>
 	</ul>
 </nav>

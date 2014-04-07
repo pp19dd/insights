@@ -43,6 +43,15 @@ switch( $mode ) {
 			case 'beats':		$template = 'admin_beats.tpl'; break;
 			case 'reporters':	$template = 'admin_reporters.tpl'; break;
 			case 'editors':		$template = 'admin_editors.tpl'; break;
+
+			case 'cameras':
+				$VOA->assign( 'cameras', insights_get_entries(array(
+					"cameras" => "Yes"
+				)));		
+				$template = 'admin_cameras.tpl';
+				 
+			break;
+			
 			default:	 		$template = 'admin.tpl'; break;
 		}	
 	break;

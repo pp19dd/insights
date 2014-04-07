@@ -38,7 +38,11 @@
 	<td class="entry_field entry_edit">
 		<div class="btn-group">
 			<a
-				href="?{rewrite edit=$entry.id}{/rewrite}" 
+{if isset($custom_edit_link)}
+				href="{$base_url}?edit={$entry.id}"
+{else} 
+				href="?{rewrite edit=$entry.id}{/rewrite}"
+{/if}
 				class="btn btn-default btn-sm" 
 				type="button"
 			>

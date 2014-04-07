@@ -107,6 +107,10 @@ function insights_get_entries_rich( $options = array() ) {
 		return( array() );
 	}
 	
+	if( isset( $options["cameras"]) ) {
+		$where[] = sprintf( "`camera_assigned`='%s'", $options["cameras"] );
+	}
+	
 	// is_deleted
 	if( isset( $options["deleted"]) ) {
 		$where[] = sprintf( "`is_deleted`='%s'", $options["deleted"] );
