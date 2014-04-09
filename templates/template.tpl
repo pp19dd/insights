@@ -70,10 +70,10 @@
 
 <!-- end footer block -->
 
-{if isset($disable_footer) && !$disable_footer}
-{$config.footer.value}
-{else}
+{if $disable_footer}
 <!-- additional footer disabled -->
+{else}
+{$config.footer.value}
 {/if}
 
 </body>

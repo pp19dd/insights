@@ -16,7 +16,21 @@ if( isset($_GET['mode']) && $_GET['mode'] == "admin" ) {
 } else {
 	if( $USER->CAN['view'] === true ) {
 		include( "index_user.php" );
+	} else {
+		// ensure at least config is loaded
+		$tbl = TABLE_PREFIX;
+		$VOA->assign( "config", $VOA->query(
+			"select * from {$tbl}_config",
+			array("index"=>"symbol")
+		));;
 	}
+}
+
+
+if( defined('VOA_DISABLE_FOOTER') ) {
+	$VOA->assign('disable_footer', true);
+} else {
+	$VOA->assign('disable_footer', false);
 }
 
 $VOA->assign( "is_admin", $is_admin );
