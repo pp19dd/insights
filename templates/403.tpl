@@ -11,6 +11,12 @@
 
 <p>You must be logged in to view this page from outside of the VOA network.</p>
 
+<p>For remote access, please enter your password at the bottom right.</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
 <p>For access credentials, please contact <a href="mailto:voadigital@voanews.com?subject=VOA+Insights">voadigital@voanews.com</a></p> 
 
 

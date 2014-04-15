@@ -12,7 +12,7 @@
 {if $can.login}
 	<div class="pull-right">
 		<form method="post" action="?{rewrite login=1 erase='logout'}{/rewrite}">
-		Admin
+		Password:
 		<input type="password" id="id_password" name="password" />
 		<input type="submit" name="do_login" value="Login"/>
 		</form>
