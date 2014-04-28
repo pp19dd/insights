@@ -125,7 +125,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 				title="Pick from calendar" 
 				class="btn btn-primaryx btn-xs pick_date" 
 				role="button" 
-				data-date="2014-03-20" 
+				data-date="{$range->active->range_start|date_format:"Y-m-d"}" 
 				data-date-format="yyyy-mm-dd"
 			>
 				<span class="glyphicon glyphicon-calendar"></span>&nbsp;From:<br/>
@@ -137,7 +137,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 				title="Pick from calendar" 
 				class="btn btn-primaryx btn-xs pick_date" 
 				role="button" 
-				data-date="2014-03-20" 
+				data-date="{$range->active->range_end|date_format:"Y-m-d"}" 
 				data-date-format="yyyy-mm-dd"
 			>
 				<span class="glyphicon glyphicon-calendar"></span>&nbsp;Until:<br/>
