@@ -41,7 +41,7 @@
 
 {else}
 
-<div class="row">
+<div class="row" id="grouped_entries">
 	{if isset($grouped_entries)}
 		{foreach from=$grouped_entries key=entry_group item=data}
 	<div class="col-md-4">
@@ -88,8 +88,14 @@
 	<a href="?{rewrite erase='term_type,term_id'}{/rewrite}">[Remove]</a>
 </h1>
 
+{elseif isset($smarty.get.day) && $smarty.get.day == "HFR"}
+
+<h1>Showing all &lsquo;Hold for Release&rsquo; entries</h1>
+
 {else}
+
 <h1>Showing all entries for {visible_range}</h1>
+
 {/if}
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}

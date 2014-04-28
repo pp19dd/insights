@@ -78,20 +78,35 @@ function insights_get_all_maps( $entries ) {
 	foreach( $ALLOW_TYPE as $v ) {
 		$all_maps[$v] = array();
 	}
+
+	$empty_count = 0;
 	
 	foreach( $entries as $e ) {
+		
+		$map_count = 0;
+		
 		foreach( $e['map'] as $type => $resolved ) {
+			$map_count += count($resolved);
+			
 			foreach( $resolved as $map) {
 				insights_increment_if_exists( $all_maps, $map );
 			}
 		}
+		
+		if( $map_count == 0) {
+			$empty_count++;
+		}
+		
 	}
 	
 	foreach( $all_maps as $k => $v ) {
 		ksort( $all_maps[$k] );
 	}
 	ksort( $all_maps );
-	return( $all_maps );
+	return( array(
+		"all_maps" => $all_maps,
+		"empty" => $empty_count
+	));
 }
 
 

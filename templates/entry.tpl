@@ -68,9 +68,16 @@
 	append_html=$camera_equipment
 }
 
-		<div class="form-group">
+		<div class="form-group form-group-deadline">
+
+			
 			<label for="input_slug" class="col-sm-2 control-label">Deadline</label>
+
+			
+
 			<div class="col-sm-10">
+
+				<div id="id_entry_form_group_deadline">
 				<input 
 					name="deadline" 
 					{if !$can.edit}readonly="readonly"{/if} 
@@ -98,6 +105,26 @@ Time
 	can_clear=true
 	value=array_flip(array($entry.deadline_time|default:"time could be null"|date_format:'H:i'))
 }
+
+<br/>
+
+</div>
+		
+		<div class="clearfix"></div>
+
+<div class="hold_for_release">
+		<label class="checkbox-inline insights_checkbox_label" style="">
+			<input 
+				name="hold_for_release" 
+				type="checkbox"
+				parent="id_entry_form_group_deadline"
+{if is_null($entry.deadline)}
+				checked="checked"
+{/if}
+				class="insights_checkbox hold_for_release_checkbox"
+			><span class="glyphicon glyphicon-pushpin"></span> No date, this is a Hold for Release entry 
+		</label>
+</div>
 
 			</div>
 		</div>

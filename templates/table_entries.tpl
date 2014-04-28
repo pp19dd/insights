@@ -23,12 +23,11 @@
        show one entry line
        ------------------------------------------------------------------ -->*}
 {function name=show_entry}
-{$entry = $entries[$entry_id]}
 
 <tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
 	<td class="entry_field entry_slug">{$entry.slug}</td>
 	<td class="entry_field entry_description">{$entry.description}</td>
-	<td class="entry_field entry_deadline">{$entry.deadline} {$entry.deadline_time}</td>
+	<td class="entry_field entry_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
 	<td class="entry_field entry_services">{map set=$entry.map.services}</td>
 	<td class="entry_field entry_mediums">{map set=$entry.map.mediums}</td>
 	<td class="entry_field entry_beats">{map set=$entry.map.beats}</td>
@@ -76,7 +75,14 @@
 		</thead>
 		<tbody>
 {foreach from=$ids item=id}
-{show_entry entry_id=$id}
+{$entry = $entries[$id]}
+{if $smarty.get.all != "empty"}
+{show_entry entry=$entry}
+{else}
+{if $entry['map_count'] === 0}
+{show_entry entry=$entry}
+{/if}
+{/if}
 {/foreach}
 		</tbody>
 	</table>

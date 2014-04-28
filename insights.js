@@ -198,3 +198,31 @@ $("#admin_login").click( function() {
 // debug	add_insight();
 // debug	$("#pick_date").click();
 // debug	$(".changelog_toggler").click();
+
+
+$(document).ready( function() {
+	
+	$(".hold_for_release_checkbox").click( function() {
+
+		var parent = $(this).attr("parent");
+		var actual_parent = $("#" + parent);
+		
+		if( this.checked ) {
+			actual_parent.hide("slide");
+		} else {
+			actual_parent.show("slide");
+		}
+	}).each( function() {
+		if( this.checked ) $("#id_entry_form_group_deadline").hide("slide");
+	});
+});
+
+//isotope is fighting bootstrap, table for now
+//	var $container = $('#grouped_entries');
+//
+//	$container.isotope("layout");
+//	$container.isotope({
+//		itemSelector: '.derp',
+//		layoutMode: 'fitRows'
+//	});
+//});

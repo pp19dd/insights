@@ -46,21 +46,21 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 		<a 
 			class="{button_class range=day suffix=$suffix}" 
 			style="width:100%"
-			href="?{rewrite range=day erase='edit,until'}{/rewrite}" 
+			href="?{rewrite range=day erase='edit,until' day=$range->day->range_start_human}{/rewrite}" 
 		>Day ({$range->day->range_start_human|date_format:"n/d"})</a>
 	</td>
 	<td style="width:20%">
 		<a
 			class="{button_class range=week suffix=$suffix}" 
 			style="width:100%"
-			href="?{rewrite range=week erase='edit,until'}{/rewrite}" 
+			href="?{rewrite range=week erase='edit,until' day=$range->week->range_start_human}{/rewrite}" 
 		>Week ({$range->week->range_start_human|date_format:"n/d"} - {$range->week->range_end_human|date_format:"n/d"})</a>
 	</td>
 	<td style="width:60%">
 		<a 
 			class="{button_class range=month suffix=$suffix}" 
 			style="width:100%"
-			href="?{rewrite range=month erase='edit,until'}{/rewrite}" 
+			href="?{rewrite range=month erase='edit,until' day=$range->month->range_start_human}{/rewrite}" 
 		>Month ({$range->month->range_start_human|date_format:"F"})</a>
 	</td>
 	<td style="">
@@ -81,31 +81,6 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 </tr>
 </table>
 
-{*<!--
-<div class="btn-group btn-group-sm insights_range {$classes}">
-	<span class="btn btn-inactive">Date range:</span>
-	
-	<button 
-		class="{button_class range=day suffix=$suffix}" 
-		onclick="window.location='?{rewrite range=day erase=until}{/rewrite}';" 
-	>Day</button>
-
-	<button 
-		class="{button_class range=week suffix=$suffix}" 
-		onclick="window.location='?{rewrite range=week}{/rewrite}';" 
-	>Week</button>
-
-	<button 
-		class="{button_class range=month suffix=$suffix}"
-		onclick="window.location='?{rewrite range=month}{/rewrite}';"
-	>Month</button>
-
-	<button 
-		class="{button_class range=custom suffix=$suffix}" onclick="window.location='?{rewrite range=custom}{/rewrite}';"
-	>Custom</button>
-</div>
--->*}
-
 {/function}
 
 <div class="insights_range">
@@ -119,7 +94,9 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 		</td>
 	</tr>
 	<tr>
-		<td style=""></td>
+		<td style="width:60px">
+			<a href="{$base_url}?{rewrite erase='show,all,edit' range='day' day='HFR' all=1}{/rewrite}">Hold For<br/>Release</a>
+		</td>
 		<td style="width:60px">
 			<a 
 				title="Pick from calendar" 
@@ -156,30 +133,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 </table>
 </div>
 
-{*
-{all_buttons classes="visible-xs visible-sm" suffix="_sm"}
-{all_buttons classes="visible-lg visible-md" suffix=""}
-*}
-
-{*<!--
-{if $can.view == true}
-<li class=""><a title="Previous day" class="btn btn-primaryx btn-md" role="button" id="pick_date_prev"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
-<li class=""><a title="Pick from calendar" class="btn btn-primaryx btn-md" role="button" id="pick_date" data-date="{$range->day->range_start_human|date_format:'Y-m-d'}" data-date-format="yyyy-mm-dd"><span class="glyphicon glyphicon-calendar"></span>&nbsp;{$range->day->range_start_human|date_format:'M d, Y'}</a></li>
-<li class=""><a title="Next day" class="btn btn-primaryx btn-md" role="button" id="pick_date_next"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
-{/if}
--->*}
-
 <div class="clearfix after_range"></div>
-
-{*<!--
-<div class="btn-group insights_range_definition">
-	<span class="btn btn-inactive">Showing:</span>
-
-	{$range->day->range_start_human}
-</div>
-
-<div class="clearfix after_range"></div>
--->*}
 
 {if !isset($smarty.get.keywords)}
 
@@ -188,11 +142,12 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
        ------------------------------------------------------------------ -->*}
 
 {function name=insights_show}
-<button 
-	type="button" 
-	class="btn btn-default {if isset($smarty.get.show) and $smarty.get.show==$parm}{*btn-primary*}active{/if}" 
-	onclick="window.location='?{rewrite show=$parm erase='edit,more,all,logout,login,deleted'}{/rewrite}';"
->{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</button>
+<a
+	role="button"	
+	class="btn btn-default {if isset($smarty.get.show) and $smarty.get.show==$parm}active{/if}"
+	href="{$base_url}?{rewrite show=$parm erase='edit,more,all,logout,login,deleted'}{/rewrite}"
+>{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</a>
+
 {/function}
 
 <div class="btn-group btn-group-sm insights_show_by_menu">
@@ -207,6 +162,17 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 	<span class="btn btn-inactive">&nbsp;</span>
 {insights_show parm="reporters" label="Reporter" count=count($all_maps['reporters'])}
 {insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
+
+{if $all_maps_empty > 0}
+	<span class="btn btn-inactive">
+		<a 
+			href="?{rewrite all=empty erase='more,show,edit'}{/rewrite}" 
+			title="Show all entries with missing tags"
+		>
+			Empty ({$all_maps_empty})
+		</a>
+	</span>
+{/if}
 	<span class="btn btn-inactive">
 		<a 
 			href="?{rewrite all=1 erase='more,show,edit'}{/rewrite}" 

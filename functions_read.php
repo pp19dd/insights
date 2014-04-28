@@ -75,6 +75,16 @@ function insights_map($entry_id, $is_deleted = 'No') {
 }
 
 
+/**
+ * returns number of actual map entries (can detect empty)
+ */
+function insights_map_count( &$map ) {
+	$count = 0;
+	foreach( $map as $k => $v ) {
+		$count += count($v);
+	}
+	return( $count );
+}
 
 /**
  * retrieves entries
@@ -121,22 +131,33 @@ function insights_get_entries_rich( $options = array() ) {
 		$where[] = sprintf( "`id` in (%s)", implode(",", $options["id"]) );
 	}
 	
-	// $date = Array (YYYY-mm-dd, ...)
-	if( isset( $options["date"]) ) {
+	// hold for release (deadline = null)
+	if( isset( $options["HFR"]) ) {
 		
-		foreach( $options["date"] as $k => $v ) {
-			$options["date"][$k] = insights_filter_date($v);
+		$where[] = "`deadline` IS NULL";
+
+	} else {
+
+		if( isset( $options["date"]) ) {
+		
+			// $date = Array (YYYY-mm-dd, ...)
+		
+			foreach( $options["date"] as $k => $v ) {
+				$options["date"][$k] = insights_filter_date($v);
+			}
+		
+			$where[] = sprintf( "`deadline` in ('%s')", implode("','", $options["date"]) );
+		}
+
+		// $range = Array( "from" => "YYYY-mm-dd", "to" => "YYYY-mm-dd" )
+		// assume range is +1 day. for a single day query, from = 2014-03-18, to = 2014-03-19
+		if( isset( $options["from"]) && isset($options["to"]) ) {
+			$where[] = sprintf( "`deadline` >= '%s'", insights_filter_date($options["from"]) );
+			$where[] = sprintf( "`deadline` <= '%s'", insights_filter_date($options["to"]) );
 		}
 		
-		$where[] = sprintf( "`deadline` in ('%s')", implode("','", $options["date"]) );
 	}
 
-	// $range = Array( "from" => "YYYY-mm-dd", "to" => "YYYY-mm-dd" )
-	// assume range is +1 day. for a single day query, from = 2014-03-18, to = 2014-03-19
-	if( isset( $options["from"]) && isset($options["to"]) ) {
-		$where[] = sprintf( "`deadline` >= '%s'", insights_filter_date($options["from"]) );
-		$where[] = sprintf( "`deadline` <= '%s'", insights_filter_date($options["to"]) );
-	}
 	
 	// $search = Array( "word", "word2..." );
 	if( isset( $options["search"]) ) {
@@ -163,6 +184,7 @@ function insights_get_entries_rich( $options = array() ) {
 	# get metadata for the entries
 	foreach( $t as $k => $v ) {
 		$t[$k]['map'] = insights_map( $v['id']/*, $is_deleted*/ );
+		$t[$k]['map_count'] = insights_map_count( $t[$k]['map'] );
 	}
 	
 	return( array(

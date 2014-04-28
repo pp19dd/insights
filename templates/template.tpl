@@ -58,6 +58,7 @@
 <script src="{$base_url}js/rainbowvis-js/rainbowvis.js"></script>
 <script src="{$base_url}js/bootstrap-sortable/Scripts/bootstrap-sortable.js"></script>
 <script src="{$base_url}js/bootstrap-sortable/Scripts/moment.min.js"></script>
+<script src="{$base_url}js/isotope/isotope.pkgd.min.js"></script>
 
 {if !$is_admin}
 {include file="_data.tpl"}

@@ -230,6 +230,19 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
         $entry_id
     );
     
+    if( isset( $p['hold_for_release']) ) {
+    	$VOA->query(
+    		"update
+    			`{$tbl}entries`
+    		set
+    			`deadline`=NULL
+   			where
+    			`id`=%s
+   			limit 1",
+        	$entry_id
+		);
+	}
+    
     $ret["entries"][] = $entry_id;
     
     insights_clear_map( $entry_id );

@@ -29,6 +29,11 @@ class Insights_Range_Day {
 	}
 	
 	function __construct( $today, $range_start = null, $range_end = null ) {
+
+		// hold for release exception
+		// treat HFR as a 'day', today
+		if( $today === "HFR" ) $today = "today";
+		
 		$this->today = $today;
 		$this->today_timestamp = strtotime($this->today );
 

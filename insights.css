@@ -118,6 +118,9 @@ textarea { resize:vertical }
 .merge_table td { padding-left:4px; padding-right:4px }
 .merge_row_selected { background-color: #FFC530 }
 
+.hold_for_release { color: silver !important };
+
+
 /* bugfix: hidden placeholders cut off */
-#s2id_autogen3, #s2id_autogen4 { width: 200px !important; };
+#s2id_autogen3, #s2id_autogen4 { width: 300px !important; }
 

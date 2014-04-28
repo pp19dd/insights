@@ -63,6 +63,9 @@
 		<div class="form-group">
 			<label for="input_deadline" class="col-sm-2 control-label">Deadline (date/time)</label>
 			<div class="col-sm-10">
+
+				<div id="id_entry_form_group_deadline_add">
+
 				<input 
 					name="deadline" 
 					type="text" autocomplete="off" 
@@ -87,6 +90,21 @@ Time
 	can_edit=$can.edit
 	can_clear=true
 }
+
+</div>
+
+		<div class="clearfix"></div>
+
+<div class="hold_for_release">
+		<label class="checkbox-inline insights_checkbox_label" style="">
+			<input 
+				name="hold_for_release" 
+				type="checkbox"
+				parent="id_entry_form_group_deadline_add"
+				class="insights_checkbox hold_for_release_checkbox"
+			><span class="glyphicon glyphicon-pushpin"></span> No date, this is a Hold for Release entry 
+		</label>
+</div>
 
 			</div>
 		</div>

@@ -85,6 +85,11 @@ $query_entries = array(
 	"to" => $RANGE->active->range_end_human
 );
 
+// hold for release -- deadline = null
+if( isset( $_GET['day'] ) && $_GET['day'] === 'HFR' ) {
+	$query_entries["HFR"] = true;
+}
+
 if( isset( $_GET['keywords']) ) {
 
 	$words = explode(" ", trim(strip_tags($_GET['keywords'])));
@@ -143,5 +148,6 @@ if( isset( $_GET['show'] ) ) {
 	$VOA->assign( 'grouped_entries', $grouped_entries );
 }
 
-$VOA->assign( 'all_maps', $all_maps );
+$VOA->assign( 'all_maps', $all_maps["all_maps"] );
+$VOA->assign( 'all_maps_empty', $all_maps["empty"] );
 $VOA->assign( 'entries', $entries );
