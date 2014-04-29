@@ -10,7 +10,7 @@
 <link href="{$base_url}js/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
 <link href="{$base_url}js/bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
 <link href="{$base_url}js/bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet" />
-<link href="{$base_url}insights.css" rel="stylesheet" />
+<link href="{$base_url}insights.css?v={$version|default:1}" rel="stylesheet" />
 <link rel="shortcut icon" type="image/x-icon" href="{$base_url}favicon.ico" />
 
 <!--[if lt IE 9]>
@@ -62,7 +62,7 @@
 
 {if !$is_admin}
 {include file="_data.tpl"}
-<script type="text/javascript" src="{$base_url}insights.js"></script>
+<script type="text/javascript" src="{$base_url}insights.js?v={$version|default:1}"></script>
 {/if}
 
 <!-- footer block -->

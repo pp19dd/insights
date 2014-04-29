@@ -1,6 +1,8 @@
 <?php
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
+define( "VERSION", "1.01" );
+
 require( "config.php" );
 require_once( 'functions.php' );
 require_once( 'functions_read.php' );
@@ -41,3 +43,4 @@ $VOA->setConfigDir( realpath( VOA_BASE_DIR . 'configs' ) );
 $VOA->template_dir = realpath("templates");
 */
 $VOA->assign( 'base_url', VOA_BASE_URL );
+$VOA->assign( 'version', VERSION);
