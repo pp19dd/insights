@@ -1,0 +1,23 @@
+body { margin: 0mm 0mm 0mm 0mm; }
+@page { size: landscape }
+
+#id_add_entry { display: none; }
+.modal { display: none; }
+.datepicker { display: none; }
+.container_footer { display: none; }
+.home_before_footer { display: none; }
+
+* { font-family: Arial; font-size: 12px; }
+th { text-align: left; border-bottom:1px solid black; }
+td { padding: 3px; vertical-align: top; }
+.odd td, .even td { border-bottom:1px dotted silver}
+
+.column_action { display: none; }
+.filterable_table_trigger { display: none; }
+
+.insights_navigation { display: none; }
+.insights_range { display: none; }
+.insights_show_by_menu { display: none; }
+
+.view-all { display: none; }
+

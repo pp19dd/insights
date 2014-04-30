@@ -95,7 +95,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 	</tr>
 	<tr>
 		<td style="width:60px">
-			<a href="{$base_url}?{rewrite erase='show,all,edit' range='day' day='HFR' all=1}{/rewrite}">Hold For<br/>Release</a>
+			<a href="{$base_url}?{rewrite erase='show,all,edit,more' range='day' day='HFR' all=1}{/rewrite}">Hold For<br/>Release</a>
 		</td>
 		<td style="width:60px">
 			<a 

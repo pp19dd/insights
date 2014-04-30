@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container insights_navigation">
 	<div role="navigation" class="navbar navbar-default navbar-inverse voa_insights_top">
 		<div class="navbar-header">
 			<button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">

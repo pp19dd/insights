@@ -24,17 +24,17 @@
        ------------------------------------------------------------------ -->*}
 {function name=show_entry}
 
-<tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
-	<td class="entry_field entry_slug">{$entry.slug}</td>
-	<td class="entry_field entry_description">{$entry.description}</td>
-	<td class="entry_field entry_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
-	<td class="entry_field entry_services">{map set=$entry.map.services}</td>
-	<td class="entry_field entry_mediums">{map set=$entry.map.mediums}</td>
-	<td class="entry_field entry_beats">{map set=$entry.map.beats}</td>
-	<td class="entry_field entry_regions">{map set=$entry.map.regions}</td>
-	<td class="entry_field entry_reporters">{map set=$entry.map.reporters}</td>
-	<td class="entry_field entry_editors">{map set=$entry.map.editors}</td>
-	<td class="entry_field entry_edit">
+<tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower} {cycle values='even,odd'}">
+	<td class="entry_field column_slug">{$entry.slug}</td>
+	<td class="entry_field column_description">{$entry.description}</td>
+	<td class="entry_field column_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
+	<td class="entry_field column_origin">{map set=$entry.map.services}</td>
+	<td class="entry_field column_medium">{map set=$entry.map.mediums}</td>
+	<td class="entry_field column_beat">{map set=$entry.map.beats}</td>
+	<td class="entry_field column_region">{map set=$entry.map.regions}</td>
+	<td class="entry_field column_reporter">{map set=$entry.map.reporters}</td>
+	<td class="entry_field column_editor">{map set=$entry.map.editors}</td>
+	<td class="entry_field column_action">
 		<div class="btn-group">
 			<a
 {if isset($custom_edit_link)}
@@ -58,33 +58,40 @@
 <div class="row">
 
 <div class="panel panel-default">
-	<table class="table sortable">
+	<table class="table sortable" id="table_filterable">
 		<thead>
 			<tr>
-				<th>Slug</th>
-				<th>Description</th>
-				<th>Deadline</th>
-				<th>Origin</th>
-				<th>Medium</th>
-				<th>Beat</th>
-				<th>Region</th>
-				<th>Reporter</th>
-				<th>Editor</th>
-				<th class="insights_grid_list_action"></th>
+				<th class="column_slug">Slug</th>
+				<th class="column_description">Description</th>
+				<th class="column_deadline">Deadline</th>
+				<th class="column_origin">Origin</th>
+				<th class="column_medium">Medium</th>
+				<th class="column_beat">Beat</th>
+				<th class="column_region">Region</th>
+				<th class="column_reporter">Reporter</th>
+				<th class="column_editor">Editor</th>
+				<th class="column_action insights_grid_list_action"></th>
 			</tr>
 		</thead>
 		<tbody>
-{foreach from=$ids item=id}
-{$entry = $entries[$id]}
-{if $smarty.get.all != "empty"}
-{show_entry entry=$entry}
+
+{*<!-- ------------------------------------------------------------------
+       show entry rows here
+       variant 1: showing empty rows only
+       variant 2: showing all
+       ------------------------------------------------------------------ -->*}
+
+{foreach from=$ids item=id}{$entry = $entries[$id]}
+
+{if isset($smarty.get.all) && $smarty.get.all == "empty"}
+	{if $entry.map_count === 0}
+		{show_entry entry=$entry}
+	{/if}
 {else}
-{if $entry['map_count'] === 0}
-{show_entry entry=$entry}
+	{show_entry entry=$entry}
 {/if}
-{/if}
+
 {/foreach}
 		</tbody>
 	</table>
 </div>
-

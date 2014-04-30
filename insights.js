@@ -27,32 +27,6 @@ for( k in insights_data.activity.list )(function(k,v){
 })(k, insights_data.activity.list[k]);
 $("<style type='text/css'>" + rainbow_rules.join("\n") + "</style>").appendTo("head");
 
-/*
-function add_calendar_legend() {
-	var spans = [];
-	var segs = 5;
-
-	for( i = 0; i < segs; i++ ) {
-		var l = (i) * (insights_data.activity.range.max / segs);
-		var u = (i+1) * (insights_data.activity.range.max / segs);
-		var v = (i+1) * (insights_data.activity.range.max / segs);
-		var tx = parseInt(l) + "-" + parseInt(u); 
-		spans.push(
-			"<span style='background-color:#" + rainbow.colourAt(v) + "'>" + tx + "</span>"
-		);
-	}
-
-	$(".datepicker.dropdown-menu").append(
-		"<div style='clear:both; margin-top:5px; height:15px; display:block' class='cal_legend'>" +
-			spans.join( "\n" ) +
-			"<span style='font-size:10px'> Entries</span>" +
-			//"<span class='cal_due'>Due</span>" +
-			//"<span class='cal_started'>Started</span>" +
-		"</div>"
-	);
-}
-*/
-
 function add_insight() {
 	$('#id_add_entry').slideToggle('fast');
 	$('#input_deadline').datepicker('hide');
@@ -60,22 +34,12 @@ function add_insight() {
 
 $('#pick_add_insight').click( function() { add_insight(); });
 
-// $('#pick_date_prev').click( function() { window.open( '?{rewrite day=$yesterday erase=edit}{/rewrite}', '_self' ); });
-// $('#pick_date_next').click( function() { window.open( '?{rewrite day=$tomorrow erase=edit}{/rewrite}', '_self' ); });
-
 $('#id_cancel_new_insight').click( function() {	$('#id_add_entry').slideToggle('fast'); });
 $('#id_submit_new_insight').click( function() { });
 
 $('#input_deadline').datepicker({
 }).on('changeDate', function(e) {
 	$(this).datepicker('hide');
-});
-
-$('#entry_deadline').datepicker({
-
-/*}).on('changeDate', function(e) {
-	$(this).datepicker('hide');
-*/	
 });
 
 
@@ -94,8 +58,6 @@ $('.pick_date').datepicker({
 	});
 	$(".dropdown-menu .active").removeClass("active").addClass("pseudo-active");
 }).on('changeDate', function(e) {
-	// $('#pick_date').datepicker('hide');
-	// window.open( '?day=' + ymd(e.date), '_self' );
 	$("#id_go_button").addClass("active");
 	$(".display_date", this).html(ymd(e.date));
 	$(this).datepicker('hide');
@@ -193,13 +155,6 @@ $("#admin_login").click( function() {
 	return( false );
 });
 
-// add_calendar_legend();
-
-// debug	add_insight();
-// debug	$("#pick_date").click();
-// debug	$(".changelog_toggler").click();
-
-
 $(document).ready( function() {
 	
 	$(".hold_for_release_checkbox").click( function() {
@@ -215,6 +170,21 @@ $(document).ready( function() {
 	}).each( function() {
 		if( this.checked ) $("#id_entry_form_group_deadline").hide("slide");
 	});
+	
+	var data_table = new filterable_table({
+		selector: "#table_filterable",
+		cookie_name: "insights_columns",
+		columns: {
+			slug: 	true,	description:	true,	deadline: 	true,
+			origin: true,	medium: 		true,	beat: 		true,
+			region: true,	reporter: 		true,	editor: 	true
+		},
+		modal: "#filterModal",
+		anchor: "h1",
+		filter_container: "#filterModal .filter_container",
+		cancel: "#filterModal_button_close"
+	});
+
 });
 
 //isotope is fighting bootstrap, table for now
@@ -226,3 +196,11 @@ $(document).ready( function() {
 //		layoutMode: 'fitRows'
 //	});
 //});
+
+//add_calendar_legend();
+
+//debug	add_insight();
+//debug	$("#pick_date").click();
+//debug	$(".changelog_toggler").click();
+
+

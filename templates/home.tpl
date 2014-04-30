@@ -1,6 +1,7 @@
 {extends file='template.tpl'}
 
 {block name='footer'}
+{include file="modal_filter.tpl"}
 {/block}
 
 {block name='content'}
@@ -31,7 +32,9 @@
 	<div class="more_view">
 	{foreach from=$grouped_entries key=entry_group item=data}
 		{if $entry_group == $smarty.get.more}
-			{include file="table_entries.tpl" ids=$data.all entries=$entries}
+
+{include file="table_entries.tpl" ids=$data.all entries=$entries}
+
 		{/if}
 	{/foreach}
 	</div>
@@ -44,11 +47,11 @@
 <div class="row" id="grouped_entries">
 	{if isset($grouped_entries)}
 		{foreach from=$grouped_entries key=entry_group item=data}
-	<div class="col-md-4">
+	<div class="col-md-4" class="grouped_entry">
 		<h3>{$entry_group|default:"(Unknown)"}</h3>
 
 			{if $data.starred|count > 0}
-			<ul>
+			<ul class="grouped_entry_items">
 				{foreach from=$data.starred item=entry_id}
 				{$entry = $entries[$entry_id]}
 				<li class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
@@ -60,7 +63,7 @@
 				{/foreach}
 			</ul>
 			{/if}
-			<p>
+			<p class="view-all">
 				<a 
 					class="btn btn-default" 
 					href="?{rewrite more=$entry_group erase=deleted}{/rewrite}" 
@@ -102,6 +105,6 @@
 
 {/if}
 
-<hr/>
+<hr class="home_before_footer"/>
 
 {/block}

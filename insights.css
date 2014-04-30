@@ -81,16 +81,17 @@ textarea { resize:vertical }
 
 /* table */
 .entry_field { font-size: 12px; }
-.entry_slug { }
-.entry_description { }
-.entry_deadline { }
-.entry_services { }
-.entry_mediums { }
-.entry_beats { }
-.entry_regions { }
-.entry_reporters { }
-.entry_editors { }
-.entry_edit { }
+.column_slug { }
+.column_description { }
+.column_deadline { }
+.column_origin { }
+.column_medium { }
+.column_beat { }
+.column_region { }
+.column_reporter { }
+.column_editor { }
+.column_action { }
+
 
 /* range helper */
 
@@ -124,3 +125,12 @@ textarea { resize:vertical }
 /* bugfix: hidden placeholders cut off */
 #s2id_autogen3, #s2id_autogen4 { width: 300px !important; }
 
+.grouped_entry { }
+.grouped_entry_items { margin-left: 0px; padding-left: 0px; }
+.grouped_entry_items li { }
+
+
+.filter_container { }
+.filter_container li { list-style: none; }
+.filter_container label { cursor:pointer; }
+.filter_reset { opacity: 0.3 }

@@ -1,7 +1,7 @@
 <?php
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
-define( "VERSION", "1.01" );
+define( "VERSION", "1.02" );
 
 require( "config.php" );
 require_once( 'functions.php' );
