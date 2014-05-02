@@ -122,16 +122,22 @@ function insights_activity() {
 
 	$t = $VOA->query(
 		"select 
-			id, 
+			`id`, 
 			`deadline` as `day`, 
 			count(date(deadline)) as `count` 
 		from 
-			{$tbl}entries 
+			`{$tbl}entries` 
 		where 
-			is_deleted='No' 
+			`is_deleted`='No' and
+			`deadline` is not null
 		group by 
 			`deadline`",
 		array("noempty", "index" => "day")
+	);
+	
+	$HFR = $VOA->query(
+		"select count(id) as `count` from `{$tbl}entries` where `deadline` is null",
+		array("flat")
 	);
 	
 	$t = array_map( function( $e ) {
@@ -140,6 +146,7 @@ function insights_activity() {
 
 	return(array(
 		"list" => $t,
+		"hfr" => $HFR["count"],
 		"range" => array(
 			"min" => min( $t ),
 			"max" => max( $t )
