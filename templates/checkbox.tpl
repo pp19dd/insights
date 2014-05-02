@@ -12,8 +12,8 @@
 			<input 
 				name="{$name}" 
 				type="checkbox"
-				{if !$can_edit}disabled="disabled"{/if} 
-				{if isset($value[$item.id])}checked="checked" {/if}
+{if !$can_edit}				disabled="disabled"{/if}
+{if isset($value[$item.id])}				checked="checked"{/if}
 				id="{$id}_{$item@index}" 
 				value="{$item.id}"
 				class="insights_checkbox"
@@ -27,13 +27,3 @@
 
 	</div>
 </div>
-
-{*<!--
-data=
-<pre>{$data|print_r}</pre>
-
-{if $value}
-value=
-<pre>{$value|print_r}</pre>
-{/if}
--->*}

@@ -143,26 +143,20 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
        ------------------------------------------------------------------ -->*}
 
 {function name=insights_show}
-<a
-	role="button"	
-	class="btn btn-default {if isset($smarty.get.show) and $smarty.get.show==$parm}active{/if}"
-	href="{$base_url}?{rewrite show=$parm erase='edit,more,all,logout,login,deleted'}{/rewrite}"
->{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</a>
-
-{/function}
+<a role="button" class="btn btn-default {if isset($smarty.get.show) and $smarty.get.show==$parm}active{/if}" href="{$base_url}?{rewrite show=$parm erase='edit,more,all,logout,login,deleted'}{/rewrite}">{$label}{if $count} <span class="disabled_badge insights_entry_count">{$count}</span>{/if}</a>{/function}
 
 <div class="btn-group btn-group-sm insights_show_by_menu">
 	<span class="btn btn-inactive">Show by:</span>
-{insights_show parm="regions" label="Region" count=count($all_maps['regions'])}
-{insights_show parm="beats" label="Beat" count=count($all_maps['beats'])}
+		{insights_show parm="regions" label="Region" count=count($all_maps['regions'])}
+		{insights_show parm="beats" label="Beat" count=count($all_maps['beats'])}
 	<span class="btn btn-inactive">&nbsp;</span>
-{insights_show parm="divisions" label="Division" count=count($all_maps['divisions'])}
-{insights_show parm="services" label="Service" count=count($all_maps['services'])}
+		{insights_show parm="divisions" label="Division" count=count($all_maps['divisions'])}
+		{insights_show parm="services" label="Service" count=count($all_maps['services'])}
 	<span class="btn btn-inactive">&nbsp;</span>
-{insights_show parm="mediums" label="Medium" count=count($all_maps['mediums'])}
+		{insights_show parm="mediums" label="Medium" count=count($all_maps['mediums'])}
 	<span class="btn btn-inactive">&nbsp;</span>
-{insights_show parm="reporters" label="Reporter" count=count($all_maps['reporters'])}
-{insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
+		{insights_show parm="reporters" label="Reporter" count=count($all_maps['reporters'])}
+		{insights_show parm="editors" label="Editor" count=count($all_maps['editors'])}
 
 {if $all_maps_empty > 0}
 	<span class="btn btn-inactive">

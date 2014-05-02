@@ -47,10 +47,9 @@
 <div class="row" id="grouped_entries">
 	{if isset($grouped_entries)}
 		{foreach from=$grouped_entries key=entry_group item=data}
-	<div class="col-md-4" class="grouped_entry">
+	<div class="col-md-4 grouped_entry">
 		<h3>{$entry_group|default:"(Unknown)"}</h3>
-
-			{if $data.starred|count > 0}
+{if $data.starred|count > 0}
 			<ul class="grouped_entry_items">
 				{foreach from=$data.starred item=entry_id}
 				{$entry = $entries[$entry_id]}
@@ -62,7 +61,7 @@
 				</li>
 				{/foreach}
 			</ul>
-			{/if}
+{/if}
 			<p class="view-all">
 				<a 
 					class="btn btn-default" 
