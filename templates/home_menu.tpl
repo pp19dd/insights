@@ -94,8 +94,9 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 		</td>
 	</tr>
 	<tr>
-		<td style="width:60px">
+		<td style="width:80px">
 			<a href="{$base_url}?{rewrite erase='show,all,edit,more' range='day' day='HFR' all=1}{/rewrite}">Hold For<br/>Release</a>
+			<span class="disabled_badge insights_entry_count">{$activity.hfr}</span> 
 		</td>
 		<td style="width:60px">
 			<a 
@@ -169,7 +170,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 			href="?{rewrite all=empty erase='more,show,edit'}{/rewrite}" 
 			title="Show all entries with missing tags"
 		>
-			Empty ({$all_maps_empty})
+			Empty <span class="disabled_badge insights_entry_count">{$all_maps_empty}</span>
 		</a>
 	</span>
 {/if}
@@ -178,7 +179,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 			href="?{rewrite all=1 erase='more,show,edit'}{/rewrite}" 
 			title="Show all entries for {$range->day->range_start_human|date_format:'M d, Y'} in list form"
 		>
-			All ({$entries|count} {if $entries|count == 1}entry{else}entries{/if})
+			All Entries <span class="disabled_badge insights_entry_count">{$entries|count}</span>
 		</a>
 	</span>
 </div>
