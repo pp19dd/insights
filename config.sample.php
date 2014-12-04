@@ -8,7 +8,7 @@ define( 'TEMP_EDIT_PWD', "md5-hash-of-temp-user-pwd" );
 define( 'API_KEY', 		 "md5-hash-of-api-pwd" );
 
 if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
-	
+
 	define( 'VOA_DATABASE__HOST',	'127.0.0.1' );
 	define( 'VOA_BASE_URL',			'http://localhost/insights/' );
 	define( 'VOA_BASE_DIR',			'./' );
@@ -18,15 +18,15 @@ if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 
 	define( "INSIGHTS_DEVELOPMENT", true );
 	define( "SYNC_URL", "http://tools.voanews.com/insights/api.php" );
-	
+
 } else {
-	
+
 	define( 'VOA_DATABASE__HOST',	'127.0.0.1' );
 	define( 'VOA_BASE_URL',			'http://www.example.com/insights/' );
 	define( 'VOA_BASE_DIR',			'/home/directory/' );
 	define( 'WHITELIST',			'1.2.3.4.5.6.' );
 	error_reporting( 0 );
-	
+
 }
 
 define( 'VOA_DATABASE__USER',	'mysql-username-here' );
@@ -36,3 +36,4 @@ define( 'VOA_SELECT_DATABASE',	'mysql-database-here' );
 define( 'TABLE_PREFIX',			'insights_' );
 
 define( 'VOA_SMARTY_VERSION',	'Smarty-3.1.16' );
+define( 'ELASTICSEARCH_HOST',	'localhost:9200' );

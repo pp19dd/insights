@@ -6,6 +6,7 @@ config.php
 _insights.sql
 backup.sh
 .htaccess
+vendor/
 
 #################
 ## Eclipse

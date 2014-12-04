@@ -3,6 +3,11 @@ define( "INSIGHTS_RUNNING", true );
 require( 'init.php' );
 
 # ============================================================================
+# elasticsearch integration
+# ============================================================================
+$ELASTIC = new Insights_ElasticSearch();
+
+# ============================================================================
 # auth
 # ============================================================================
 $USER = new Insights_User();
@@ -61,21 +66,21 @@ switch( $mode ) {
 			case 'cameras':
 				$VOA->assign( 'cameras', insights_get_entries(array(
 					"cameras" => "Yes"
-				)));		
+				)));
 				$template = 'admin_cameras.tpl';
-				 
+
 			break;
-			
+
 			default:	 		$template = 'admin.tpl'; break;
-		}	
+		}
 	break;
-	
+
 	case '404':			$template = '404.tpl'; break;
-	case '403':			
+	case '403':
 		header( "HTTP/1.0 403 Forbidden" );
 		$template = "403.tpl";
 	break;
-	
+
 	case 'search':		$template = 'search.tpl'; break;
 	case 'edit':
 		# single entry
@@ -83,19 +88,19 @@ switch( $mode ) {
 		$entry = insights_get_entries(array(
 			"id" => array($entry_id)
 		));
-			
+
 		if( is_array( $entry ) && !empty( $entry ) ) {
 			$entry = array_shift( $entry );
 		}
-			
+
 		$VOA->assign( 'entry', $entry );
-			
+
 		$history = insights_get_history( $entry_id );
 		$VOA->assign( 'history', $history );
-			
+
 		$template = 'entry.tpl';
 		break;
-		
+
 	default:
 		$template = 'home.tpl';
 	break;
