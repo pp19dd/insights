@@ -1,7 +1,7 @@
 <?php
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
-define( "VERSION", "1.02" );
+define( "VERSION", "1.10" );
 
 require( "config.php" );
 require_once( 'functions.php' );
@@ -12,7 +12,8 @@ require_once( 'functions_history.php' );
 require_once( 'class.range.php' );
 require_once( 'class.api.php' );
 require_once( 'class.url.php' );
-require_once( 'class.user.php');
+require_once( 'class.user.php' );
+require_once( 'class.elastic.php' );
 
 // table name fragments: main portion
 $INSIGHTS_TABLES = array(
