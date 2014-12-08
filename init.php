@@ -3,6 +3,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
 define( "VERSION", "1.10" );
 
+require( 'vendor/autoload.php' );
 require( "config.php" );
 require_once( 'functions.php' );
 require_once( 'functions_read.php' );
