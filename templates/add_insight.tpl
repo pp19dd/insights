@@ -175,7 +175,7 @@ Time
 	<div class="form-group">
 			<label class="col-sm-2 control-label">&nbsp;</label>
 			<div class="col-sm-10">
-				<button id="id_submit_new_insight" type="submit" class="btn btn-default">Add new insight</button>
+				<button id="id_submit_new_insight" type="submit" class="btn btn-default">Save new insight</button>
 				<button id="id_cancel_new_insight" type="button" class="btn btn-cancel">Cancel</button>
 			</div>
 	</div>

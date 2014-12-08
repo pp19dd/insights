@@ -20,7 +20,10 @@
 {/if}
 
 <div>
-	<p>Problems, questions? Contact <a href="mailto:voadigital@voanews.com?subject=VOA+Insights">voadigital@voanews.com</a></p>
+	<p>
+		<span class="insights_version">Version {$version}</span>. 
+		Problems, questions? Contact <a href="mailto:voadigital@voanews.com?subject=VOA%20Insights">voadigital@voanews.com</a>
+	</p>
 </div>
 
 </footer>

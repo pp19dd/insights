@@ -6,15 +6,30 @@ class Insights_ElasticSearch {
     public $client;
 
     function __construct() {
+        
+        $params = array(
+            "hosts" => array(ELASTICSEARCH_HOST),
+            "connectionParams" => array(
+                "auth" => array(
+                    ELASTICSEARCH_USER,
+                    ELASTICSEARCH_PASS,
+                    "Basic"            	
+                )
+            )
+        );
+        
         try {
-            $this->client = new Elasticsearch\Client(array(
-                "hosts" => array(ELASTICSEARCH_HOST)
-            ));
+            $this->client = new Elasticsearch\Client($params);
         } catch( Exception $e ) {
-            // hrmmrm
+            $this->onException("construct", null, $e);
         }
     }
 
+    // for overrides
+    function onException($label, $id = null, $e) {
+        
+    }
+    
     function getEntry($id) {
         $entry = insights_get_entries(array(
             "id" => array($id)
@@ -28,13 +43,13 @@ class Insights_ElasticSearch {
 
         try {
             $ret = $this->client->index(array(
-            "id" => $id,
-            "body" => $entry,
-            "index" => "insights",
-            "type" => "entry"
+                "id" => $id,
+                "body" => $entry,
+                "index" => "insights",
+                "type" => "entry"
             ));
         } catch( Exception $e ) {
-            // hmmmm
+            $this->onException("update", $id, $e);
         }
     }
 
@@ -46,7 +61,7 @@ class Insights_ElasticSearch {
                 "type" => "entry"
             ));
         } catch( Exception $e ) {
-            // hrmm
+            $this->onException("delete", $id, $e);
         }
     }
 

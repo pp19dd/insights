@@ -46,7 +46,7 @@ options array:
 */
 
 if( !defined( 'VOA_SMARTY_VERSION' ) ) {
-	define( 'VOA_SMARTY_VERSION', 'Smarty-3.1.1' );
+	define( 'VOA_SMARTY_VERSION', 'Smarty-3.1.16' );
 }
 require_once( VOA_SMARTY_VERSION . '/libs/Smarty.class.php' );
 

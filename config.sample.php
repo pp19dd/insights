@@ -37,3 +37,5 @@ define( 'TABLE_PREFIX',			'insights_' );
 
 define( 'VOA_SMARTY_VERSION',	'Smarty-3.1.16' );
 define( 'ELASTICSEARCH_HOST',	'localhost:9200' );
+define( 'ELASTICSEARCH_USER',	'elastic_username' );
+define( 'ELASTICSEARCH_PASS',	'elastic_password' );
