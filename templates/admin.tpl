@@ -18,6 +18,22 @@ th.th_count, td.td_count { text-align: right; width: 100px; }
 
 <script>
 
+function elasticsearch_admin(req_action) {
+	$("#" + req_action).html("...");
+	$.ajax({
+		type: "POST",
+		url: "?{rewrite}{/rewrite}",
+		data: {
+			ajax: true,
+			action: "elasticsearch_" + req_action
+		},
+		success: function(data) {
+			$("#" + req_action).html(data.html);
+		},
+		dataType: "json"
+	});
+}
+
 function do_rename_term() {
 	var term_id = $("#renameModal_term_id").text();
 	var term_name = $("#renameModal_term_name_new").val();

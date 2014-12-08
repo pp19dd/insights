@@ -134,3 +134,8 @@ textarea { resize:vertical }
 .filter_container li { list-style: none; }
 .filter_container label { cursor:pointer; }
 .filter_reset { opacity: 0.3 }
+
+/* admin - elasticsearch */
+.btn-elasticsearch { }
+.elasticsearch_status { }
+.btn-elasticsearch .btn { width: 150px }
