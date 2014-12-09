@@ -4,8 +4,6 @@
 
 <h1>Search Engine</h1>
 
-
-
 {function name=esbutton}
 <tr>
 <td>
@@ -21,13 +19,49 @@
 
 {/function}
 
-<table>
+<table class="tbl_elasticsearch_status">
+<tr><td>&nbsp;</td></tr>
 {esbutton label="Records" action="records" icon="refresh" verify="no"}
 {esbutton label="Status" action="status" icon="refresh" verify="no"}
 <tr><td>&nbsp;</td></tr>
 {esbutton label="Create Index" action="create_index" icon="ok" verify="yes"}
 {esbutton label="Delete Index" action="delete_index" icon="remove" verify="yes"}
 {esbutton label="Bulk Insert" action="bulk_insert" icon="barcode" verify="yes"}
+<tr><td colspan="2"><hr/></td></tr>
+<tr>
+	<td style="width:170px">
+
+		<p>JSON query:</p>
+
+{function name="esradio"}
+
+<input {if isset($checked)}checked="checked"{/if} id="id_{$ename}" type="radio" name="es_radio" value="{$ename}" />
+<label for="id_{$ename}"> {$ename}</label><br/>
+
+{/function}
+
+{esradio ename="print_r"}
+{esradio ename="print_r | hits"}
+{esradio checked=true ename="table"}
+{esradio ename="console"}
+
+	</td>
+<td>
+<textarea id="elasticsearch_query_textarea">{
+    "query" : {
+        "match" : {
+            "description" : {
+                 "query": "rotations",
+                 "operator": "and"
+            }
+        }
+    }
+}
+</textarea>
+</td>
+</tr>
+{esbutton label="Query (CTRL+Enter)" action="query" icon="search" verify="no"}
+
 </table>
 
 <hr/>
@@ -55,10 +89,22 @@
 {block name="footer" append}
 <script>
 
+$("#elasticsearch_query_textarea").keydown(function(e) {
+	if( (e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey ) {	
+		elasticsearch_admin("query");
+	}
+});
+
 function clear_button(e) {
 	$(e).removeClass( "btn-danger");
 	var label = $(e).attr("original-label");
 	$(e).find(".actual_label").html(label);
+}
+
+function clear_all_buttons() {
+	$(".elasticsearch_button").each( function(i,e) {
+		clear_button(e);
+	});
 }
 
 // delete buttons are two-step
@@ -69,6 +115,7 @@ $(".elasticsearch_button").click( function() {
 	var action = $(this).attr("original-action");
 
 	if( verify == "no" ) {
+		clear_all_buttons();
 		elasticsearch_admin(action);
 		return(false);
 	}
@@ -82,10 +129,8 @@ $(".elasticsearch_button").click( function() {
 		elasticsearch_admin(action);
 
 	} else {
-		$(".elasticsearch_button").each( function(i,e) {
-			clear_button(e);
-		});
-		
+		clear_all_buttons();
+
 		$(this).addClass( 'btn-danger' );
 		$(this).find(".actual_label").html( "Really?") ;
 

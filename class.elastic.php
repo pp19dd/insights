@@ -3,7 +3,8 @@
 class Insights_ElasticSearch {
 
     public $client;
-
+    public $batch_size = 500;
+    
     function __construct() {
         
         $params = array(
@@ -29,6 +30,81 @@ class Insights_ElasticSearch {
         
     }
 
+    function Query($raw_json) {
+
+/*
+$raw_json = <<< EOF
+
+{
+    "query" : {
+        "match" : {
+            "slug" : "obama"
+        }
+    }
+}
+
+EOF;
+*/
+        $params = array("body" => $raw_json);
+
+        $params["index"] = "insights";
+        #$params["type"] = "entries";
+        
+        return( $this->client->search($params) );
+    }
+    
+    function batchInsert($batch_number) {
+        global $VOA;
+        $tbl = TABLE_PREFIX;
+        
+        $limit_b = $this->batch_size;
+        $limit_a = intval($batch_number) * $limit_b;
+        
+        $entries = $VOA->query(
+            "select id from {$tbl}entries where is_deleted='No' limit %s,%s",
+            $limit_a,
+            $limit_b
+        );
+        
+        $params = array("body"=>array());
+        foreach( $entries as $entry ) {
+            
+            $id = $entry["id"];
+            $data = $this->getEntry($id);
+            $data = $data[$id];
+            
+            $params["body"][] = array(
+            	"index" => array("_id" => $id) 
+            );
+            $params["body"][] = $data;
+        }
+
+        $params["index"] = "insights";
+        $params["type"] = "entry";
+                
+        $ret = $this->client->bulk($params);
+        
+        return($entries);
+    }
+    
+    function getBatchCount() {
+        $count = $this->getRecordCount();
+        $batches = $count / $this->batch_size;
+        return( ceil($batches) );
+    }
+    
+    function getRecordCount() {
+        global $VOA;
+        $tbl = TABLE_PREFIX;
+        
+        $r = $VOA->query(
+            "select count(id) as `entry_count` from `{$tbl}entries` where is_deleted='No'",
+            array("flat")
+        );
+        
+        return( $r["entry_count"] );
+    }
+    
     function createIndex() {
         try {
             $ret = $this->client->indices()->create(array(

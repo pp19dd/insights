@@ -18,17 +18,45 @@ th.th_count, td.td_count { text-align: right; width: 100px; }
 
 <script>
 
-function elasticsearch_admin(req_action) {
+function elasticsearch_admin(req_action, optional_data) {
 	$("#" + req_action).html("...");
+	var s_data = {
+		ajax: true,
+		action: "elasticsearch_" + req_action 
+	};
+	if( typeof optional_data != "undefined" ) {
+		s_data["option"] = optional_data;
+	}
+	if( req_action == "query" ) {
+		s_data["option"] = $("#elasticsearch_query_textarea").val();
+		s_data["format"] = $("input[name=es_radio]:checked").val();
+	}
+
 	$.ajax({
 		type: "POST",
 		url: "?{rewrite}{/rewrite}",
-		data: {
-			ajax: true,
-			action: "elasticsearch_" + req_action
-		},
+		data: s_data,
 		success: function(data) {
 			$("#" + req_action).html(data.html);
+
+			// indicator
+			if( typeof data.done != "undefined" ) {
+				$(".batch_" + data.done).removeClass("batch_working").addClass("batch_completed");
+			}
+
+			if( typeof data.debug != "undefined" ) {
+				console.dir( data.debug );
+			}
+
+			if( typeof data.command != "undefined" ) {
+				// console.info( data );
+				switch( data.command ) {
+					case 'next':
+						$(".batch_" + data.index).addClass("batch_working");
+						elasticsearch_admin("bulk_insert_batch", { index: data.index });
+					break;
+				}
+			}
 		},
 		dataType: "json"
 	});

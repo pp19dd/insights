@@ -1,6 +1,9 @@
 <?php
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
+#$ELASTIC->batchInsert(0); die;
+#$x = $ELASTIC->query("x");print_r( $x ); die;
+
 # ============================================================================
 # ajax mode, control panel
 # ============================================================================
@@ -9,31 +12,113 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
     $ret = array();
     switch( $_POST['action'] ) {
         case 'elasticsearch_records':
-            $r = $VOA->query(
-                "select count(id) as `entry_count` from insights_entries where is_deleted='No'",
-                array("flat")
-            );
-            
-            $ret["html"] = print_r( $r, true );
+            $ret["html"] = "Entry count: " . $ELASTIC->getRecordCount();
         break;
+
+        case 'elasticsearch_query':
+            try {
+                $results = $ELASTIC->Query($_POST['option']);
+                
+                switch( $_POST['format'] ) {
+                	case 'print_r':
+                	    $ret["html"] = "<PRE>" . print_r($results, true) . "</PRE>";
+                	break;
+                	
+                	case 'print_r | hits':
+                	    $ret["html"] = "<PRE>" . print_r($results["hits"]["hits"], true) . "</PRE>";
+                	break;
+
+                	case 'table':
+                	    $ret["html"] = "<table>";
+                	    foreach( $results["hits"]["hits"] as $hit ) {
+                	        $ret["html"] .= sprintf(
+                                "<tr>" . str_repeat("<td>%s</td>", 3) . "</tr>",
+                	            $hit["_source"]["id"],
+                	            $hit["_source"]["deadline"],
+              	                $hit["_source"]["slug"]
+                	        );
+                	    }
+                	    $ret["html"] .= "</table>";
+                	break;
+                	
+                	case 'console':
+                	    $ret["html"] = "View console for output.";
+                	    $ret["debug"] = $results;
+                	break;
+                }
+                
+            } catch( Exception $e ) {
+                $ret["html"] = print_r( $e->getMessage(), true );
+            }
+
+            break;
         
         case 'elasticsearch_status':
             $status = $ELASTIC->getStatus();
-            $ret["status"] = $status;
-            $ret["html"] = print_r( $status["indices"]["insights"]["total"]["docs"], true );
+            $docs = $status["indices"]["insights"]["total"]["docs"];
+            
+            if( is_null($docs) ) {
+                $ret["html"] = "Error: can't query status. Is an index created?";
+            } else {
+                $ret["html"] = "Indexed records: " . $docs["count"] . ", deleted records: " . $docs["deleted"];
+            }
         break;
 
         case 'elasticsearch_create_index':
-            $ret["html"] = print_r( $ELASTIC->createIndex(), true );
+            $ack = $ELASTIC->createIndex();
+            if( isset($ack["acknowledged"]) && $ack["acknowledged"] == 1 ) {
+                $ret["html"] = "Index created. Please make sure to bulk insert ASAP.";
+            } else {
+                $ret["html"] = "Error: did not create index?";
+            }
             break;
         
         case 'elasticsearch_delete_index':
-            $ret["html"] = print_r( $ELASTIC->deleteIndex(), true );
+            $ack = $ELASTIC->deleteIndex();
+            if( isset($ack["acknowledged"]) && $ack["acknowledged"] == 1 ) {
+                $ret["html"] = "Index deleted. Please make sure to recreate it ASAP.";
+            } else {
+                $ret["html"] = "Error: did not delete index?";
+            }
         break;
 
         case 'elasticsearch_bulk_insert':
-            #$entries = get_
-            $ret["html"] = "TODO: bulk insert, see \$ELASTIC->onUpdate()";
+            $ret["html"] = ""; 
+            $batch_html = "<div class='elastic_batches'>";
+            for( $i = 0; $i < $ELASTIC->getBatchCount(); $i++ ) {
+                $batch_html .= "<div class='batch batch_{$i}'>{$i}</div>";
+            }
+            $batch_html .= "</div>";
+            $ret["html"] .= $batch_html;
+            $ret["command"] = "next";
+            $ret["index"] = 0;
+            //usleep(100000);
+        break;
+        
+        case 'elasticsearch_bulk_insert_batch':
+            
+            $batches = $ELASTIC->getBatchCount();
+            $index = intval($_POST['option']['index']);
+            $finish = $batches - 1;
+            #$finish = 2;
+            
+            // do elastic bulk insert
+            $x = $ELASTIC->batchInsert($index);
+            
+            #$ret["debug"] = $x;
+            
+            // signal completion
+            $ret["done"] = $index;
+            
+            
+            if( $index >= $finish ) {
+                // done - verify?
+            } else {
+                $ret["command"] = "next";
+                $ret["index"] = $index + 1;
+            }    
+            #sleep(1);
+            //usleep(100000);
         break;
         
         case 'rename':

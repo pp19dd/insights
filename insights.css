@@ -139,3 +139,19 @@ textarea { resize:vertical }
 .btn-elasticsearch { }
 .elasticsearch_status { }
 .btn-elasticsearch .btn { width: 150px }
+.elastic_batches { }
+.elastic_batches .batch {
+    border: 1px solid gray;
+    border-radius: 13px;
+    float: left;
+    font-weight: bold;
+    height: 22px;
+    margin: 1px;
+    text-align: center;
+    width: 23px;	
+}
+.batch_working { background-color: orange }
+.batch_completed { background-color: limegreen }
+.tbl_elasticsearch_status { width: 100%; }
+.tbl_elasticsearch_status td { vertical-align: top }
+#elasticsearch_query_textarea { width: 100%; height:200px; font-family: Courier New }
