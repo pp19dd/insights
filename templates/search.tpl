@@ -1,5 +1,8 @@
 {extends file='template.tpl'}
 
+{block name='footer'}
+{include file="modal_filter.tpl"}
+{/block}
 
 {block name='content'}
 
@@ -24,7 +27,7 @@
 	<li><a href="{$base_url}">Start Over from today</a></li>
 	<li>Increase the search date range (currently {$range->active->range_start_human} to {$range->active->range_end_human}).</li>
 	<li>Remove some extra search terms.</li>
-	<li>Shorten the search terms, or reduce to a common stem (ex: instead of Ukraine try ukr)</li> 
+	<li>Shorten the search terms, or reduce to a common stem (ex: instead of Ukraine try ukr)</li>
 </ul>
 
 {else}
@@ -32,9 +35,9 @@
 <p>{$entries|count} result{if $entries|count != 1}s{/if}.</p>
 
 {if $range->active->range_start_human == $range->active->range_end_human}
-<h1>Search date includes {$range->active->range_start_human|date_format:"M d, Y"}</h1>
+<h1 class="table_title">Search date includes {$range->active->range_start_human|date_format:"M d, Y"}</h1>
 {else}
-<h1>Search dates include {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
+<h1 class="table_title">Search dates include {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
 {/if}
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}

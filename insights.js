@@ -6,7 +6,7 @@ function ymd( e ) {
 	var y = parseInt(e.getFullYear());
 	var m = parseInt(e.getMonth() + 1);
 	var d = parseInt(e.getDate());
-	
+
 	return( y + "-" + pad(m) + "-" + pad(d) );
 }
 
@@ -64,7 +64,7 @@ $('.pick_date').datepicker({
 });
 
 $("#id_go_button").click(function() {
-	var from = $("#id_range_from").text(); 
+	var from = $("#id_range_from").text();
 	var until = $("#id_range_until").text();
 	var url = $("#id_go_button").attr( "url" );
 	window.open( url + "&day=" + from + "&until=" + until, "_self" );
@@ -87,7 +87,7 @@ $(".deletion_button").click( function() {
 $('.parse_select2').each( function(i,e) {
 	var cc = $(e).attr("data-can-clear");
 
-	if( typeof cc != "undefined" ) { 	
+	if( typeof cc != "undefined" ) {
 		$(e).select2({ allowClear: true, separator: ";" });
 	} else {
 		$(e).select2({ separator: ";" });
@@ -97,7 +97,7 @@ $('.parse_select2').each( function(i,e) {
 
 // data and preloads are stored/referenced in attrs
 $('.parse_select2b').each( function(i,e) {
-	
+
 	// used for both stages
 	var cc = $(e).attr("data-can-clear");
 	var t = $(e).attr("data-selected");
@@ -111,7 +111,7 @@ $('.parse_select2b').each( function(i,e) {
 			var f = $(data).filter( function() {
 				return( this.text.localeCompare(term) === 0 );
 			});
-			
+
 			if( f.length === 0 ) {
 				return({ id:term, text:term });
 			}
@@ -124,10 +124,10 @@ $('.parse_select2b').each( function(i,e) {
 	if( (typeof t == 'string') && t.length > 0 ) {
 		var values = t.split(",");
 		var values_obj = [];
-		
+
 		for( value in values ) {
 			var stored_id = parseInt( values[value] );
-			
+
 			var temp = $.grep(insights_data[data_key].results, function(e ) {
 				if( e.id == stored_id ) return( true );
 				return( false );
@@ -138,7 +138,7 @@ $('.parse_select2b').each( function(i,e) {
 				"text": temp[0].text
 			});
 		}
-		
+
 		$(e).select2( "data", values_obj );
 	}
 });
@@ -156,12 +156,12 @@ $("#admin_login").click( function() {
 });
 
 $(document).ready( function() {
-	
+
 	$(".hold_for_release_checkbox").click( function() {
 
 		var parent = $(this).attr("parent");
 		var actual_parent = $("#" + parent);
-		
+
 		if( this.checked ) {
 			actual_parent.hide("slide");
 		} else {
@@ -170,7 +170,7 @@ $(document).ready( function() {
 	}).each( function() {
 		if( this.checked ) $("#id_entry_form_group_deadline").hide("slide");
 	});
-	
+
 	var data_table = new filterable_table({
 		selector: "#table_filterable",
 		cookie_name: "insights_columns",
@@ -180,7 +180,7 @@ $(document).ready( function() {
 			region: true,	reporter: 		true,	editor: 	true
 		},
 		modal: "#filterModal",
-		anchor: "h1",
+		anchor: "h1.table_title",
 		filter_container: "#filterModal .filter_container",
 		cancel: "#filterModal_button_close"
 	});
@@ -202,5 +202,3 @@ $(document).ready( function() {
 //debug	add_insight();
 //debug	$("#pick_date").click();
 //debug	$(".changelog_toggler").click();
-
-

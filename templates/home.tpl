@@ -12,7 +12,7 @@
 <div class="alert alert-danger alert-dismissable">
 
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-	
+
 	<p>{$error}</p>
 
 </div>
@@ -63,9 +63,9 @@
 			</ul>
 {/if}
 			<p class="view-all">
-				<a 
-					class="btn btn-default" 
-					href="?{rewrite more=$entry_group erase=deleted}{/rewrite}" 
+				<a
+					class="btn btn-default"
+					href="?{rewrite more=$entry_group erase=deleted}{/rewrite}"
 					role="button"
 				>View all ({$data.all|count}) &raquo;</a>
 			</p>
@@ -85,18 +85,18 @@
 {if isset($smarty.get.all)}
 
 {if isset($smarty.get.term_type)}
-<h1>
+<h1 class="table_title">
 	Showing all entries for {$smarty.get.term_type} / id # {$smarty.get.term_id} ({${$smarty.get.term_type}[$smarty.get.term_id].name|default:"Blank Entry"})
 	<a href="?{rewrite erase='term_type,term_id'}{/rewrite}">[Remove]</a>
 </h1>
 
 {elseif isset($smarty.get.day) && $smarty.get.day == "HFR"}
 
-<h1>Showing all &lsquo;Hold for Release&rsquo; entries</h1>
+<h1 class="table_title">Showing all &lsquo;Hold for Release&rsquo; entries</h1>
 
 {else}
 
-<h1>Showing all entries for {visible_range}</h1>
+<h1 class="table_title">Showing all entries for {visible_range}</h1>
 
 {/if}
 

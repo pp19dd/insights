@@ -39,10 +39,10 @@
 			<a
 {if isset($custom_edit_link)}
 				href="{$base_url}?edit={$entry.id}"
-{else} 
+{else}
 				href="?{rewrite edit=$entry.id}{/rewrite}"
 {/if}
-				class="btn btn-default btn-sm" 
+				class="btn btn-default btn-sm"
 				type="button"
 			>
 			<span class="glyphicon {if $entry.is_starred=='Yes'}glyphicon-star insights_star_note_starred{else}glyphicon-star-empty{/if}"></span>

@@ -8,7 +8,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 # ajax mode, control panel
 # ============================================================================
 if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
-    
+
     $ret = array();
     switch( $_POST['action'] ) {
         case 'elasticsearch_records':
@@ -18,45 +18,46 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
         case 'elasticsearch_query':
             try {
                 $results = $ELASTIC->Query($_POST['option']);
-                
+
                 switch( $_POST['format'] ) {
                 	case 'print_r':
                 	    $ret["html"] = "<PRE>" . print_r($results, true) . "</PRE>";
                 	break;
-                	
+
                 	case 'print_r | hits':
                 	    $ret["html"] = "<PRE>" . print_r($results["hits"]["hits"], true) . "</PRE>";
                 	break;
 
                 	case 'table':
-                	    $ret["html"] = "<table>";
+                	    $ret["html"] = "<table class='elasticsearch_table_results'>";
                 	    foreach( $results["hits"]["hits"] as $hit ) {
                 	        $ret["html"] .= sprintf(
-                                "<tr>" . str_repeat("<td>%s</td>", 3) . "</tr>",
+                                "<tr>" . str_repeat("<td>%s</td>", 4) . "</tr>",
                 	            $hit["_source"]["id"],
                 	            $hit["_source"]["deadline"],
-              	                $hit["_source"]["slug"]
+              	                $hit["_source"]["slug"],
+              	                $hit["_source"]["description"]
                 	        );
                 	    }
                 	    $ret["html"] .= "</table>";
                 	break;
-                	
+
                 	case 'console':
                 	    $ret["html"] = "View console for output.";
                 	    $ret["debug"] = $results;
                 	break;
                 }
-                
+
             } catch( Exception $e ) {
                 $ret["html"] = print_r( $e->getMessage(), true );
             }
 
             break;
-        
+
         case 'elasticsearch_status':
             $status = $ELASTIC->getStatus();
             $docs = $status["indices"]["insights"]["total"]["docs"];
-            
+
             if( is_null($docs) ) {
                 $ret["html"] = "Error: can't query status. Is an index created?";
             } else {
@@ -72,7 +73,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 $ret["html"] = "Error: did not create index?";
             }
             break;
-        
+
         case 'elasticsearch_delete_index':
             $ack = $ELASTIC->deleteIndex();
             if( isset($ack["acknowledged"]) && $ack["acknowledged"] == 1 ) {
@@ -83,7 +84,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
         break;
 
         case 'elasticsearch_bulk_insert':
-            $ret["html"] = ""; 
+            $ret["html"] = "";
             $batch_html = "<div class='elastic_batches'>";
             for( $i = 0; $i < $ELASTIC->getBatchCount(); $i++ ) {
                 $batch_html .= "<div class='batch batch_{$i}'>{$i}</div>";
@@ -94,39 +95,39 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             $ret["index"] = 0;
             //usleep(100000);
         break;
-        
+
         case 'elasticsearch_bulk_insert_batch':
-            
+
             $batches = $ELASTIC->getBatchCount();
             $index = intval($_POST['option']['index']);
             $finish = $batches - 1;
             #$finish = 2;
-            
+
             // do elastic bulk insert
             $x = $ELASTIC->batchInsert($index);
-            
+
             #$ret["debug"] = $x;
-            
+
             // signal completion
             $ret["done"] = $index;
-            
-            
+
+
             if( $index >= $finish ) {
                 // done - verify?
             } else {
                 $ret["command"] = "next";
                 $ret["index"] = $index + 1;
-            }    
+            }
             #sleep(1);
             //usleep(100000);
         break;
-        
+
         case 'rename':
-    
+
             $term_id = intval($_POST['term_id']);
             $term_name = trim(strip_tags($_POST['term_name']));
             $term_type = $_POST['term_type'];
-             
+
             # for this safety filter, try_type is cooerced into an array
             global $ALLOW_TYPE;
             $tbl = TABLE_PREFIX;
@@ -135,7 +136,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 die( "Error: term type not allowed");
             }
             $type = array_shift( $type );
-            
+
             $VOA->query(
                 "update `{$tbl}{$type}` set `name`='%s' where `id`=%s limit 1",
                 $term_name,
@@ -145,13 +146,13 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             $ret["term_name"] = $term_name;
             $ret["term_id"] = $term_id;
         break;
-        
+
         case 'merge':
 
             # make sure term ids exist
             if(
-                !isset( $_POST['terms_to_merge']) || 
-                !is_array( $_POST['terms_to_merge']) || 
+                !isset( $_POST['terms_to_merge']) ||
+                !is_array( $_POST['terms_to_merge']) ||
                 empty( $_POST['terms_to_merge']))
             {
                 die( "Error: terms not listed/specified");
@@ -160,7 +161,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             foreach( $_POST['terms_to_merge'] as $term ) {
                 $terms[] = intval( $term );
             }
-            
+
             # for this safety filter, try_type is cooerced into an array
             $term_type = $_POST['term_type'];
             global $ALLOW_TYPE;
@@ -173,7 +174,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
 
             # simple int
             $reassign_to = intval( $_POST['reassign_to'] );
-            
+
             # do the merge
              $VOA->query(
                  "update `{$tbl}map` set `other_id`=%s where `other_id` in (%s) and `type`='%s' and `is_deleted`='No'",
@@ -181,7 +182,7 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 implode(",", $terms),
                 $type
              );
-            
+
 //            ob_start();
 //             $ret["test"] = "testing";
 //             echo "<PRE>";
@@ -191,9 +192,9 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
 //             $ret["html"] = ob_get_clean();
             $ret["status"] = "good";
         break;
-        
+
     }
-    
+
     echo json_encode($ret);
     die;
 }
@@ -206,12 +207,12 @@ $queries = insights_get_common_queries();
 // #pre( $queries );
 // foreach( $queries["reporters"] as $k => $v ) {
 //     $tbl = TABLE_PREFIX;
-    
+
 //     $count = $VOA->query(
 //         "select count(*) as `count` from {$tbl}map where type='reporters' and other_id={$v["id"]}",
 //         array("flat")
 //     );
-    
+
 //     #pre( $count );
 //     $queries["reporters"][$k]["count"] = $count["count"];
 // }
@@ -220,4 +221,3 @@ $queries = insights_get_common_queries();
 foreach( $queries as $query => $data ) {
     $VOA->assign( $query, $data );
 }
-

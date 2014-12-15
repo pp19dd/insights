@@ -7,7 +7,11 @@ label { cursor: pointer; }
 
 th.th_id, td.td_id { text-align: right; color: silver; }
 th.th_count, td.td_count { text-align: right; width: 100px; }
- 
+
+.elasticsearch_table_results { width: 100%; height: 300px }
+.elasticsearch_table_results td { border: 1px dotted silver; font-size: 12px }
+.elasticsearch_table_results th {}
+
 </style>
 {/block}
 
@@ -22,14 +26,14 @@ function elasticsearch_admin(req_action, optional_data) {
 	$("#" + req_action).html("...");
 	var s_data = {
 		ajax: true,
-		action: "elasticsearch_" + req_action 
+		action: "elasticsearch_" + req_action
 	};
 	if( typeof optional_data != "undefined" ) {
 		s_data["option"] = optional_data;
 	}
 	if( req_action == "query" ) {
 		s_data["option"] = $("#elasticsearch_query_textarea").val();
-		s_data["format"] = $("input[name=es_radio]:checked").val();
+        s_data["format"] = $("input[name=es_radio]:checked").val();
 	}
 
 	$.ajax({
@@ -92,7 +96,7 @@ function do_rename_term() {
 		$("#renameModal_alert").addClass("alert-danger").html( "Error updating record." );
 		$("#renameModal_button_close,#renameModal_button_rename").attr("disabled", false );
 	});
-	
+
 }
 
 function rename_term( term_id, that, term_type ) {
@@ -100,7 +104,7 @@ function rename_term( term_id, that, term_type ) {
 	$("#renameModal_alert").removeClass("alert-danger").removeClass("alert-info");
 	$("#renameModal_button_close,#renameModal_button_rename").attr("disabled", false);
 
-	// fill in info related to this term_id	
+	// fill in info related to this term_id
 	var term_name = $("tr.row_id_" + term_id + " .td_name").text();
 	$("#renameModal_term_name_new").val( term_name );
 	$("#renameModal_term_id").html( term_id );
@@ -123,7 +127,7 @@ function filter_same( filters, old_filters ) {
 			ret = false;
 		} else {
 			if( old_filters[k] != v ) ret = false;
-		} 
+		}
 	})(k, filters[k]);
 
 	return( ret );
@@ -140,7 +144,7 @@ function apply_filters() {
 
 		var actual_filters = filters.name.trim().split(" ");
 		for( i = 0; i < actual_filters.length; i++ )(function(filter) {
-			
+
 			var invert = false;
 			if( filter.substr(0,1) == "-" ) {
 				filter = filter.substr(1);
@@ -174,7 +178,7 @@ function apply_filters() {
 
 // apply filter if needed
 $("#filter_name, #filter_empty").bind("click change keydown keyup keypress", function() {
-	var old_filters = {};	
+	var old_filters = {};
 
 	for( var k in filters )(function(k,v) {
 		old_filters[k] = v;
@@ -183,7 +187,7 @@ $("#filter_name, #filter_empty").bind("click change keydown keyup keypress", fun
 	filters.show_empty = $("#filter_empty")[0].checked;
 	filters.name = $("#filter_name").val().toLowerCase();
 
-	if( filter_same(filters, old_filters) == false ) {	
+	if( filter_same(filters, old_filters) == false ) {
 		apply_filters();
 	}
 });
@@ -198,8 +202,8 @@ function clear_merge_terms() {
 // merge items
 
 function do_merge_terms() {
-	
-	var term_type = list;	
+
+	var term_type = list;
 	var terms_to_merge = [];
 	var reassign_to = parseInt($(".merge_destination").text());
 
@@ -228,7 +232,7 @@ function do_merge_terms() {
 				var id = terms_to_merge[i];
 				var old_count = parseInt($(".row_id_" + id + " .td_count").text());
 				total_count_to_add += old_count;
- 
+
 				$(".row_id_" + id + " .td_count").html( "0" );
 
 // 				console.log( i, id, old_count, total_count_to_add );
@@ -237,7 +241,7 @@ function do_merge_terms() {
 			// update totals
 			var total_count = parseInt($(".row_id_" + reassign_to + " .td_count").text());
 			var new_count = total_count + total_count_to_add;
-			$(".row_id_" + reassign_to + " .td_count").html( new_count );  
+			$(".row_id_" + reassign_to + " .td_count").html( new_count );
 
 // 			console.log( total_count, new_count );
 
@@ -261,13 +265,13 @@ function merge_items() {
 
 	$(".merge_selection_status").html("&nbsp;");
 
-	var merge_html = 
-		"<table class='merge_table' border='0'>" + 
+	var merge_html =
+		"<table class='merge_table' border='0'>" +
 			"<tr>" +
-				"<th style='text-align:right; width:35px'>id</th>" + 
-				"<th>name</th>" + 
-				"<th style='width:35px'>count</th>" + 
-				"<th style='text-align:right'>Set all to this name/id</th>" + 
+				"<th style='text-align:right; width:35px'>id</th>" +
+				"<th>name</th>" +
+				"<th style='width:35px'>count</th>" +
+				"<th style='text-align:right'>Set all to this name/id</th>" +
 			"</tr>";
 
 	$(".merge").each( function(i,e) {
@@ -276,13 +280,13 @@ function merge_items() {
 		var count = $(".row_id_" + row_id + " .td_count").text();
 
 		if( e.checked == true ) {
-			merge_html += 
-				"<tr class='merge_row merge_row_" + row_id + "'>" + 
-					"<td style='text-align:right'>" + row_id + "</td>" + 
+			merge_html +=
+				"<tr class='merge_row merge_row_" + row_id + "'>" +
+					"<td style='text-align:right'>" + row_id + "</td>" +
 					"<td>" + name + "</td>" +
 					"<td style='text-align:right'>" + count + "</td>" +
 					"<td style='text-align:right'>" +
-						"<input type='radio' record-id='" + row_id + "' class='merge_reassign' name='merge_reassign' />" + 
+						"<input type='radio' record-id='" + row_id + "' class='merge_reassign' name='merge_reassign' />" +
 					"</td>"
 				"</tr>";
 		}
@@ -295,7 +299,7 @@ function merge_items() {
 	$("#merge_body .merge_reassign").click( function() {
 		$("#mergeModal_button_rename").attr("disabled", false);
 		var row_id = $(this).attr("record-id");
-		
+
 		$(".merge_row").removeClass( "merge_row_selected" );
 		$(".merge_row_" + row_id).addClass( "merge_row_selected" );
 
@@ -319,7 +323,7 @@ $(".merge").bind("click change", function() {
 });
 
 // $("#filter_name").val( "henry" ).click(); /* debug merge */
-// $("tr.admin_row:visible .merge").click() /* debug merge */ 
+// $("tr.admin_row:visible .merge").click() /* debug merge */
 
 // start
 $("#filter_name").focus();

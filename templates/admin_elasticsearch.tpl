@@ -47,17 +47,14 @@
 
 	</td>
 <td>
-<textarea id="elasticsearch_query_textarea">{
-    "query" : {
+<textarea id="elasticsearch_query_textarea">{ "query" : {
         "match" : {
-            "description" : {
-                 "query": "rotations",
+            "slug" : {
+                 "query": "pkg obama",
                  "operator": "and"
             }
         }
-    }
-}
-</textarea>
+} }</textarea>
 </td>
 </tr>
 {esbutton label="Query (CTRL+Enter)" action="query" icon="search" verify="no"}
@@ -90,7 +87,7 @@
 <script>
 
 $("#elasticsearch_query_textarea").keydown(function(e) {
-	if( (e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey ) {	
+	if( (e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey ) {
 		elasticsearch_admin("query");
 	}
 });
@@ -121,11 +118,11 @@ $(".elasticsearch_button").click( function() {
 	}
 
 	if( $(this).hasClass( "btn-danger" ) ) {
-		
+
 		// confirm deleting
-		
+
 		clear_button(this);
-		
+
 		elasticsearch_admin(action);
 
 	} else {
