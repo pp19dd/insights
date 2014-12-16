@@ -14,11 +14,11 @@
 
 {function select_mode_1}
 
-<select 
+<select
 	id="{$id}"
-	name="{$name}" 
-	class="parse_select2" 
-	style="{$style}" 
+	name="{$name}"
+	class="parse_select2 {if isset($fixed_width)}select2_fixed_width{/if}" 
+	style="{$style}"
 	separator=";"
 {if isset($can_clear)}
 	data-can-clear="true"
@@ -37,11 +37,11 @@
 
 {function select_mode_2}
 
-<select 
+<select
 	id="{$id}"
-	name="{$name}" 
-	class="parse_select2" 
-	style="{$style}" 
+	name="{$name}"
+	class="parse_select2 {if isset($fixed_width)}select2_fixed_width{/if}"
+	style="{$style}"
 	separator=";"
 {if isset($can_clear)}
 	data-can-clear="true"
@@ -64,19 +64,19 @@
 {/function}
 
 {function select_mode_3}
-<input 
-	id="{$id}" 
-	type="hidden" 
-	name="{$name}" 
-	class="parse_select2b"
-	separator=";" 
-	style="{$style}" 
+<input
+	id="{$id}"
+	type="hidden"
+	name="{$name}"
+	class="parse_select2b {if isset($fixed_width)}select2_fixed_width{/if}"
+	separator=";"
+	style="{$style}"
 {if isset($can_clear)}
 	data-can-clear="true"
 {/if}
 	{if !$can.edit}readonly="readonly"{/if}
 	{if isset($placeholder)}data-placeholder="{$placeholder}"{/if}
-	insights_data="{$data}" 
+	insights_data="{$data}"
 	data-selected="{if isset($value)}{$value|array_keys|implode:','}{/if}"
 
 />
@@ -100,4 +100,4 @@
 {if !isset($skip_container)}
 	</div>
 </div>
-{/if}		
+{/if}

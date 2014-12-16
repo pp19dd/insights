@@ -16,7 +16,7 @@ $result = $VOA->query(
 	array(
 		"index" => "something"								// query options, see below
 	)														// array can be placed in any order
-);														
+);
 
 ------------------------------------------------------------------------------------------------------
 override smarty version					define( "VOA_SMARTY_VERSION",	'Smarty-3.1.1' );
@@ -54,17 +54,29 @@ function pre($a, $die = true, $var_name = null) {
 	}
 }
 
+// convenient for displaying query debug
+function table($a, $die = true) {
+	echo "<table border='1' style='border-collapse:collapse'>";
+	foreach( $a as $k => $v ) {
+		printf( "<tr><td>%s</td></tr>", implode("</td><td>", $v));
+	}
+	echo "</table>";
+	if( $die === true ) {
+		die;
+	}
+}
+
 function smarty_modifier_ago($tm, $cur_tm = null) {
 	if( is_null($cur_tm) ) $cur_tm = time();
 	$dif = $cur_tm-strtotime($tm);
-	
+
 	$pds = array('second','minute','hour','day','week','month','year','decade');
 	$lngh = array(1,60,3600,86400,604800,2630880,31570560,315705600);
 	for($v = sizeof($lngh)-1; ($v >= 0)&&(($no = $dif/$lngh[$v])<=1); $v--);
 	if($v < 0) $v = 0;
 	$_tm = $cur_tm-($dif%$lngh[$v]);
 	$no = floor($no); if($no <> 1) $pds[$v] .='s'; $x=sprintf("%d %s ",$no,$pds[$v]);
-	
+
 	return $x;
 }
 
@@ -95,14 +107,14 @@ class VOA extends Smarty {
 		}
 		return($b);
 	}
-	
+
 	function check_magic_quotes() {
 		if( get_magic_quotes_gpc() ) {
 			$_POST = $this->recursive_stripslashes( $_POST );
 			$_GET = $this->recursive_stripslashes( $_GET );
 		}
 	}
-	
+
 	function connect() {
 		$this->link = @mysql_connect( $this->sql_server, $this->sql_username, $this->sql_password, true );
 		if( !$this->link ) {
@@ -118,14 +130,14 @@ class VOA extends Smarty {
 		}
 		return( true );
 	}
-	
+
 	function query_fetch_reduce($a) {
 		if( isset($this->options["index"]) && isset($this->options["collapse"]) ) {
 			$a = $a[$this->options["collapse"]];
 		}
 		return( $a );
 	}
-	
+
 	function query_fetch() {
 		if( in_array("object", $this->options ) ) {
 			return( mysql_fetch_object( $this->t ) );
@@ -133,26 +145,26 @@ class VOA extends Smarty {
 			return( mysql_fetch_assoc( $this->t ) );
 		}
 	}
-	
+
 	function stop_debug() {
 		if( in_array( "debug", $this->options ) ) {
 			$de = count($this->queries) - 1;
 			$this->queries[$de]['stop'] = microtime();
 			#$diff = $this->queries[$de]['stop'] - $this->queries[$de]['start'];
-			
-			$this->queries[$de]['diff'] = 
+
+			$this->queries[$de]['diff'] =
 				(substr($this->queries[$de]['stop'],11)-substr($this->queries[$de]['start'],11))
 				+(substr($this->queries[$de]['stop'],0,9)-substr($this->queries[$de]['start'],0,9));
 		}
 	}
-	
+
 	function query_raw() {
-		
+
 		/* return directly instead of returning contents as array */
 		$this->t = @mysql_query( $this->sql );
 		if( in_array( "nofetch", $this->options ) ) {
 			$this->stop_debug();
-				
+
 			if( !$this->t ) {
 				$this->error = mysql_error();
 				return( false );
@@ -160,7 +172,7 @@ class VOA extends Smarty {
 				return( $this->t );
 			}
 		}
-		
+
 		/* empty? */
 		if( @mysql_num_rows( $this->t ) == 0 ) {
 			$this->stop_debug();
@@ -170,14 +182,14 @@ class VOA extends Smarty {
 				return( false );
 			}
 		}
-		
+
 		/* single line */
 		if( in_array( "flat", $this->options ) ) {
 			$retval = $this->query_fetch();
 			$this->stop_debug();
 			return( $retval );
 		}
-		
+
 		/* else, return array - possibly indexed */
 		$retarr = array();
 		while( $r = $this->query_fetch() ) {
@@ -187,9 +199,9 @@ class VOA extends Smarty {
 				if( in_array( "deep", $this->options ) ) {
 					if( is_object($r) ) {
 						if( isset( $this->options["index2"] ) ) {
-		
+
 							// fixme: never did the object part
-		
+
 						} else {
 							$key = $r->{$this->options['index']};
 							$retarr[$key][] = $this->query_fetch_reduce($r);
@@ -198,7 +210,7 @@ class VOA extends Smarty {
 						if( isset( $this->options["index2"] ) ) {
 							$key = $r[$this->options['index']];
 							$key2 = $r[$this->options['index2']];
-								
+
 							$retarr[$key][$key2] = $this->query_fetch_reduce($r);
 						} else {
 							$key = $r[$this->options['index']];
@@ -219,15 +231,15 @@ class VOA extends Smarty {
 		$this->stop_debug();
 		return( $retarr );
 	}
-	
+
 	function query() {
-		
+
 		// be careful with global options
 		$this->options = $this->sticky_options;
-		
+
 		$c = func_num_args();
 		if( $c === 0 ) return( false );
-		
+
 		/* generate SQL line, escape if needed, apply any given options */
 		if( $c === 1 ) {
 			$this->sql = func_get_arg(0);
@@ -253,7 +265,7 @@ class VOA extends Smarty {
 		if( in_array( "debug", $this->options ) ) {
 			$this->queries[] = array("sql" => $this->sql, "start" => microtime());
 		}
-		
+
 		return( $this->query_raw() );
 	}
 }
@@ -263,15 +275,15 @@ if( !function_exists( 'smarty_block_rewrite' ) ) {
 function smarty_block_rewrite($parms, $content, &$smarty, &$repeat ) {
 
 	if( $repeat ) {
-	
+
 		$get = $_GET;
-		
+
 		$delim = ",";
 		if( isset( $parms['delimiter'] ) ) {
 			$delim = $parms['delimiter'];
 			unset( $parms['delimiter'] );
 		}
-		
+
 		foreach( $parms as $k => $v ) {
 			if( $k == 'erase' ) {
 				$erase = explode($delim, $v);
@@ -307,9 +319,9 @@ function smarty_block_rewrite($parms, $content, &$smarty, &$repeat ) {
 		$ret = http_build_query( $get );
 		$ret = str_replace( "=&", "&", $ret );
 		if( substr($ret,-1) == "=" ) $ret = substr($ret,0,-1);
-		
+
 		return( $ret );
-	
+
 	}
 }
 

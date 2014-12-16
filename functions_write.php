@@ -220,6 +220,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             `{$tbl}entries`
         set
             `is_deleted`='No',
+            `preslug`='%s',
             `slug`='%s',
             `description`='%s',
             `camera_assigned`='%s',
@@ -228,6 +229,7 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
         where
             `id`=%s
         limit 1",
+        trim(strip_tags($p['preslug'])),
         trim(strip_tags($p['slug'])),
         trim(strip_tags($p['description'])),
         (isset($p["camera_assigned"]) ? 'Yes' : 'No' ),

@@ -88,11 +88,16 @@ $(".deletion_button").click( function() {
 $('.parse_select2').each( function(i,e) {
 	var cc = $(e).attr("data-can-clear");
 
-	if( typeof cc != "undefined" ) {
-		$(e).select2({ allowClear: true, separator: ";" });
-	} else {
-		$(e).select2({ separator: ";" });
+	var select_parms = { separator: ";" }
+	if( $(e).hasClass("select2_fixed_width") ) {
+		select_parms["width"] = "resolve";
 	}
+
+	if( typeof cc != "undefined" ) {
+		select_parms["allowClear"] = true;
+	}
+
+	$(e).select2(select_parms);
 
 });
 
@@ -185,7 +190,6 @@ $(document).ready( function() {
 		filter_container: "#filterModal .filter_container",
 		cancel: "#filterModal_button_close"
 	});
-
 });
 
 //isotope is fighting bootstrap, table for now

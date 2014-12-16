@@ -101,16 +101,12 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             $batches = $ELASTIC->getBatchCount();
             $index = intval($_POST['option']['index']);
             $finish = $batches - 1;
-            #$finish = 2;
 
             // do elastic bulk insert
             $x = $ELASTIC->batchInsert($index);
 
-            #$ret["debug"] = $x;
-
             // signal completion
             $ret["done"] = $index;
-
 
             if( $index >= $finish ) {
                 // done - verify?
@@ -118,8 +114,6 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 $ret["command"] = "next";
                 $ret["index"] = $index + 1;
             }
-            #sleep(1);
-            //usleep(100000);
         break;
 
         case 'rename':
@@ -183,13 +177,6 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 $type
              );
 
-//            ob_start();
-//             $ret["test"] = "testing";
-//             echo "<PRE>";
-//             print_r( $_POST );
-//             print_r( $terms );
-//             echo "</PRE>";
-//             $ret["html"] = ob_get_clean();
             $ret["status"] = "good";
         break;
 
@@ -203,20 +190,6 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
 # admin-related queries
 # ============================================================================
 $queries = insights_get_common_queries();
-
-// #pre( $queries );
-// foreach( $queries["reporters"] as $k => $v ) {
-//     $tbl = TABLE_PREFIX;
-
-//     $count = $VOA->query(
-//         "select count(*) as `count` from {$tbl}map where type='reporters' and other_id={$v["id"]}",
-//         array("flat")
-//     );
-
-//     #pre( $count );
-//     $queries["reporters"][$k]["count"] = $count["count"];
-// }
-
 
 foreach( $queries as $query => $data ) {
     $VOA->assign( $query, $data );
