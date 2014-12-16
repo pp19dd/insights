@@ -37,7 +37,8 @@ $('#pick_add_insight').click( function() { add_insight(); });
 $('#id_cancel_new_insight').click( function() {	$('#id_add_entry').slideToggle('fast'); });
 $('#id_submit_new_insight').click( function() { });
 
-$('#input_deadline').datepicker({
+$('#input_deadline,#entry_deadline').datepicker({
+
 }).on('changeDate', function(e) {
 	$(this).datepicker('hide');
 });
