@@ -8,10 +8,14 @@
 				<h4 class="modal-title" id="myModalLabel">Choose which columns to show</h4>
 			</div>
 			<div class="modal-body">
+				<div class="pull-right" id="filterModal_extra">
+					<ul id="filterModal_extra_ul"></ul>
+				</div>
 				<ul class="filter_container"></ul>
 			</div>
 			<div class="modal-footer">
 				<div class="pull-left alert" id="filterModal_alert"></div>
+				<button type="button" id="filterModal_button_reset" class="btn btn-default" data-dismiss="modal">Reset All Options</button>
 				<button type="button" id="filterModal_button_close" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
