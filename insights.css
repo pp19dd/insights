@@ -166,3 +166,5 @@ textarea { resize:vertical }
 
 .striped_tr { border: 0px !important; }
 .striped_td { border: 0px !important; }
+.striped-even { /*background-color: silver*/ }
+.striped-odd { background-color: gainsboro }

@@ -17,12 +17,11 @@ function filterable_table(options) {
 		this.children.push( new cookied_filter(k, this.columns[k], this) );
 	}
 
-/*
 	this.children.push( new cookied_filter("layout", false, this, {
 		type: "extra",
 		label: "Use striped layout for descriptions"
 	}));
-*/
+
 	this.cancel.click( function() {	});
 }
 
@@ -78,13 +77,41 @@ cookied_filter.prototype.act_column = function() {
 		$(this.column_name).hide();
 	}
 }
+
 cookied_filter.prototype.act_extra = function() {
 
 	this.checkbox[0].checked = this.value;
 	if( this.value != true ) return(false);
 
-//return(false);
+	this.setup_striped_rows();
+	this.fix_even_odd_rows();
 
+	var that = this;
+	$(this.parent.table).on("before-sort", function(e) {
+		that.destroy_striped_rows();
+	}).on("sorted", function() {
+		that.setup_striped_rows();
+		that.fix_even_odd_rows();
+	});
+}
+
+cookied_filter.prototype.fix_even_odd_rows = function() {
+	var trs = $("tbody tr", this.parent.table);
+
+	trs.removeClass("striped-even striped-odd");
+	trs.each( function(i,e) {
+		if( parseInt(i/2) % 2 ) {
+			$(e).addClass("striped-odd");
+		} else {
+			$(e).addClass("striped-even");
+		}
+	});
+}
+
+
+// rudimentary support for striped rows:
+// deconstruct before sorting, construct after sorting
+cookied_filter.prototype.setup_striped_rows = function() {
 	$(".column_description").hide();
 
 	$("tr.insights_entry").each( function(i,e) {
@@ -98,12 +125,24 @@ cookied_filter.prototype.act_extra = function() {
 	});
 }
 
-cookied_filter.prototype.act = function() {
+cookied_filter.prototype.destroy_striped_rows = function() {
+	$("tr.striped_tr").remove();
+}
+
+cookied_filter.prototype.is_extra = function() {
 	if(
 		(typeof this.options != "undefined") &&
 		(typeof this.options.type != "undefined") &&
 		(this.options.type == "extra")
 	) {
+		return(true);
+	} else {
+		return(false);
+	}
+}
+
+cookied_filter.prototype.act = function() {
+	if( this.is_extra() == true ) {
 		this.act_extra();
 	} else {
 		this.act_column();
@@ -175,16 +214,11 @@ cookied_filter.prototype.setup_extra = function() {
 // <ul><li><checkbox /><label></label></li></ul>
 cookied_filter.prototype.setup_html = function() {
 
-	if(
-		(typeof this.options != "undefined") &&
-		(typeof this.options.type != "undefined") &&
-		(this.options.type == "extra")
-	) {
+	if( this.is_extra() == true ) {
 		this.setup_extra();
 	} else {
 		this.setup_column();
 	}
-
 }
 
 cookied_filter.prototype.load = function() {

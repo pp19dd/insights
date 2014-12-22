@@ -70,7 +70,7 @@
 				<th class="column_region">Region</th>
 				<th class="column_reporter">Reporter</th>
 				<th class="column_editor">Editor</th>
-				<th class="column_action insights_grid_list_action"></th>
+				<th class="column_action insights_grid_list_action" data-defaultsort='disabled'></th>
 			</tr>
 		</thead>
 		<tbody>
