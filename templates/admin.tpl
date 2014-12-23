@@ -11,7 +11,8 @@ th.th_count, td.td_count { text-align: right; width: 100px; }
 .elasticsearch_table_results { width: 100%; height: 300px }
 .elasticsearch_table_results td { border: 1px dotted silver; font-size: 12px }
 .elasticsearch_table_results th {}
-
+#query { height: 1000px; overflow-y: auto }
+#query_second { padding-top: 1em; }
 </style>
 {/block}
 
@@ -32,7 +33,10 @@ function elasticsearch_admin(req_action, optional_data) {
 		s_data["option"] = optional_data;
 	}
 	if( req_action == "query" ) {
-		s_data["option"] = $("#elasticsearch_query_textarea").val();
+		// s_data["option"] = $("#elasticsearch_query_textarea").val();
+
+		// when in rome, use globals...
+		s_data["option"] = editor.getValue();
         s_data["format"] = $("input[name=es_radio]:checked").val();
 	}
 
@@ -42,6 +46,7 @@ function elasticsearch_admin(req_action, optional_data) {
 		data: s_data,
 		success: function(data) {
 			$("#" + req_action).html(data.html);
+			$("#query_second").html(data.html2);
 
 			// indicator
 			if( typeof data.done != "undefined" ) {

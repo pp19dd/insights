@@ -9,7 +9,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 # ============================================================================
 if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
 
-    $ret = array();
+    $ret = array("html2" => "");
     switch( $_POST['action'] ) {
         case 'elasticsearch_records':
             $ret["html"] = "Entry count: " . $ELASTIC->getRecordCount();
@@ -28,7 +28,19 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
                 	    $ret["html"] = "<PRE>" . print_r($results["hits"]["hits"], true) . "</PRE>";
                 	break;
 
+                	case 'print_r | facets':
+                	    $ret["html"] = "<PRE>" . print_r($results["facets"], true) . "</PRE>";
+                	break;
+
                 	case 'table':
+                        $ret["html2"] = sprintf(
+                            "Total: <strong>%s</strong><br/>" .
+                            "Max Score: <strong>%s</strong><br/>",
+                            $results["hits"]["total"],
+                            $results["hits"]["max_score"]
+                        );
+                    //print_r($results["hits"]["hits"], true);
+
                 	    $ret["html"] = "<table class='elasticsearch_table_results'>";
                 	    foreach( $results["hits"]["hits"] as $hit ) {
                 	        $ret["html"] .= sprintf(

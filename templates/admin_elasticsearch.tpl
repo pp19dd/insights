@@ -12,6 +12,9 @@
 		<span class="glyphicon glyphicon-{$icon}"></span>
 		<span class="actual_label">{$label}</span>
 	</a>
+{if isset($extra)}
+{$extra}
+{/if}
 </div>
 </td>
 	<td><div id="{$action}">...</div></td>
@@ -29,6 +32,20 @@
 {esbutton label="Bulk Insert" action="bulk_insert" icon="barcode" verify="yes"}
 <tr><td colspan="2"><hr/></td></tr>
 <tr>
+	<td colspan="2">
+
+<p>Notes:</p>
+<ul>
+	<li>Do not use this function if you don't fully understand its implications.</li>
+	<li>Always make sure search engine is running, by clicking status. Count should be in thousands.</li>
+	<li>If status count is blank, perform: create an index.</li>
+	<li>If status count is zero, perform: bulk insert.</li>
+	<li>Bulk insertion may take several minutes.</li>
+</ul>
+	</td>
+</tr>
+<tr><td colspan="2"><hr/></td></tr>
+<tr>
 	<td style="width:170px">
 
 		<p>JSON query:</p>
@@ -42,48 +59,42 @@
 
 {esradio ename="print_r"}
 {esradio ename="print_r | hits"}
+{esradio ename="print_r | facets"}
 {esradio checked=true ename="table"}
 {esradio ename="console"}
 
 	</td>
 <td>
-<textarea id="elasticsearch_query_textarea">{ "query" : {
-        "match" : {
-            "slug" : {
-                 "query": "pkg obama",
-                 "operator": "and"
-            }
-        }
-} }</textarea>
+
+<div id="elasticsearch_query_textarea">{
+	"query": {
+		"match": {
+			"slug": {
+				"query": "pkg obama",
+				"operator": "and"
+			}
+		}
+	}
+}</div>
 </td>
 </tr>
-{esbutton label="Query (CTRL+Enter)" action="query" icon="search" verify="no"}
-
+{esbutton
+	label="Query (CTRL+Enter)"
+	action="query"
+	icon="search"
+	verify="no"
+	extra="<div class='clearfix'></div><div id='query_second'></div>"
+}
 </table>
 
 <hr/>
-
-<p>Notes:</p>
-<ul>
-	<li>Do not use this function if you don't fully understand its implications.</li>
-	<li>Always make sure search engine is running, by clicking status. Count should be in thousands.</li>
-	<li>If status count is blank, perform: create an index.</li>
-	<li>If status count is zero, perform: bulk insert.</li>
-	<li>Bulk insertion may take several minutes.</li>
-</ul>
-
-{*
-{include file='admin__table.tpl' list='cameras' table_title='Cameras' add=false editable=false hide=array('is_deleted') data=$cameras}
-*}
-
-{*
-{include file="table_entries.tpl" ids=$cameras|array_keys entries=$cameras custom_edit_link=true}
-*}
 
 {/block}
 
 
 {block name="footer" append}
+<script type="text/javascript" src="{$base_url}js/ace/ace.js"></script>
+
 <script>
 
 $("#elasticsearch_query_textarea").keydown(function(e) {
@@ -120,9 +131,7 @@ $(".elasticsearch_button").click( function() {
 	if( $(this).hasClass( "btn-danger" ) ) {
 
 		// confirm deleting
-
 		clear_button(this);
-
 		elasticsearch_admin(action);
 
 	} else {
@@ -134,6 +143,10 @@ $(".elasticsearch_button").click( function() {
 	}
 });
 
+// much smoother with code highlighting and shift+tab
+var editor = ace.edit("elasticsearch_query_textarea");
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/javascript");
 
 
 //elasticsearch_status();
