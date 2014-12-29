@@ -91,24 +91,7 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'HFR' ) {
 }
 
 if( isset( $_GET['keywords']) ) {
-
-	$words = explode(" ", trim(strip_tags($_GET['keywords'])));
-	$words = array_filter( $words );
-
-	if( count($words) == 0 ) {
-		$query_entries["stop"] = array("Warning: Empty search string");
-	} else {
-		$query_entries["search"] = $words;
-	}
-
-	// search removal tips
-	$tips = array();
-	foreach( $words as $word ) {
-		$words_as_keys = array_flip( $words );
-		unset( $words_as_keys[$word]);
-		$tips[$word] = implode(" ", array_keys($words_as_keys));
-	}
-	$VOA->assign( "search_tips", $tips);
+	include( "index_search.php" );
 }
 
 # override: admin mode - requests particular ids
@@ -121,7 +104,7 @@ if( isset( $_GET['term_type']) && isset( $_GET['term_id']) ) {
 	if( in_array($_GET['term_type'], $ALLOW_TYPE ) === false ) {
 		die( "error: term type not allowed");
 	}
-	
+
 	# find a list of entry ids associated with term type / term id
 	$tbl = TABLE_PREFIX;
 	$entry_ids_from_map = $VOA->query(
@@ -130,7 +113,7 @@ if( isset( $_GET['term_type']) && isset( $_GET['term_id']) ) {
 		intval( $_GET['term_id'] ),
 		array( "index" => "entry_id", "noempty" )
 	);
-	
+
 	$query_entries["id"] = array_keys( $entry_ids_from_map );
 }
 

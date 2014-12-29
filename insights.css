@@ -89,7 +89,7 @@ textarea { resize:vertical }
 
 /* table */
 .entry_field { font-size: 12px; }
-.column_slug { }
+.column_slug { font-weight: bold; }
 .column_description { }
 .column_deadline { }
 .column_origin { }

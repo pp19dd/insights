@@ -76,6 +76,8 @@ cookied_filter.prototype.act_column = function() {
 	} else {
 		$(this.column_name).hide();
 	}
+
+	this.fix_colspan();
 }
 
 cookied_filter.prototype.act_extra = function() {
@@ -114,14 +116,25 @@ cookied_filter.prototype.fix_even_odd_rows = function() {
 cookied_filter.prototype.setup_striped_rows = function() {
 	$(".column_description").hide();
 
+
+
 	$("tr.insights_entry").each( function(i,e) {
 		var descr = $(".column_description", e).html();
 		$(e).after(
 			"<tr class='striped_tr'>" +
-			"<td class='striped_td entry_field column_description' colspan='8'>" +
+			"<td class='striped_td striped_td_left entry_field column_description'>" +
 			descr +
-			"</td><td class='striped_td'></td></tr>"
+			"</td><td class='striped_td striped_td_right'></td></tr>"
 		);
+	});
+
+	this.fix_colspan();
+}
+
+cookied_filter.prototype.fix_colspan = function() {
+	var visible_columns = $("thead th:visible", this.parent.table).length;
+	$(".striped_td_left", this.parent.table).each( function(i,e) {
+		$(e).attr("colspan", visible_columns - 1);
 	});
 }
 
