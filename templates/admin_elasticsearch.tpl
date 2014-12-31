@@ -74,7 +74,8 @@
 				"operator": "and"
 			}
 		}
-	}
+	},
+	"sort": { "deadline": "desc" }
 }</div>
 </td>
 </tr>

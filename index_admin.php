@@ -96,6 +96,9 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
         break;
 
         case 'elasticsearch_bulk_insert':
+            // insertion could take awhile
+            set_time_limit(180);
+            
             $ret["html"] = "";
             $batch_html = "<div class='elastic_batches'>";
             for( $i = 0; $i < $ELASTIC->getBatchCount(); $i++ ) {
@@ -109,6 +112,8 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
         break;
 
         case 'elasticsearch_bulk_insert_batch':
+            // insertion could take awhile
+            set_time_limit(180);
 
             $batches = $ELASTIC->getBatchCount();
             $index = intval($_POST['option']['index']);

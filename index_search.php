@@ -53,7 +53,8 @@ $search_results["exact"] = $ELASTIC->Query('
                 { "match": { "description": { "query": "'.$search_words.'", "operator": "and" } }}
             ]
         }
-    }
+    },
+	"sort": { "deadline": "desc" }
 }
 ');
 $search_results["fuzzy"] = $ELASTIC->Query('
@@ -65,7 +66,8 @@ $search_results["fuzzy"] = $ELASTIC->Query('
 				{ "fuzzy": { "description": "'.$search_words.'" }}
             ]
         }
-    }
+    },
+	"sort": { "deadline": "desc" }	
 }
 ');
 
