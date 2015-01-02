@@ -66,6 +66,16 @@
 	</td>
 <td>
 
+<div id="presets">
+	Cookied Presets:
+	<span class="preset" id="preset_a">Avocado</span> |
+	<span class="preset" id="preset_b">Broccoli</span> |
+	<span class="preset" id="preset_c">Carrot</span> |
+	<span class="preset" id="preset_d">Dragonfruit</span> |
+	<span class="preset" id="preset_e">Eggplant</span> |
+	<span class="preset" id="preset_f">Fennel</span>
+</div>
+
 <div id="elasticsearch_query_textarea">{
 	"query": {
 		"match": {
@@ -75,7 +85,14 @@
 			}
 		}
 	},
-	"sort": { "deadline": "desc" }
+	"sort": { "deadline": "desc" },
+	"facets": {
+	    "map_reporters": {
+	        "terms": {
+                "field": "map_reporters"
+	        }
+	    }
+	}
 }</div>
 </td>
 </tr>
@@ -93,8 +110,16 @@
 {/block}
 
 
+{block name="head" append}
+<style type="text/css">
+.preset { font-weight: bold; color: gray; cursor: pointer }
+.active-preset { color: orange }
+</style>
+{/block}
+
 {block name="footer" append}
 <script type="text/javascript" src="{$base_url}js/ace/ace.js"></script>
+<script type="text/javascript" src="{$base_url}/elastic_presets.js"></script>
 
 <script>
 
@@ -145,11 +170,15 @@ $(".elasticsearch_button").click( function() {
 });
 
 // much smoother with code highlighting and shift+tab
+var default_code = $("#elasticsearch_query_textarea").text();
 var editor = ace.edit("elasticsearch_query_textarea");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/javascript");
 
+$(".preset").esPreset({
+	destination: editor,
+	default_code: default_code
+});
 
-//elasticsearch_status();
 </script>
 {/block}

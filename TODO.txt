@@ -1,0 +1,11 @@
+==============================================================================
+  Needs doing:
+==============================================================================
+ * star entries
+ * elasticsearch facets need to use a keyword tokenizer
+ * pagination for search results
+ * facets interface for search results (active query)
+ * compare created vs deadline
+ * default view: show some entries if nothing is starred
+ * fix-test switch to/from striped view
+ * London Bureau: Radio + Africa + Middle East + Europe query

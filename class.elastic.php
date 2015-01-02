@@ -147,15 +147,29 @@ EOF;
                 }
             }
         }
-        # reduce debug
-        /*
+
+        # reduce further, for facets
+        foreach( $ret as $k => $v ) {
+            $v = str_replace(
+                array(" ", ","),
+                array("_", "_"),
+                implode("@#@", $v)
+            );
+            $v = str_replace("@#@", ",", $v);
+            $ret["facet_{$k}"] = $v;
+        }
+
+        #        $this->reduceMapDebug($ret,$map);
+
+        return($ret);
+    }
+
+    function reduceMapDebug($ret, $map) {
         echo "<div style='float:right; width:50%; border-left:2px solid gray; padding:10px'>";
         pre($ret, false);
         echo "</div>";
         pre($map, false);
         die;
-        */
-        return($ret);
     }
 
     function getEntry($id) {
