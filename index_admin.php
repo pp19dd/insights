@@ -4,6 +4,61 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 #$ELASTIC->batchInsert(0); die;
 #$x = $ELASTIC->query("x");print_r( $x ); die;
 
+function insights_get_history_data_where(&$where, $field, $field_sql = null) {
+
+    if( is_null($field_sql) ) $field_sql = $field;
+
+    if( !isset( $_GET[$field]) ) return(false);
+
+    $field = trim(mysql_real_escape_string($_GET[$field]));
+    if( strlen($field) == 0 ) return(false);
+
+    $where[] = sprintf("`%s`='%s'", $field_sql, $field);
+}
+
+
+function insights_get_history_data() {
+    $ret = array();
+
+    $tbl = TABLE_PREFIX;
+    $per_page = 500;
+
+    $where = array(1);
+    insights_get_history_data_where($where, "ip");
+    insights_get_history_data_where($where, "id", "entry_id");
+    insights_get_history_data_where($where, "slug", "{$tbl}entries`.`slug");
+
+#pre($where);
+#    if( isset( $_GET['id']) ) $where[] = mysql_real_escape_string($_GET['ip']);
+    #if( isset( $_GET['ip']) ) $where[] = mysql_real_escape_string($_GET['ip']);
+
+    $ret["history_rows"] = insights_get_history_rows($where);
+    $ret["history_actions"] = insights_get_history_actions($where);
+
+    // easier pagination for smarty
+    $pages = array();
+    $ret["history_pages"] = array(
+        "current" => 1,
+        "total" => ceil($ret["history_rows"] / $per_page),
+        "list" => array()
+    );
+    for( $i = 0; $i < $ret["history_pages"]["total"]; $i++ ) {
+        $ret["history_pages"]["list"][] = $i + 1;
+    }
+
+    if( isset( $_GET['p']) ) {
+        $ret["history_pages"]["current"] = intval($_GET['p']);
+    }
+
+    $ret["history_entries"] = insights_get_history_page(
+        $ret["history_pages"]["current"],
+        $per_page,
+        $where
+    );
+
+    return( $ret );
+}
+
 # ============================================================================
 # ajax mode, control panel
 # ============================================================================

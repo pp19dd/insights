@@ -1,6 +1,7 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
+ * FIXME: like instead of = for activity search
  * star entries
  * elasticsearch facets need to use a keyword tokenizer
  * pagination for search results

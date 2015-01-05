@@ -285,3 +285,64 @@ function insights_get_common_queries() {
 
 	return( $queries );
 }
+
+function insights_get_history_rows($where = array(1)) {
+	global $VOA;
+	$tbl = TABLE_PREFIX;
+
+	$where_sql = implode(") and (", $where);
+
+	$r = $VOA->query(
+		"select count(*) as rows from `${tbl}_history` where ({$where_sql})", array("flat")
+	);
+
+	return( $r["rows"] );
+}
+
+function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
+	global $VOA;
+	$tbl = TABLE_PREFIX;
+
+	$where_sql = implode(") and (", $where);
+
+	$limit_b = $per_page;
+	$limit_a = ($p - 1) * $limit_b;
+
+	$r = $VOA->query(
+		"select
+			{$tbl}_history.*,
+			{$tbl}entries.slug
+		from
+			{$tbl}_history
+		left join
+			{$tbl}entries
+		on
+			{$tbl}entries.id=${tbl}_history.entry_id
+		where
+			({$where_sql})
+		order by
+			id desc
+		limit
+			%s,%s",
+		$limit_a,
+		$limit_b
+	);
+echo "FIXME: %like% instead of =";
+pre($VOA->sql);
+	return( $r );
+}
+
+function insights_get_history_actions() {
+	global $VOA;
+	$tbl = TABLE_PREFIX;
+
+	$r = $VOA->query(
+		"select count(*) AS `rows` , `action`
+		FROM `{$tbl}_history`
+		GROUP BY `action`
+		ORDER BY `action`",
+		array("index" => "action")
+	);
+
+	return( $r );
+}

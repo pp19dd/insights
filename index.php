@@ -64,7 +64,15 @@ switch( $mode ) {
             case 'reporters':       $template = 'admin_reporters.tpl'; break;
             case 'editors':         $template = 'admin_editors.tpl'; break;
             case 'elasticsearch':   $template = 'admin_elasticsearch.tpl'; break;
-                
+
+            case 'activity':
+                $history_data = insights_get_history_data();
+                foreach( $history_data as $h_k => $h_v ) {
+                    $VOA->assign( $h_k, $h_v );
+                }
+                $template = 'admin_activity.tpl';
+            break;
+
             case 'cameras':
                 $VOA->assign( 'cameras', insights_get_entries(array(
                     "cameras" => "Yes"
