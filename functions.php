@@ -323,12 +323,13 @@ function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 		order by
 			id desc
 		limit
-			%s,%s",
-		$limit_a,
-		$limit_b
+			{$limit_a},{$limit_b}"
 	);
-echo "FIXME: %like% instead of =";
-pre($VOA->sql);
+	#print_r( error_get_last() );
+	#echo mysql_error();
+	#pre($r);
+	#pre($VOA);
+	#pre($VOA->sql);
 	return( $r );
 }
 
@@ -345,4 +346,14 @@ function insights_get_history_actions() {
 	);
 
 	return( $r );
+}
+
+function insights_get_watchlist() {
+	$ret = array();
+	if( !isset( $_COOKIE["insights_watch_list"]) ) return($ret);
+	$t = explode(",", $_COOKIE["insights_watch_list"]);
+	foreach( $t as $k => $v ) {
+		$ret[] = intval($v);
+	}
+	return( array_unique($ret) );
 }

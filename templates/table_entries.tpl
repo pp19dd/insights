@@ -34,7 +34,7 @@
 	<td class="entry_field column_region">{map set=$entry.map.regions}</td>
 	<td class="entry_field column_reporter">{map set=$entry.map.reporters}</td>
 	<td class="entry_field column_editor">{map set=$entry.map.editors}</td>
-	<td class="entry_field column_action">
+	<td data-id="{$entry.id}" class="entry_field column_action">
 		<div class="btn-group">
 			<a
 {if isset($custom_edit_link)}

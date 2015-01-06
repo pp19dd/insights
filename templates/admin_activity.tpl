@@ -38,13 +38,22 @@
 {/function}
 
 {function name="pagination"}
+
+{if $history_pages.list|count > 1}
+<hr/>
 <div class="btn-group btn-group-sm">
 {foreach from=$history_pages.list item=page}
-	<div class="btn btn-default {if $page == $history_pages.current}active{/if}" onclick="window.location='?p={$page}';">
+	<div
+		class="btn btn-default {if $page == $history_pages.current}active{/if}"
+		onclick="window.location='{strip}
+		?{rewrite erase="mode,page" p=$page}{/rewrite}
+		{/strip}';">
 		{$page}
 	</div>
 {/foreach}
 </div>
+<hr/>
+{/if}
 {/function}
 
 {function name="counts"}

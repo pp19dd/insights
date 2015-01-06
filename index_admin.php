@@ -4,7 +4,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 #$ELASTIC->batchInsert(0); die;
 #$x = $ELASTIC->query("x");print_r( $x ); die;
 
-function insights_get_history_data_where(&$where, $field, $field_sql = null) {
+function insights_get_history_data_where(&$where, $field, $field_sql = null, $like = false) {
 
     if( is_null($field_sql) ) $field_sql = $field;
 
@@ -13,7 +13,11 @@ function insights_get_history_data_where(&$where, $field, $field_sql = null) {
     $field = trim(mysql_real_escape_string($_GET[$field]));
     if( strlen($field) == 0 ) return(false);
 
-    $where[] = sprintf("`%s`='%s'", $field_sql, $field);
+    if( $like == false ) {
+        $where[] = sprintf("`%s`='%s'", $field_sql, $field);
+    } else {
+        $where[] = sprintf("`%s` like '%%%s%%'", $field_sql, $field);
+    }
 }
 
 
@@ -26,9 +30,9 @@ function insights_get_history_data() {
     $where = array(1);
     insights_get_history_data_where($where, "ip");
     insights_get_history_data_where($where, "id", "entry_id");
-    insights_get_history_data_where($where, "slug", "{$tbl}entries`.`slug");
+    insights_get_history_data_where($where, "slug", "slug", true);
 
-#pre($where);
+#pre( $where );
 #    if( isset( $_GET['id']) ) $where[] = mysql_real_escape_string($_GET['ip']);
     #if( isset( $_GET['ip']) ) $where[] = mysql_real_escape_string($_GET['ip']);
 

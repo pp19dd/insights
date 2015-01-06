@@ -69,6 +69,7 @@
 {include file="_data.tpl"}
 <script type="text/javascript" src="{$base_url}columns.js?v={$version|default:1}"></script>
 <script type="text/javascript" src="{$base_url}insights.js?v={$version|default:1}"></script>
+<script type="text/javascript" src="{$base_url}watchlist.js?v={$version|default:1}"></script>
 {/if}
 
 <!-- footer block -->

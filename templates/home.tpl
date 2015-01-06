@@ -94,6 +94,14 @@
 
 <h1 class="table_title">Showing all &lsquo;Hold for Release&rsquo; entries</h1>
 
+{elseif isset($smarty.get.day) && $smarty.get.day == "watchlist"}
+
+<h1 class="table_title">Showing your &lsquo;Watch List&rsquo; entries</h1>
+
+<div class="watchlist_options">
+	Options: <a class="watchlist_clear_link" href="#">Clear Watch List</a>,  <a class="watchlist_share_link" href="#">Share Watch List</a>
+</div>
+
 {else}
 
 <h1 class="table_title">Showing all entries for {visible_range}</h1>

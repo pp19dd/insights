@@ -89,8 +89,8 @@ textarea { resize:vertical }
 
 /* table */
 .entry_field { font-size: 12px; }
-.column_slug { font-weight: bold; }
-.column_description { }
+.column_slug { font-weight: bold; line-height:1.75em !important }
+.column_description { line-height:1.75em !important }
 .column_deadline { }
 .column_origin { }
 .column_medium { }

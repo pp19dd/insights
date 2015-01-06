@@ -17,19 +17,19 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 <table class="calendar_nav_hint" style="width:100%">
 	<tr>
 		<td style="text-align:left">
-			<a 
-				title="Previous {$smarty.get.range}" 
-				class="btn btn-primaryx btn-xs" 
-				role="button" 
+			<a
+				title="Previous {$smarty.get.range}"
+				class="btn btn-primaryx btn-xs"
+				role="button"
 				href="?{rewrite day=$selrange->prev->range_start_human until=$selrange->prev->range_end_human}{/rewrite}"
 			><span class="glyphicon glyphicon-arrow-left"></span> {human_range selrange=$selrange->prev format=$format}</a>
 		</td>
 		<td></td>
 		<td style="text-align:right">
-			<a 
-				title="Next {$smarty.get.range}" 
-				class="btn btn-primaryx btn-xs" 
-				role="button" 
+			<a
+				title="Next {$smarty.get.range}"
+				class="btn btn-primaryx btn-xs"
+				role="button"
 				href="?{rewrite day=$selrange->next->range_start_human until=$selrange->next->range_end_human}{/rewrite}"
 			>{human_range selrange=$selrange->next format=$format} <span class="glyphicon glyphicon-arrow-right"></span></a>
 		</td>
@@ -43,31 +43,31 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 <table border="0" style="width:100%">
 <tr>
 	<td style="width:10%">
-		<a 
-			class="{button_class range=day suffix=$suffix}" 
+		<a
+			class="{button_class range=day suffix=$suffix}"
 			style="width:100%"
-			href="?{rewrite range=day erase='edit,until' day=$range->day->range_start_human}{/rewrite}" 
+			href="?{rewrite range=day erase='edit,until' day=$range->day->range_start_human}{/rewrite}"
 		>Day ({$range->day->range_start_human|date_format:"n/d"})</a>
 	</td>
 	<td style="width:20%">
 		<a
-			class="{button_class range=week suffix=$suffix}" 
+			class="{button_class range=week suffix=$suffix}"
 			style="width:100%"
-			href="?{rewrite range=week erase='edit,until' day=$range->week->range_start_human}{/rewrite}" 
+			href="?{rewrite range=week erase='edit,until' day=$range->week->range_start_human}{/rewrite}"
 		>Week ({$range->week->range_start_human|date_format:"n/d"} - {$range->week->range_end_human|date_format:"n/d"})</a>
 	</td>
 	<td style="width:60%">
-		<a 
-			class="{button_class range=month suffix=$suffix}" 
+		<a
+			class="{button_class range=month suffix=$suffix}"
 			style="width:100%"
-			href="?{rewrite range=month erase='edit,until' day=$range->month->range_start_human}{/rewrite}" 
+			href="?{rewrite range=month erase='edit,until' day=$range->month->range_start_human}{/rewrite}"
 		>Month ({$range->month->range_start_human|date_format:"F"})</a>
 	</td>
 	<td style="">
 {if $smarty.get.range == 'custom'}
-		<a 
+		<a
 			title="Use the date dropdown on the right"
-			class="{button_class range=custom suffix=$suffix}" 
+			class="{button_class range=custom suffix=$suffix}"
 			style="width:100%"
 		>Custom</a>
 {/if}
@@ -89,21 +89,25 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 		<td rowspan="2">
 			{all_buttons classes="" suffix="_sm"}
 		</td>
-		<td colspan="3">
+		<td colspan="4">
 			<div style="border-bottom:1px solid rgb(230,230,230)">Custom Range</div>
 		</td>
 	</tr>
 	<tr>
+		<td style="width:50px">
+			<a href="{$base_url}?{rewrite erase='show,all,edit,more' range='day' day='watchlist' all=1}{/rewrite}">Watch List</a>
+			<span class="disabled_badge insights_entry_count insights_watchlist_count"></span>
+		</td>
 		<td style="width:80px">
 			<a href="{$base_url}?{rewrite erase='show,all,edit,more' range='day' day='HFR' all=1}{/rewrite}">Hold For<br/>Release</a>
-			<span class="disabled_badge insights_entry_count">{$activity.hfr}</span> 
+			<span class="disabled_badge insights_entry_count">{$activity.hfr}</span>
 		</td>
 		<td style="width:60px">
-			<a 
-				title="Pick from calendar" 
-				class="btn btn-primaryx btn-xs pick_date" 
-				role="button" 
-				data-date="{$range->active->range_start|date_format:"Y-m-d"}" 
+			<a
+				title="Pick from calendar"
+				class="btn btn-primaryx btn-xs pick_date"
+				role="button"
+				data-date="{$range->active->range_start|date_format:"Y-m-d"}"
 				data-date-format="yyyy-mm-dd"
 			>
 				<span class="glyphicon glyphicon-calendar"></span>&nbsp;From:<br/>
@@ -111,11 +115,11 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 			</a>
 		</td>
 		<td style="width:60px">
-			<a 
-				title="Pick from calendar" 
-				class="btn btn-primaryx btn-xs pick_date" 
-				role="button" 
-				data-date="{$range->active->range_end|date_format:"Y-m-d"}" 
+			<a
+				title="Pick from calendar"
+				class="btn btn-primaryx btn-xs pick_date"
+				role="button"
+				data-date="{$range->active->range_end|date_format:"Y-m-d"}"
 				data-date-format="yyyy-mm-dd"
 			>
 				<span class="glyphicon glyphicon-calendar"></span>&nbsp;Until:<br/>
@@ -123,9 +127,9 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 			</a>
 		</td>
 		<td style="width:20px">
-			<button 
-				id="id_go_button" 
-				class="go_button btn btn-xs btn-default" 
+			<button
+				id="id_go_button"
+				class="go_button btn btn-xs btn-default"
 				url="?{rewrite erase='edit,day,until' range='custom'}{/rewrite}"
 				style="height:40px;width:35px;"
 			>Go</button>
@@ -160,8 +164,8 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 
 {if $all_maps_empty > 0}
 	<span class="btn btn-inactive">
-		<a 
-			href="?{rewrite all=empty erase='more,show,edit'}{/rewrite}" 
+		<a
+			href="?{rewrite all=empty erase='more,show,edit'}{/rewrite}"
 			title="Show all entries with missing tags"
 		>
 			Empty <span class="disabled_badge insights_entry_count">{$all_maps_empty}</span>
@@ -169,8 +173,8 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 	</span>
 {/if}
 	<span class="btn btn-inactive">
-		<a 
-			href="?{rewrite all=1 erase='more,show,edit'}{/rewrite}" 
+		<a
+			href="?{rewrite all=1 erase='more,show,edit'}{/rewrite}"
 			title="Show all entries for {$range->day->range_start_human|date_format:'M d, Y'} in list form"
 		>
 			All Entries <span class="disabled_badge insights_entry_count">{$entries|count}</span>

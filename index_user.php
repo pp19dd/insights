@@ -90,6 +90,15 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'HFR' ) {
 	$query_entries["HFR"] = true;
 }
 
+// watchlist -- cookie based
+if( isset( $_GET['day'] ) && $_GET['day'] === 'watchlist' ) {
+	$watchlist = insights_get_watchlist();
+	unset($query_entries["from"]);
+	unset($query_entries["to"]);
+	$query_entries["id"] = $watchlist;
+	$VOA->assign( "watchlist", $watchlist );
+}
+
 if( isset( $_GET['keywords']) ) {
 	include( "index_search.php" );
 }
@@ -99,7 +108,7 @@ if( isset( $_GET['term_type']) && isset( $_GET['term_id']) ) {
 
 	# reset query, ignoring date ranges, etc
 	$query_entries = array();
-	
+
 	# make sure we only allow presets
 	if( in_array($_GET['term_type'], $ALLOW_TYPE ) === false ) {
 		die( "error: term type not allowed");
