@@ -26,7 +26,7 @@
 
 <tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower} {cycle values='even,odd'}">
 	<td class="entry_field column_slug">{$entry.slug}</td>
-	<td class="entry_field column_description">{$entry.description}</td>
+	<td class="entry_field column_description">{$entry.description|nl2br}</td>
 	<td class="entry_field column_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
 	<td class="entry_field column_origin">{map set=$entry.map.services}</td>
 	<td class="entry_field column_medium">{map set=$entry.map.mediums}</td>

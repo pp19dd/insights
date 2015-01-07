@@ -2,6 +2,7 @@
 
 {block name='footer'}
 {include file="modal_filter.tpl"}
+{include file="modal_watchlist.tpl"}
 {/block}
 
 {block name='content'}
@@ -99,8 +100,12 @@
 <h1 class="table_title">Showing your &lsquo;Watch List&rsquo; entries</h1>
 
 <div class="watchlist_options">
-	Options: <a class="watchlist_clear_link" href="#">Clear Watch List</a>,  <a class="watchlist_share_link" href="#">Share Watch List</a>
+	<span>Options: </span>
+	<a class="watchlist_clear_link" href="#">Clear Watch List</a>
+	<a class="watchlist_share_link" href="#">Share Watch List</a>
 </div>
+
+<div class="clearfix"></div>
 
 {else}
 

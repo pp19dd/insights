@@ -168,3 +168,17 @@ textarea { resize:vertical }
 .striped_td { border: 0px !important; }
 .striped-even { /*background-color: silver*/ }
 .striped-odd { background-color: gainsboro }
+
+/* watchlist */
+.watchlist_options a, .watchlist_options span { float: left; padding:4px; }
+.watchlist_options { }
+.watchlist_options a { width: 170px; display: block; }
+.watchlist_clear_link { }
+.watchlist_share_link { }
+
+.confirm-clearing { background-color: crimson; color: white !important; }
+#watchlistModal { }
+#watchlistModal textarea { width: 100%; height: 100px; }
+.watching_span { white-space: nowrap; }
+.watching_checkbox { }
+.watching_label { white-space: nowrap; font-weight:normal; }

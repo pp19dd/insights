@@ -4,6 +4,7 @@
 {if $can.view == true}
 
 var insights_data = {
+	base_url: {$base_url|json_encode},
 	editors: { results: {$editors_reduced|json_encode} },
 	reporters: { results: {$reporters_reduced|json_encode} },
 	activity: {$activity|json_encode},
@@ -13,6 +14,7 @@ var insights_data = {
 {else}
 
 var insights_data = {
+	base_url: {$base_url|json_encode},
 	editors: { results: [] },
 	reporters: { results: [] },
 	activity: {

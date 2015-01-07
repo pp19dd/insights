@@ -45,11 +45,37 @@ watchlist.prototype.clear = function(id) {
 
 watchlist.prototype.utility_links = function() {
 	var that = this;
-	$(".watchlist_clear_link").click(function(e){
-		that.clear();
+	$(".watchlist_clear_link").click(function(e) {
+		var a = $(this);
+
+		function reset_link(target) {
+			$(target).removeClass("confirm-clearing");
+			$(target).html( "Clear Watch List" );
+		}
+
+		if( a.hasClass("confirm-clearing") ) {
+			that.clear();
+			reset_link(a);
+		} else {
+			a.addClass("confirm-clearing");
+			a.html( "Sure you want to clear?");
+			setTimeout( function() {
+				reset_link(a);
+			}, 4000);
+		}
+
 		e.preventDefault();
 	});
+
 	$(".watchlist_share_link").click(function(e){
+		$("#watchlistModal .modal-body").html(
+			"<p>Copy this link and send it to others.</p>" +
+			"<textarea readonly>" +
+			insights_data.base_url + "?watch=" +that.list() +
+			"</textarea>" +
+			"<p>Note that their watch list will not be reset. Your items will be added to theirs.</p>"
+		);
+		$("#watchlistModal").modal("show");
 		e.preventDefault();
 	});
 }
@@ -62,14 +88,24 @@ watchlist.prototype.setup_html = function() {
 	$("tbody .column_action").each(function(i,e) {
 		var button_id = $(this).attr("data-id");
 		var watch_id = "watch_" + button_id;
+		var title = "title='Add to your watch list'";
 
 		var checkbox = $(
-			"<input id='" + watch_id + "'" +
+			"<input class='watching_checkbox' " + title +
+			" id='" + watch_id + "'" +
 			that.checked(button_id) +
 			"type='checkbox' />"
 		);
 
-		var label = $("<label for='" + watch_id + "'>&nbsp;Watch</label>");
+		function update_watch_state(checkbox, label) {
+			if( $(checkbox).prop("checked") ) {
+				$(label).html( "&nbsp;Watching" );
+			} else {
+				$(label).html( "&nbsp;Watch" );
+			}
+		}
+
+		var label = $("<label class='watching_label' " + title + " for='" + watch_id + "'>&nbsp;Watch</label>");
 
 		$(checkbox).change(function() {
 			var state = $(this).prop("checked");
@@ -79,10 +115,14 @@ watchlist.prototype.setup_html = function() {
 			} else {
 				that.add(button_id);
 			}
+			update_watch_state(checkbox, label);
 		});
 
-		$(this).append(checkbox);
-		$(this).append(label);
+		update_watch_state(checkbox, label);
+		var span = $("<span class='watching_span'></span>");
+		$(span).append(checkbox);
+		$(span).append(label);
+		$(this).append(span);
 
 		/*$(e).mouseover(function() {
 			$(checkbox).show();

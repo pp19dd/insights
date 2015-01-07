@@ -10,6 +10,20 @@ $URL = new Rewrite_URL();
 if( !isset( $_GET['range'] )) 	$URL->set( "range", "day" );
 if( !isset( $_GET['day'] )) 	$URL->set( "day", date("Y-m-d") );
 
+// watchlist: stop now and merge a watchlist
+if( isset( $_GET['watch']) ) {
+
+	$watch_a = insights_get_watchlist();
+	$watch_b = insights_string_to_watchlist( $_GET['watch'] );
+	$watch_c = array_unique(array_merge($watch_a, $watch_b));
+
+	insights_save_watchlist( $watch_c );
+	header("location:" . VOA_BASE_URL . "?day=watchlist&all=1" );
+	die;
+}
+
+
+
 if( !isset($_GET['range']) || !isset($_GET['day']) ) {
 	header("location:" . (String)$URL);
 	die;

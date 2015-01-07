@@ -286,6 +286,9 @@ function insights_get_common_queries() {
 	return( $queries );
 }
 
+/**
+* returns number of activity items
+*/
 function insights_get_history_rows($where = array(1)) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -299,6 +302,9 @@ function insights_get_history_rows($where = array(1)) {
 	return( $r["rows"] );
 }
 
+/**
+* retrieves activity list, by page
+*/
 function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -333,6 +339,9 @@ function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 	return( $r );
 }
 
+/**
+* gives a breakdown of all add/delete/update/star actions
+*/
 function insights_get_history_actions() {
 	global $VOA;
 	$tbl = TABLE_PREFIX;
@@ -348,12 +357,33 @@ function insights_get_history_actions() {
 	return( $r );
 }
 
-function insights_get_watchlist() {
-	$ret = array();
-	if( !isset( $_COOKIE["insights_watch_list"]) ) return($ret);
-	$t = explode(",", $_COOKIE["insights_watch_list"]);
+/**
+* explodes comma-separated array, with integer filtering
+*/
+function insights_string_to_watchlist($str) {
+	$t = explode(",", $str);
 	foreach( $t as $k => $v ) {
 		$ret[] = intval($v);
 	}
+	return( $ret );
+}
+
+/**
+* gets an array of entry IDs from a cookie
+*/
+function insights_get_watchlist() {
+	$ret = array();
+	if( !isset( $_COOKIE["insights_watch_list"]) ) return($ret);
+	$ret = insights_string_to_watchlist($_COOKIE["insights_watch_list"]);
 	return( array_unique($ret) );
+}
+
+/**
+* saves an array of entry IDs as a cookie
+*/
+function insights_save_watchlist($a) {
+	$str = implode(",", $a);
+
+	$expire = 60 * 60 * 24 * 365;
+	setcookie( "insights_watch_list", $str, time() + $expire, "/");
 }

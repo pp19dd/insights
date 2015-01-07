@@ -1,15 +1,12 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
- * Watchlist share functionality
+ * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
  * FIXME: deleted notice way too sticky
- * FIXME: like instead of = for activity search
- * star entries
  * elasticsearch facets need to use a keyword tokenizer
  * pagination for search results
  * facets interface for search results (active query)
- * compare created vs deadline
  * default view: show some entries if nothing is starred
  * fix-test switch to/from striped view (default: striped)
  * London Bureau: Radio + Africa + Middle East + Europe query

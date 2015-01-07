@@ -160,7 +160,7 @@ $(document).keyup(function(e) {
 $("#admin_login").click( function() {
 	return( false );
 });
-var dino;
+
 $(document).ready( function() {
 
 	$(".hold_for_release_checkbox").click( function() {
@@ -193,8 +193,6 @@ $(document).ready( function() {
 
 	var insights_watchlist = new watchlist();
 	insights_watchlist.init();
-
-	dino = insights_watchlist;
 });
 
 //isotope is fighting bootstrap, table for now
