@@ -4,17 +4,19 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 define( "VERSION", "1.10" );
 
 require( 'vendor/autoload.php' );
-require( "config.php" );
+require( 'config.php' );
 require_once( 'functions.php' );
 require_once( 'functions_read.php' );
 require_once( 'functions_write.php' );
 require_once( 'functions_action.php' );
 require_once( 'functions_history.php' );
+require_once( 'functions_smarty.php' );
 require_once( 'class.range.php' );
 require_once( 'class.api.php' );
 require_once( 'class.url.php' );
 require_once( 'class.user.php' );
 require_once( 'class.elastic.php' );
+require_once( 'class.db.php' );
 
 // table name fragments: main portion
 $INSIGHTS_TABLES = array(
@@ -35,14 +37,16 @@ $ALLOW_TYPE = array(
 	'regions'
 );
 
-require_once( 'voa.php' );
+# porting to an updated db version
+# require_once( 'voa.php' );
 
-/*
-$VOA->setTemplateDir( realpath( VOA_BASE_DIR . 'templates') );
-$VOA->setCompileDir( realpath( VOA_BASE_DIR . 'templates_c') );
-$VOA->setCacheDir( realpath( VOA_BASE_DIR . 'cache' ) );
-$VOA->setConfigDir( realpath( VOA_BASE_DIR . 'configs' ) );
-$VOA->template_dir = realpath("templates");
-*/
-$VOA->assign( 'base_url', VOA_BASE_URL );
-$VOA->assign( 'version', VERSION);
+$smarty = new Smarty();
+$smarty->assign( 'base_url', VOA_BASE_URL );
+$smarty->assign( 'version', VERSION);
+$smarty->compile_id = $_SERVER['HTTP_HOST'];
+$db = new VOA_DB(
+	VOA_DATABASE__HOST,
+	VOA_SELECT_DATABASE,
+	VOA_DATABASE__USER,
+	VOA_DATABASE__PASS
+);

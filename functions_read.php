@@ -9,15 +9,12 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
  * @param $id Integer table.id
  */
 function resolve_map($table, $id, $is_deleted = 'No') {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
-	$t = $VOA->query(
-		"select * from `{$tbl}%s` where `id`=%s and `is_deleted`='%s'",
-		$table,
-		intval($id),
-		$is_deleted,
-		array("noempty", "flat")
+	$t = $db->Single()->Query(
+		"select * from `{$tbl}{$table}` where `id`=? and `is_deleted`=?",
+		array( intval($id), $is_deleted )
 	);
 
 	return( $t );
@@ -31,25 +28,18 @@ function resolve_map($table, $id, $is_deleted = 'No') {
  */
 
 function insights_map($entry_id, $is_deleted = 'No') {
-	global $VOA;
+	global $db;
 	global $ALLOW_TYPE;
 	$tbl = TABLE_PREFIX;
 
-	$t = $VOA->query(
+	$t = $db->Index("type")->Index("other_id")->Query(
 		"select
 			*
 		from
 			`{$tbl}map`
 		where
-			`entry_id`=%s and `is_deleted`='%s'",
-		intval( $entry_id ),
-		$is_deleted,
-		array(
-			"noempty",
-			"index" => "type",
-			"deep",
-			"index2" => "other_id"
-		)
+			`entry_id`=? and `is_deleted`=?",
+		array(intval( $entry_id ), $is_deleted )
 	);
 
 	// mapping routine should show all pertinent types
@@ -104,7 +94,7 @@ function insights_get_entries( $options = array() ) {
 }
 
 function insights_get_entries_rich( $options = array() ) {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 	$where = array("1");
 
@@ -172,14 +162,16 @@ function insights_get_entries_rich( $options = array() ) {
 
 	# unified query
 	$where_flat = implode( ") and (", $where);
-	$VOA->sql = "select * from `{$tbl}entries` where ({$where_flat})";
+	$sql = "select * from `{$tbl}entries` where ({$where_flat})";
 
 
-	$VOA->options = array();		# preserve options, since this is a manual query
-	$VOA->options[] = "noempty";
-	$VOA->options["index"] = "id";
-	$t = $VOA->query_raw();
-	$VOA->options = array();		# restore options
+	#$VOA->options = array();		# preserve options, since this is a manual query
+	#$VOA->options[] = "noempty";
+	#$VOA->options["index"] = "id";
+	#$t = $VOA->query_raw();
+	#$VOA->options = array();		# restore options
+
+	$t = $db->Index("id")->Query($sql);
 
 	# get metadata for the entries
 	foreach( $t as $k => $v ) {
@@ -190,6 +182,6 @@ function insights_get_entries_rich( $options = array() ) {
 	return( array(
 		"results" => $t,
 		"where" => $where,
-		"sql" => $VOA->sql
+		"sql" => $sql
 	));
 }

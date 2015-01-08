@@ -63,7 +63,7 @@ $RANGE = new Insights_Range(
 	(isset($_GET['until']) ? $_GET['until'] : null)
 );
 $RANGE->active = $RANGE->{$_GET['range']};
-$VOA->assign( 'range', $RANGE );
+$smarty->assign( 'range', $RANGE );
 
 # ============================================================================
 # ajax / post mode?
@@ -83,11 +83,11 @@ if( isset( $_POST ) && isset( $_POST['form_type'] ) ) {
 $queries = insights_get_common_queries();
 
 foreach( $queries as $query => $data ) {
-	$VOA->assign( $query, $data );
+	$smarty->assign( $query, $data );
 }
 
 # hint entries for calendar (activity level)
-$VOA->assign( 'activity', insights_activity() );
+$smarty->assign( 'activity', insights_activity() );
 
 
 # ============================================================================
@@ -114,7 +114,7 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'watchlist' ) {
 	// note when an entry is deleted in a watchlist
 	unset($query_entries["deleted"]);
 
-	$VOA->assign( "watchlist", $watchlist );
+	$smarty->assign( "watchlist", $watchlist );
 }
 
 if( isset( $_GET['keywords']) ) {
@@ -134,11 +134,13 @@ if( isset( $_GET['term_type']) && isset( $_GET['term_id']) ) {
 
 	# find a list of entry ids associated with term type / term id
 	$tbl = TABLE_PREFIX;
-	$entry_ids_from_map = $VOA->query(
-		"select * from `{$tbl}map` where `type`='%s' and `other_id`=%s and `is_deleted`='No'",
-		$_GET['term_type'],
-		intval( $_GET['term_id'] ),
-		array( "index" => "entry_id", "noempty" )
+
+	$entry_ids_from_map = $db->Index("entry_id")->Query(
+		"select * from `{$tbl}map` where `type`=? and `other_id`=? and `is_deleted`='No'",
+		array(
+			$_GET['term_type'],
+			intval($_GET['term_id'])
+		)
 	);
 
 	$query_entries["id"] = array_keys( $entry_ids_from_map );
@@ -155,9 +157,9 @@ $all_maps = insights_get_all_maps( $entries );
 #			[beats, divisions, editors, mediums, regions]
 if( isset( $_GET['show'] ) ) {
 	$grouped_entries = insights_group_by( $_GET['show'], $entries );
-	$VOA->assign( 'grouped_entries', $grouped_entries );
+	$smarty->assign( 'grouped_entries', $grouped_entries );
 }
 
-$VOA->assign( 'all_maps', $all_maps["all_maps"] );
-$VOA->assign( 'all_maps_empty', $all_maps["empty"] );
-$VOA->assign( 'entries', $entries );
+$smarty->assign( 'all_maps', $all_maps["all_maps"] );
+$smarty->assign( 'all_maps_empty', $all_maps["empty"] );
+$smarty->assign( 'entries', $entries );

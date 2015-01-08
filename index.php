@@ -25,24 +25,23 @@ if( isset($_GET['mode']) && $_GET['mode'] == "admin" ) {
     } else {
         // ensure at least config is loaded
         $tbl = TABLE_PREFIX;
-        $VOA->assign( "config", $VOA->query(
-            "select * from {$tbl}_config",
-            array("index"=>"symbol")
-        ));;
+        $smarty->assign( "config", $db->Index("symbol")->Query(
+            "select * from {$tbl}_config"
+        ));
     }
 }
 
 
 if( defined('VOA_DISABLE_FOOTER') ) {
-    $VOA->assign('disable_footer', true);
+    $smarty->assign('disable_footer', true);
 } else {
-    $VOA->assign('disable_footer', false);
+    $smarty->assign('disable_footer', false);
 }
 
-$VOA->assign( "is_admin", $is_admin );
+$smarty->assign( "is_admin", $is_admin );
 
-$VOA->assign( 'can', $USER->getPermissions() );
-$VOA->assign( 'error', $USER->error );
+$smarty->assign( 'can', $USER->getPermissions() );
+$smarty->assign( 'error', $USER->error );
 
 # ============================================================================
 # template picker, routed from .htaccess / mod_rewrite
@@ -68,13 +67,13 @@ switch( $mode ) {
             case 'activity':
                 $history_data = insights_get_history_data();
                 foreach( $history_data as $h_k => $h_v ) {
-                    $VOA->assign( $h_k, $h_v );
+                    $smarty->assign( $h_k, $h_v );
                 }
                 $template = 'admin_activity.tpl';
             break;
 
             case 'cameras':
-                $VOA->assign( 'cameras', insights_get_entries(array(
+                $smarty->assign( 'cameras', insights_get_entries(array(
                     "cameras" => "Yes"
                 )));
                 $template = 'admin_cameras.tpl';
@@ -103,10 +102,10 @@ switch( $mode ) {
             $entry = array_shift( $entry );
         }
 
-        $VOA->assign( 'entry', $entry );
+        $smarty->assign( 'entry', $entry );
 
         $history = insights_get_history( $entry_id );
-        $VOA->assign( 'history', $history );
+        $smarty->assign( 'history', $history );
 
         $template = 'entry.tpl';
         break;
@@ -119,5 +118,5 @@ switch( $mode ) {
 # ============================================================================
 # break caching, template compiling and display
 # ============================================================================
-// $VOA->clearCompiledTemplate( $template );
-$VOA->display( $template );
+// $smarty->clearCompiledTemplate( $template );
+$smarty->display( $template );

@@ -117,10 +117,10 @@ function insights_get_all_maps( $entries ) {
  * @return array containing list (date => count), range (min, max)
  */
 function insights_activity() {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
-	$t = $VOA->query(
+	$t = $db->Index("day")->Query(
 		"select
 			`id`,
 			`deadline` as `day`,
@@ -131,13 +131,11 @@ function insights_activity() {
 			`is_deleted`='No' and
 			`deadline` is not null
 		group by
-			`deadline`",
-		array("noempty", "index" => "day")
+			`deadline`"
 	);
 
-	$HFR = $VOA->query(
-		"select count(id) as `count` from `{$tbl}entries` where `deadline` is null",
-		array("flat")
+	$HFR = $db->Single()->Query(
+		"select count(id) as `count` from `{$tbl}entries` where `deadline` is null"
 	);
 
 	$t = array_map( function( $e ) {
@@ -160,10 +158,10 @@ function insights_activity() {
  * @param $type String table name, beats / services / etc
  */
 function insights_get_type( $type ) {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
-	$ret = $VOA->query(
+	$ret = $db->Index("id")->Query(
 		"select
 			`{$tbl}{$type}`.*,
 			(
@@ -181,8 +179,7 @@ function insights_get_type( $type ) {
 		where
 			`{$tbl}{$type}`.`is_deleted`='No'
 		order by
-			`name`",
-		array("index"=>"id", "noempty")
+			`name`"
 	);
 
 	return( $ret );
@@ -216,7 +213,7 @@ function insights_nonzero_count_filter( $element ) {
  * navigation helpers, names of services, config
  */
 function insights_get_common_queries() {
-	global $VOA;
+	global $db;
 	global $ALLOW_TYPE;
 	$tbl = TABLE_PREFIX;
 
@@ -232,8 +229,9 @@ function insights_get_common_queries() {
 			"WEB" => "WEB"
 		),
 		"hours" => array(),
-		"services_full" => $VOA->query(
+		"services_full" => $db->Index("id")->Query(
 			"select
+				{$tbl}services.id,
 				{$tbl}services.*,
 				{$tbl}divisions.name as `division_name`
 			from
@@ -243,13 +241,11 @@ function insights_get_common_queries() {
 			on
 				{$tbl}services.division_id = {$tbl}divisions.id
 			where
-				{$tbl}services.is_deleted='No'",
-			array("index"=>"id")
+				{$tbl}services.is_deleted='No'"
 		),
 		"divisions_and_services" => array(),
-		"config" => $VOA->query(
-			"select * from {$tbl}_config",
-			array("index"=>"symbol")
+		"config" => $db->Index("symbol")->Query(
+			"select * from {$tbl}_config"
 		)
 	);
 
@@ -272,10 +268,9 @@ function insights_get_common_queries() {
 	# used for a pretty dropdown
 	foreach( $queries['divisions'] as $division_id => $division ) {
 		$key = $queries['divisions'][$division_id]['name'];
-		$values = $VOA->query(
-			"select * from {$tbl}services where division_id=%s order by name",
-			$division_id,
-			array("noempty")
+		$values = $db->Query(
+			"select * from {$tbl}services where division_id=? order by name",
+			$division_id
 		);
 
 		foreach( $values as $k => $v ) {
@@ -290,13 +285,13 @@ function insights_get_common_queries() {
 * returns number of activity items
 */
 function insights_get_history_rows($where = array(1)) {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
 	$where_sql = implode(") and (", $where);
 
-	$r = $VOA->query(
-		"select count(*) as rows from `${tbl}_history` where ({$where_sql})", array("flat")
+	$r = $db->Single()->Query(
+		"select count(*) as rows from `${tbl}_history` where ({$where_sql})"
 	);
 
 	return( $r["rows"] );
@@ -306,7 +301,7 @@ function insights_get_history_rows($where = array(1)) {
 * retrieves activity list, by page
 */
 function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
 	$where_sql = implode(") and (", $where);
@@ -314,7 +309,7 @@ function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 	$limit_b = $per_page;
 	$limit_a = ($p - 1) * $limit_b;
 
-	$r = $VOA->query(
+	$r = $db->Query(
 		"select
 			{$tbl}_history.*,
 			{$tbl}entries.slug
@@ -329,13 +324,9 @@ function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 		order by
 			id desc
 		limit
-			{$limit_a},{$limit_b}"
+			?,?",
+		array($limit_a,$limit_b)
 	);
-	#print_r( error_get_last() );
-	#echo mysql_error();
-	#pre($r);
-	#pre($VOA);
-	#pre($VOA->sql);
 	return( $r );
 }
 
@@ -343,15 +334,14 @@ function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
 * gives a breakdown of all add/delete/update/star actions
 */
 function insights_get_history_actions() {
-	global $VOA;
+	global $db;
 	$tbl = TABLE_PREFIX;
 
-	$r = $VOA->query(
+	$r = $db->Index("action")->Query(
 		"select count(*) AS `rows` , `action`
 		FROM `{$tbl}_history`
 		GROUP BY `action`
-		ORDER BY `action`",
-		array("index" => "action")
+		ORDER BY `action`"
 	);
 
 	return( $r );
