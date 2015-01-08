@@ -41,7 +41,7 @@
 {if isset($custom_edit_link)}
 				href="{$base_url}?edit={$entry.id}"
 {else}
-				href="?{rewrite edit=$entry.id}{/rewrite}"
+				href="?{rewrite erase=deleted edit=$entry.id}{/rewrite}"
 {/if}
 				class="btn btn-default btn-sm"
 				type="button"

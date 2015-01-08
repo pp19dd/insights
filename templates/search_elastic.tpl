@@ -1,13 +1,13 @@
 
 {if $search_tips|count == 0}
-<p><a href="?{rewrite erase='keywords,search'}{/rewrite}">Exit from Search Mode</a></p>
+<p><a href="?{rewrite erase='deleted,keywords,search'}{/rewrite}">Exit from Search Mode</a></p>
 {/if}
 
 <h1>Search: {$smarty.get.keywords|default:"(Empty search string)"}</h1>
 
 <ul>
 {foreach from=$search_tips key=word item=alt}
-	<li>{$word} <a title="Remove word from search" href="?{rewrite keywords=$alt}{/rewrite}">[Remove]</a></li>
+	<li>{$word} <a title="Remove word from search" href="?{rewrite erase=deleted keywords=$alt}{/rewrite}">[Remove]</a></li>
 {/foreach}
 </ul>
 

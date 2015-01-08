@@ -13,10 +13,10 @@
 
 <div class="container" id="entry_add_entry">
 
-	<form role="form" class="form-horizontal" method="post" action="?{rewrite erase=edit}{/rewrite}">
+	<form role="form" class="form-horizontal" method="post" action="?{rewrite erase='deleted,edit'}{/rewrite}">
 		<input type="hidden" name="form_type" value="update_insight" />
 		<input type="hidden" name="entry_id" value="{$entry.id}" />
-		<input type="hidden" name="return_to" value="{rewrite erase=edit}{/rewrite}" />
+		<input type="hidden" name="return_to" value="{rewrite erase='deleted,edit'}{/rewrite}" />
 
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Slug</label>
@@ -268,7 +268,7 @@ You're logged in as an admin.
 				>Update insight</button>
 {else}
 				<button
-					onclick="window.location='?{rewrite erase='edit'}{/rewrite}'"
+					onclick="window.location='?{rewrite erase='deleted,edit'}{/rewrite}'"
 					type="button"
 					class="btn btn-cancel"
 				>Go Back</button>

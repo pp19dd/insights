@@ -25,7 +25,7 @@
 <div class="row">
 
 <h1>Showing {$smarty.get.more}</h1>
-<p><a href="?{rewrite erase=more}{/rewrite}">Back: View all {$smarty.get.show}</a></p>
+<p><a href="?{rewrite erase='deleted,more'}{/rewrite}">Back: View all {$smarty.get.show}</a></p>
 
 <hr/>
 
@@ -56,7 +56,7 @@
 				{$entry = $entries[$entry_id]}
 				<li class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower}">
 					<div class="insights_slug">
-						<a href="?{rewrite edit=$entry.id}{/rewrite}">{$entry.slug|default:"(Untitled)"}</a>
+						<a href="?{rewrite erase=deleted edit=$entry.id}{/rewrite}">{$entry.slug|default:"(Untitled)"}</a>
 					</div>
 					<div class="insights_description">{$entry.description|default:"(Blank)"}</div>
 				</li>
@@ -88,7 +88,7 @@
 {if isset($smarty.get.term_type)}
 <h1 class="table_title">
 	Showing all entries for {$smarty.get.term_type} / id # {$smarty.get.term_id} ({${$smarty.get.term_type}[$smarty.get.term_id].name|default:"Blank Entry"})
-	<a href="?{rewrite erase='term_type,term_id'}{/rewrite}">[Remove]</a>
+	<a href="?{rewrite erase='deleted,term_type,term_id'}{/rewrite}">[Remove]</a>
 </h1>
 
 {elseif isset($smarty.get.day) && $smarty.get.day == "HFR"}

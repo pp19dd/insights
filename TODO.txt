@@ -3,7 +3,6 @@
 ==============================================================================
  * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
- * FIXME: deleted notice way too sticky
  * elasticsearch facets need to use a keyword tokenizer
  * pagination for search results
  * facets interface for search results (active query)
