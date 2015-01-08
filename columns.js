@@ -116,12 +116,11 @@ cookied_filter.prototype.fix_even_odd_rows = function() {
 cookied_filter.prototype.setup_striped_rows = function() {
 	$(".column_description").hide();
 
-
-
 	$("tr.insights_entry").each( function(i,e) {
+		var preserve_class = $(e).data("preserve-class");
 		var descr = $(".column_description", e).html();
 		$(e).after(
-			"<tr class='striped_tr'>" +
+			"<tr class='striped_tr " + preserve_class + "'>" +
 			"<td class='striped_td striped_td_left entry_field column_description'>" +
 			descr +
 			"</td><td class='striped_td striped_td_right'></td></tr>"

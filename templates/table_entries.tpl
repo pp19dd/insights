@@ -24,7 +24,8 @@
        ------------------------------------------------------------------ -->*}
 {function name=show_entry}
 
-<tr class="insights_entry insights_entry_id_{$entry.id} insights_entry_starred_{$entry.is_starred|lower} {cycle values='even,odd'}">
+{capture assign="class"}insights_entry_id_{$entry.id} insights_entry_deleted_{$entry.is_deleted|lower}{/capture}
+<tr class="insights_entry {$class} insights_entry_starred_{$entry.is_starred|lower} {cycle values='even,odd'}" data-preserve-class="{$class}">
 	<td class="entry_field column_slug">{$entry.slug}</td>
 	<td class="entry_field column_description">{$entry.description|nl2br}</td>
 	<td class="entry_field column_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>

@@ -110,6 +110,10 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'watchlist' ) {
 	unset($query_entries["from"]);
 	unset($query_entries["to"]);
 	$query_entries["id"] = $watchlist;
+
+	// note when an entry is deleted in a watchlist
+	unset($query_entries["deleted"]);
+
 	$VOA->assign( "watchlist", $watchlist );
 }
 

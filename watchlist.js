@@ -16,6 +16,13 @@ watchlist.prototype.init = function() {
 
 	this.load_values(t);
 	this.setup_html();
+	this.hint_deleted();
+}
+
+watchlist.prototype.hint_deleted = function() {
+	$(".insights_entry_deleted_yes .watching_span").after(
+		"<div>Note: this entry is deleted.</div>"
+	);
 }
 
 watchlist.prototype.get_count = function() {
@@ -85,7 +92,7 @@ watchlist.prototype.setup_html = function() {
 	this.utility_links();
 	var that = this;
 
-	$("tbody .column_action").each(function(i,e) {
+	$("tbody .column_action, .watch_placeholder").each(function(i,e) {
 		var button_id = $(this).attr("data-id");
 		var watch_id = "watch_" + button_id;
 		var title = "title='Add to your watch list'";

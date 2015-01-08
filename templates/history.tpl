@@ -29,6 +29,7 @@
 
 <div class="container clearfix" style="margin-bottom:1em">
 	<div class="pull-right">
+		<span class="watch_placeholder" data-id="{$entry.id}"></span> |
 		<a class="changelog_toggler" href="#" onclick="$('#id_history').slideToggle('fast'); return(false);">Change Log</a>
 	</div>
 </div>
@@ -44,7 +45,7 @@
 		<div class="panel-body" style="background-color:#F7F2F7">
 
 <div style="height:300px; overflow-y:auto">
-			
+
 <table class="table">
 <thead>
 <tr>

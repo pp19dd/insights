@@ -37,7 +37,7 @@
 	can_edit=$can.edit
 	can_clear=true
 	fixed_width=true
-	placeholder="Type"	
+	placeholder="Type"
 	value=array_flip(array($entry.preslug|default:""))
 }
 

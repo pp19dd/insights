@@ -14,6 +14,7 @@ h1 { font-size: 18px; color: gray }
 .insights_entry a { color: black }
 .insights_slug { margin:0px; }
 .insights_description { color: silver; font-size: 10px }
+.insights_entry_deleted_yes { background-color: crimson !important; color: white !important }
 
 .insights_star_note { }
 .insights_star_note_starred { color: darkorange }
