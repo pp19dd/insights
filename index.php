@@ -39,7 +39,6 @@ if( defined('VOA_DISABLE_FOOTER') ) {
 }
 
 $smarty->assign( "is_admin", $is_admin );
-
 $smarty->assign( 'can', $USER->getPermissions() );
 $smarty->assign( 'error', $USER->error );
 
@@ -47,8 +46,8 @@ $smarty->assign( 'error', $USER->error );
 # template picker, routed from .htaccess / mod_rewrite
 # ============================================================================
 $mode = '';
-if( isset( $_GET['mode'] ) )     $mode = $_GET['mode'];
-if( isset( $_GET['search']) )     $mode = "search";
+if( isset( $_GET['mode'] ) )    $mode = $_GET['mode'];
+if( isset( $_GET['search']) )   $mode = "search";
 if( isset( $_GET['edit']) )     $mode = "edit";
 
 if( $mode === "admin" && $USER->CAN['star'] === false ) $mode = "403";

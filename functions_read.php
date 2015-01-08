@@ -165,12 +165,6 @@ function insights_get_entries_rich( $options = array() ) {
 	$sql = "select * from `{$tbl}entries` where ({$where_flat})";
 
 
-	#$VOA->options = array();		# preserve options, since this is a manual query
-	#$VOA->options[] = "noempty";
-	#$VOA->options["index"] = "id";
-	#$t = $VOA->query_raw();
-	#$VOA->options = array();		# restore options
-
 	$t = $db->Index("id")->Query($sql);
 
 	# get metadata for the entries

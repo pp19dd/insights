@@ -1,6 +1,7 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
+ * Optimize: edit screen does not need to query all range records
  * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
  * elasticsearch facets need to use a keyword tokenizer

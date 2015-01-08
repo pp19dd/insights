@@ -145,7 +145,14 @@ class VOA_DB {
         return( $ret );
     }
 
-    function Query($sql, $params = array()) {
+    function Query($sql, $params = array(), $trap = NULL) {
+
+        if( !is_null($trap) ) {
+            throw new Exception(
+                "DB refactoring needed: last parameter should be empty"
+            );
+        }
+
         if( !is_array($params) ) $params = array($params);
 
         $this->statement = $this->db->prepare( $sql );
@@ -166,5 +173,9 @@ class VOA_DB {
             if( $this->sticky == false ) $this->setDefaults();
             return( $this->statement->fetch($this->fetch_style) );
         }
+    }
+
+    function getInsertID() {
+        return( $this->db->lastInsertId() );
     }
 }

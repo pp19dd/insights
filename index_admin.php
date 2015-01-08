@@ -207,10 +207,9 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             }
             $type = array_shift( $type );
 
-            $VOA->query(
-                "update `{$tbl}{$type}` set `name`='%s' where `id`=%s limit 1",
-                $term_name,
-                $term_id
+            $db->Query(
+                "update `{$tbl}{$type}` set `name`=? where `id`=? limit 1",
+                array( $term_name, $term_id )
             );
             $ret["status"] = "good";
             $ret["term_name"] = $term_name;
@@ -246,12 +245,22 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
             $reassign_to = intval( $_POST['reassign_to'] );
 
             # do the merge
-             $VOA->query(
-                 "update `{$tbl}map` set `other_id`=%s where `other_id` in (%s) and `type`='%s' and `is_deleted`='No'",
-                $reassign_to,
-                implode(",", $terms),
-                $type
-             );
+            $sql_terms = implode(",", $terms);
+
+            $db->query(
+                "update
+                    `{$tbl}map`
+                set
+                    `other_id`=:other_id
+                where
+                    `other_id` in ({$sql_terms}) and
+                    `type`=:type and
+                    `is_deleted`='No'",
+                array(
+                    ":other_id" => $reassign_to,
+                    ":type" => $type
+                )
+            );
 
             $ret["status"] = "good";
         break;
@@ -268,5 +277,5 @@ if( isset( $_POST['ajax']) && isset( $_POST['action'] ) ) {
 $queries = insights_get_common_queries();
 
 foreach( $queries as $query => $data ) {
-    $VOA->assign( $query, $data );
+    $smarty->assign( $query, $data );
 }

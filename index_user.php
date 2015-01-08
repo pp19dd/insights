@@ -146,9 +146,14 @@ if( isset( $_GET['term_type']) && isset( $_GET['term_id']) ) {
 	$query_entries["id"] = array_keys( $entry_ids_from_map );
 }
 
-$entries = insights_get_entries($query_entries);
-$all_maps = insights_get_all_maps( $entries );
-
+// exception for edit mode
+if( !isset( $_GET['edit']) ) {
+	$entries = insights_get_entries($query_entries);
+	$all_maps = insights_get_all_maps( $entries );
+} else {
+	$entries = array();
+	$all_maps = array( "all_maps" => array(), "empty" => array() );
+}
 
 
 # perform filtration by-group

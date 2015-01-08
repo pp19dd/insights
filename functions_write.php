@@ -16,7 +16,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
  */
 
 function insights_add_map( $try_type, $entry_id, $action_id, $other_ids, &$ret, $add_new_entry = true ) {
-    global $VOA;
+    global $db;
     global $ALLOW_TYPE;
 
     # for this safety filter, try_type is cooerced into an array
@@ -42,13 +42,12 @@ function insights_add_map( $try_type, $entry_id, $action_id, $other_ids, &$ret, 
             // skip adding entry since there is no matched value
             if( $add_new_entry !== true ) continue;
 
-            $VOA->query(
-                "insert into `{$tbl}%s` (`name`) values ('%s')",
-                $type,
+            $db->Query(
+                "insert into `{$tbl}{$type}` (`name`) values (?)",
                 $other_id
             );
 
-            $other_id = mysql_insert_id();
+            $other_id = $db->getInsertID();
 
             if( is_array( $ret ) ) {
                 if( !isset( $ret['other'][$type] ) ) $ret['other'][$type] = array();
@@ -57,18 +56,20 @@ function insights_add_map( $try_type, $entry_id, $action_id, $other_ids, &$ret, 
 
         }
 
-        $VOA->query(
+        $db->Query(
             "insert into `{$tbl}map`
                 (`action_id`, `type`, `entry_id`, `other_id`)
             values
-                (%s, '%s', '%s', '%s')",
-            intval( $action_id ),
-            $type,
-            intval( $entry_id ),
-            intval( $other_id )
+                (:action_id, :type, :entry_id, :other_id)",
+            array(
+                ":action_id" => intval( $action_id ),
+                ":type" => $type,
+                ":entry_id" => intval( $entry_id ),
+                ":other_id" => intval( $other_id )
+            )
         );
 
-        $map_id = mysql_insert_id();
+        $map_id = $db->getInsertID();
 
         if( is_array( $ret ) ) {
             if( !isset( $ret['map'][$type] ) ) {
@@ -84,15 +85,15 @@ function insights_add_map( $try_type, $entry_id, $action_id, $other_ids, &$ret, 
  * marks an entry deleted (is_deleted becomes Yes)
  */
 function insights_delete_entry( $entry_id ) {
-    global $VOA;
+    global $db;
     global $ELASTIC;
 
     $tbl = TABLE_PREFIX;
 
     insights_history($entry_id, "delete");
 
-    $VOA->query(
-        "update `{$tbl}entries` set `is_deleted`='Yes' where `id`=%s limit 1",
+    $db->Query(
+        "update `{$tbl}entries` set `is_deleted`='Yes' where `id`=? limit 1",
         intval( $entry_id )
     );
 
@@ -103,15 +104,14 @@ function insights_delete_entry( $entry_id ) {
  * marks an entry starred/unstarred (is_starred becomes Yes or No)
  */
 function insights_star( $entry_id, $star = 'Yes' ) {
-    global $VOA;
+    global $db;
     $tbl = TABLE_PREFIX;
 
     insights_history($entry_id, "star", $star);
 
-    $VOA->query(
-        "update `{$tbl}entries` set `is_starred`='%s' where `id`=%s limit 1",
-        $star,
-        intval( $entry_id )
+    $db->Query(
+        "update `{$tbl}entries` set `is_starred`=? where `id`=? limit 1",
+        array( $star, intval( $entry_id ) )
     );
 }
 
@@ -121,11 +121,11 @@ function insights_star( $entry_id, $star = 'Yes' ) {
  * @param $entry_id entries.id
  */
 function insights_clear_map( $entry_id ) {
-    global $VOA;
+    global $db;
     $tbl = TABLE_PREFIX;
 
-    $VOA->query(
-        "update `{$tbl}map` set `is_deleted`='Yes' where `entry_id`=%s",
+    $db->query(
+        "update `{$tbl}map` set `is_deleted`='Yes' where `entry_id`=?",
         intval( $entry_id )
     );
 }
@@ -164,7 +164,7 @@ function insights_filter_date( $date ) {
  * @param $requesting_entry_id Integer If set to -1, add a new entry. Otherwise update.
  */
 function insights_add_insight( $p, $requesting_entry_id = -1 ) {
-    global $VOA;
+    global $db;
     global $ALLOW_TYPE;
     global $ELASTIC;
 
@@ -190,10 +190,10 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 
         // two separate actions when adding an entry
         // a blank add, and an update
-        $VOA->query(
+        $db->Query(
             "insert into `{$tbl}entries` (id) values (null)"
         );
-        $entry_id = mysql_insert_id();
+        $entry_id = $db->getInsertID();
 
         // snag an action id for later notes
         $action_id = insights_history($entry_id, "add", "", true);
@@ -215,36 +215,38 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
     	$time_string = "'{$time}'";
     }
 
-    $VOA->query(
+    $db->Query(
         "update
             `{$tbl}entries`
         set
             `is_deleted`='No',
-            `preslug`='%s',
-            `slug`='%s',
-            `description`='%s',
-            `camera_assigned`='%s',
-            `deadline`='%s',
+            `preslug`=:preslug,
+            `slug`=:slug,
+            `description`=:description,
+            `camera_assigned`=:camera,
+            `deadline`=:deadline,
             `deadline_time`={$time_string}
         where
-            `id`=%s
+            `id`=:entry_id
         limit 1",
-        trim(strip_tags($p['preslug'])),
-        trim(strip_tags($p['slug'])),
-        trim(strip_tags($p['description'])),
-        (isset($p["camera_assigned"]) ? 'Yes' : 'No' ),
-        date("Y-m-d", strtotime($p['deadline'])),
-        $entry_id
+        array(
+            ":preslug" => trim(strip_tags($p['preslug'])),
+            ":slug" => trim(strip_tags($p['slug'])),
+            ":description" => trim(strip_tags($p['description'])),
+            ":camera" => (isset($p["camera_assigned"]) ? 'Yes' : 'No' ),
+            ":deadline" => date("Y-m-d", strtotime($p['deadline'])),
+            ":entry_id" => $entry_id
+        )
     );
 
     if( isset( $p['hold_for_release']) ) {
-    	$VOA->query(
+    	$db->Query(
     		"update
     			`{$tbl}entries`
     		set
     			`deadline`=NULL
    			where
-    			`id`=%s
+    			`id`=?
    			limit 1",
         	$entry_id
 		);

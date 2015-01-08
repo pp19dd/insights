@@ -54,16 +54,15 @@ EOF;
     }
 
     function batchInsert($batch_number) {
-        global $VOA;
+        global $db;
         $tbl = TABLE_PREFIX;
 
         $limit_b = $this->batch_size;
         $limit_a = intval($batch_number) * $limit_b;
 
-        $entries = $VOA->query(
-            "select `id` from `{$tbl}entries` where `is_deleted`='No' limit %s,%s",
-            $limit_a,
-            $limit_b
+        $entries = $db->Query(
+            "select `id` from `{$tbl}entries` where `is_deleted`='No' limit ?,?",
+            array($limit_a, $limit_b)
         );
 
         $params = array("body"=>array());
@@ -93,12 +92,11 @@ EOF;
     }
 
     function getRecordCount() {
-        global $VOA;
+        global $db;
         $tbl = TABLE_PREFIX;
 
-        $r = $VOA->query(
-            "select count(id) as `entry_count` from `{$tbl}entries` where is_deleted='No'",
-            array("flat")
+        $r = $db->Single()->Query(
+            "select count(id) as `entry_count` from `{$tbl}entries` where is_deleted='No'"
         );
 
         return( $r["entry_count"] );

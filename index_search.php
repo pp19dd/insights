@@ -22,7 +22,7 @@ foreach( $words as $word ) {
 	unset( $words_as_keys[$word]);
 	$tips[$word] = implode(" ", array_keys($words_as_keys));
 }
-$VOA->assign( "search_tips", $tips);
+$smarty->assign( "search_tips", $tips);
 
 // elastic search mode
 $search_results = array(
@@ -67,7 +67,7 @@ $search_results["fuzzy"] = $ELASTIC->Query('
             ]
         }
     },
-	"sort": { "deadline": "desc" }	
+	"sort": { "deadline": "desc" }
 }
 ');
 

@@ -5,7 +5,10 @@
 
 {block name='content'}
 
+{*<!--
+	optimizing: don't query all records if you're just editing
 {include file="home_menu.tpl"}
+-->*}
 
 <div class="row">
 
