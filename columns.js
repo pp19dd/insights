@@ -1,5 +1,7 @@
 
-function filterable_table(options) {
+function filterable_table(options) { }
+
+filterable_table.prototype.init = function(options) {
 	this.table = $(options.selector);
 	this.cookie_name = options.cookie_name;
 	this.columns = options.columns;
@@ -9,19 +11,23 @@ function filterable_table(options) {
 	this.cancel = $(options.cancel);
 	this.okay = $(options.okay);
 
-	this.children = [];
+	this.children = {};
 
 	this.setup_html();
 
 	for( k in this.columns ) {
-		this.children.push( new cookied_filter(k, this.columns[k], this) );
+		var temp = new cookied_filter();
+		temp.init(k, this.columns[k], this);
+		this.children[k] = temp;
+		// this.children.push( temp );
 	}
-
-	this.children.push( new cookied_filter("layout", false, this, {
+	var temp = new cookied_filter();
+	temp.init("layout", true, this, {
 		type: "extra",
 		label: "Use striped layout for descriptions"
-	}));
-
+	});
+	// this.children.push(temp);
+	this.children["striped_layout"] = temp;
 	this.cancel.click( function() {	});
 }
 
@@ -53,7 +59,9 @@ filterable_table.prototype.setup_html = function() {
 // atomic cookie -- ex: insights_column_slug, insights_columns_editor
 // ===========================================================================
 
-function cookied_filter( name, value, parent, options) {
+function cookied_filter() { }
+
+cookied_filter.prototype.init = function( name, value, parent, options) {
 	this.name = name;
 	this.column_name = ".column_" + name;
 	this.cookie_name = parent.cookie_name + "_" + name;

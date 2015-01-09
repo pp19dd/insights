@@ -177,7 +177,9 @@ $(document).ready( function() {
 		if( this.checked ) $("#id_entry_form_group_deadline").hide("slide");
 	});
 
-	var data_table = new filterable_table({
+	var data_table = new filterable_table();
+
+	data_table.init({
 		selector: "#table_filterable",
 		cookie_name: "insights_columns",
 		columns: {

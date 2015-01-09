@@ -5,58 +5,44 @@
 {/strip}{/function}
 {strip}
 
+{function name=title_restricted}<title>VOA Insights - Restricted Access</title>{/function}
+{function name=title_search}<title>VOA Insights - {range_title} - Search {$smarty.get.keywords}</title>{/function}
+{function name=title_editing}<title>VOA Insights - {range_title} - Editing # {$entry.id} - {$entry.slug}</title>{/function}
+{function name=title_viewing}<title>VOA Insights - {range_title} - Viewing # {$entry.id} - {$entry.slug}</title>{/function}
+{function name=title_all}<title>VOA Insights - {range_title} - ALL</title>{/function}
+{function name=title_show_more}<title>VOA Insights - {range_title} - Show {$smarty.get.show} - {$smarty.get.more}</title>{/function}
+{function name=title_show}<title>VOA Insights - {range_title} - Show {$smarty.get.show}</title>{/function}
+{function name=title_range}<title>VOA Insights - {range_title}</title>{/function}
+{function name=title_watchlist}<title>VOA Insights - Watch List</title>{/function}
+
 {if $is_admin}
-
-<title>Admin</title>
-
+	<title>Admin</title>
 {else}
-
-{if $can.view}
-
-	{if isset($smarty.get.keywords)}
-
-<title>VOA Insights - {range_title} - Search {$smarty.get.keywords}</title>
-
-	{elseif isset($smarty.get.edit)}
-
-		{if $can.edit == true}
-
-<title>VOA Insights - {range_title} - Editing # {$entry.id} - {$entry.slug}</title>
-
+	{if $can.view}
+		{if isset($smarty.get.keywords)}
+			{title_search}
+		{elseif isset($smarty.get.edit)}
+			{if $can.edit == true}
+				{title_editing}
+			{else}
+				{title_viewing}
+			{/if}
+		{elseif isset($smarty.get.day) && $smarty.get.day=="watchlist"}
+			{title_watchlist}
+		{elseif isset($smarty.get.all)}
+			{title_all}
+		{elseif isset($smarty.get.show)}
+			{if isset($smarty.get.more)}
+				{title_show_more}
+			{else}
+				{title_show}
+			{/if}
 		{else}
-
-<title>VOA Insights - {range_title} - Viewing # {$entry.id} - {$entry.slug}</title>
-
+			{title_range}
 		{/if}
-
-	{elseif isset($smarty.get.all)}
-
-<title>VOA Insights - {range_title} - ALL</title>
-
-	{elseif isset($smarty.get.show)}
-
-		{if isset($smarty.get.more)}
-
-<title>VOA Insights - {range_title} - Show {$smarty.get.show} - {$smarty.get.more}</title>
-
-		{else}
-
-<title>VOA Insights - {range_title} - Show {$smarty.get.show}</title>
-
-		{/if}
-
 	{else}
-
-<title>VOA Insights - {range_title}</title>
-
+		{title_restricted}
 	{/if}
-
-{else}
-
-<title>VOA Insights - Restricted Access</title>
-
-{/if}
-
 {/if}
 
 {/strip}

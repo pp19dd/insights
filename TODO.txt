@@ -1,12 +1,11 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
- * Optimize: edit screen does not need to query all range records
+ * fix-test switch to/from striped view (default: striped)
  * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
  * elasticsearch facets need to use a keyword tokenizer
  * pagination for search results
  * facets interface for search results (active query)
  * default view: show some entries if nothing is starred
- * fix-test switch to/from striped view (default: striped)
  * London Bureau: Radio + Africa + Middle East + Europe query
