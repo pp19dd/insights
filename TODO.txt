@@ -1,7 +1,6 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
- * fix-test switch to/from striped view (default: striped)
  * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
  * elasticsearch facets need to use a keyword tokenizer

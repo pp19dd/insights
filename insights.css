@@ -25,10 +25,8 @@ h1 { font-size: 18px; color: gray }
 .more_view .insights_entries { line-height: 1.5em }
 
 
-{*
 .voa_insights_top { background-color: black !important }
 .voa_insights_top a { color: white !important }
-*}
 
 .voa-insights-brand {
 	background-image: url(img/voa-insights-50.png);
@@ -183,3 +181,5 @@ textarea { resize:vertical }
 .watching_span { white-space: nowrap; }
 .watching_checkbox { }
 .watching_label { white-space: nowrap; font-weight:normal; }
+
+.cookie_option_note { width: 300px; }
