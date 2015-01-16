@@ -85,6 +85,8 @@ function insights_get_all_maps( $entries ) {
 
 		$map_count = 0;
 
+		if( !isset($e["map"]) ) continue;
+
 		foreach( $e['map'] as $type => $resolved ) {
 			$map_count += count($resolved);
 

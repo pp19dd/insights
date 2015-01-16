@@ -183,3 +183,20 @@ textarea { resize:vertical }
 .watching_label { white-space: nowrap; font-weight:normal; }
 
 .cookie_option_note { width: 300px; }
+
+/* search */
+.search_tips {
+	list-style: none;
+	padding:0px;
+}
+.search_tips li {
+	float: left;
+	padding:4px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.search_term {
+	border:1px solid silver;
+	border-radius:8px;
+	margin-right:8px;
+}

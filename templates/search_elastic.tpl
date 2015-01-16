@@ -3,17 +3,14 @@
 <p><a href="?{rewrite erase='deleted,keywords,search'}{/rewrite}">Exit from Search Mode</a></p>
 {/if}
 
-<h1>Search: {$smarty.get.keywords|default:"(Empty search string)"}</h1>
-
-<ul>
+<ul class="search_tips">
+	<li>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if} for search: </li>
 {foreach from=$search_tips key=word item=alt}
-	<li>{$word} <a title="Remove word from search" href="?{rewrite erase=deleted keywords=$alt}{/rewrite}">[Remove]</a></li>
+	<li class="search_term">{$word} <a class="glyphicon glyphicon-remove" title="Remove word from search" href="?{rewrite erase=deleted keywords=$alt}{/rewrite}"></a></li>
 {/foreach}
 </ul>
 
-{include file="table_entries.tpl" ids=$elasticsearch_results2|array_keys entries=$elasticsearch_results2}
-
-<pre>{$elasticsearch_results2|print_r}</pre>
+<div class="clearfix"></div>
 
 {if $entries|count == 0}
 
@@ -27,14 +24,12 @@
 
 {else}
 
-<p>{$entries|count} result{if $entries|count != 1}s{/if}.</p>
-
 {if $range->active->range_start_human == $range->active->range_end_human}
 <h1 class="table_title">Search date includes {$range->active->range_start_human|date_format:"M d, Y"}</h1>
 {else}
 <h1 class="table_title">Search dates include {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
 {/if}
 
-{include file="table_entries.tpl" ids=$entries|array_keys entries=$entries}
+{include file="table_entries.tpl" ids=$entries|array_keys entries=$entries highlight=$search_tips|array_keys}
 
 {/if}

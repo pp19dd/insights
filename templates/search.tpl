@@ -1,10 +1,10 @@
-{extends file='template.tpl'}
+{extends file="template.tpl"}
 
-{block name='footer'}
+{block name="footer"}
 {include file="modal_filter.tpl"}
 {/block}
 
-{block name='content'}
+{block name="content"}
 
 {include file="home_menu.tpl"}
 

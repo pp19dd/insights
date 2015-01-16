@@ -162,9 +162,35 @@ function insights_get_entries_rich( $options = array() ) {
 
 	# unified query
 	$where_flat = implode( ") and (", $where);
-	$sql = "select * from `{$tbl}entries` where ({$where_flat})";
+	$sql = "select * from `{$tbl}entries` where ({$where_flat}) ";
 
+	# any sorting order?
+	$orderby = ""; $direction = "";
+	$allowed_orderby = array(
+		"deadline" => true,
+		"id" => true,
+		"slug" => true
+	);
 
+	# orderby is permitted
+	if(
+		isset( $options["orderby"] ) &&
+		isset( $allowed_orderby[$options["orderby"]] )
+	) {
+
+		$orderby = "order by " . $options["orderby"];
+
+		# direction?
+		if( isset( $options["direction"] ) ) {
+			switch( strtolower($options["direction"]) ) {
+				case 'asc': $direction = "ASC"; break;
+				case 'desc': $direction = "DESC"; break;
+			}
+		}
+	}
+	$sql .= $orderby . " " . $direction;
+
+	# perform query
 	$t = $db->Index("id")->Query($sql);
 
 	# get metadata for the entries

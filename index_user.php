@@ -165,6 +165,17 @@ if( isset( $_GET['show'] ) ) {
 	$smarty->assign( 'grouped_entries', $grouped_entries );
 }
 
+/*echo "<PRE style='background-color:gainsboro; padding:10px'>";
+print_r($query_entries);
+
+die;
+echo count($entries) . "<br/>";
+echo count($all_maps["all_maps"]) . "<br/>";
+print_r( $all_maps );
+print_r( $entries );
+//print_r( $grouped_entries ); // for show mode only
+die;
+*/
 $smarty->assign( 'all_maps', $all_maps["all_maps"] );
 $smarty->assign( 'all_maps_empty', $all_maps["empty"] );
 $smarty->assign( 'entries', $entries );

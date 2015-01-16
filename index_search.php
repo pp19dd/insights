@@ -5,15 +5,16 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 # search is now specialized: ElasticSearch
 # ============================================================================
 
-
 $words = explode(" ", trim(strip_tags($_GET['keywords'])));
 $words = array_filter( $words );
 
+/*
 if( count($words) == 0 ) {
 	$query_entries["stop"] = array("Warning: Empty search string");
 } else {
 	$query_entries["search"] = $words;
 }
+*/
 
 // search removal tips
 $tips = array();
@@ -30,100 +31,29 @@ $search_results = array(
 	"fuzzy" => array()
 );
 
-/*
-{
-    "query": {
-        "bool": {
-            "should": [
-                { "match": { "slug": { "query": "pkg", "operator": "and" } }},
-                { "match": { "description": { "query": "pkg", "operator": "and" } }}
-            ]
-        }
-    }
-}
-*/
-
 $search_words = implode(" ", $words);
 $search_results["exact"] = $ELASTIC->Query('
 {
-    "query": {
-        "dis_max": {
-            "queries": [
-                { "match": { "slug": { "query": "'.$search_words.'", "operator": "and" } }},
-                { "match": { "description": { "query": "'.$search_words.'", "operator": "and" } }}
-            ]
-        }
-    },
+	"size": 100,
+	"query": {
+		"match": {
+			"_all": { "query": "' . $search_words . '", "operator": "and" }
+		}
+	},
 	"sort": { "deadline": "desc" }
 }
 ');
-$search_results["fuzzy"] = $ELASTIC->Query('
-{
-    "query": {
-        "dis_max": {
-            "queries": [
-                { "fuzzy": { "slug": "'.$search_words.'" }},
-				{ "fuzzy": { "description": "'.$search_words.'" }}
-            ]
-        }
-    },
-	"sort": { "deadline": "desc" }
-}
-');
-
-/*
-$search_results["exact"] = $ELASTIC->Query('
-{
-	"query": {
-		"bool": {
-			"should": [
-				{
-					"match": {
-						"slug": {
-							"query": "'.$search_words.'",
-							"operator": "and"
-						}
-					}
-				},
-				{
-					"match": {
-						"description": {
-							"query": "'.$search_words.'",
-							"operator": "and"
-						}
-					}
-				}
-			]
-		}
-	}
-}
-');
-
-$search_results["fuzzy"] = $ELASTIC->Query('
-{
-	"query": {
-		"bool": {
-			"should": [
-				{
-					"fuzzy": {
-						"slug": "'.$search_words.'"
-					}
-				},
-				{
-					"fuzzy": {
-						"description": "'.$search_words.'"
-					}
-				}
-			]
-		}
-	}
-}
-');
-*/
 
 // append search results ids to query
 function process_elastic_ids($r, &$ids) {
 	static $seen = array();
+
+	if(
+		!isset( $r["hits"]) ||
+		!isset( $r["hits"]["hits"] )
+	) {
+		return(false);
+	}
 
 	foreach( $r["hits"]["hits"] as $hit ) {
 		$id = $hit["_id"];
@@ -134,10 +64,16 @@ function process_elastic_ids($r, &$ids) {
 	}
 }
 
+// elastic search worked, but, still doing classic query for data display
+// in form of ids; ex: ( [id] => Array ( [0] => 11035 ) )
 $query_entries = array();
 $query_entries["id"] = array();
+$query_entries["orderby"] = "deadline";
+$query_entries["direction"] = "desc";
+
 process_elastic_ids($search_results["exact"], $query_entries["id"]);
 process_elastic_ids($search_results["fuzzy"], $query_entries["id"]);
+$smarty->assign( "elasticsearch_results", $search_results );
 
-#pre($query_entries);
-#pre($search_results);
+#echo "<PRE>"; print_r($query_entries);die;
+#echo "<PRE>"; print_r($search_results);die;
