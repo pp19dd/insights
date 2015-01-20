@@ -1,6 +1,18 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
+ * quick-remove table item "hide"
+ * reset cookie names
+ * group by views (radio/beta/etc) <-- ??
+ * editable search line
+ * date range? remove? optional?
+ * facets?
+ * g-mail style prefix   editor:jim
+ * search title: remove range
+ * search pagination
+ * title: remove range from edit links (1970 bug)
+ * error: quote " breaks guzzle in searches
+ * customizable filter is missing from search table (columns.js)
  * highlight search results
  * Add option for NOT making something searchable
  * Cookie description textarea height
