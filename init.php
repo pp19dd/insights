@@ -11,6 +11,7 @@ require_once( 'functions_write.php' );
 require_once( 'functions_action.php' );
 require_once( 'functions_history.php' );
 require_once( 'functions_smarty.php' );
+require_once( 'functions_search.php' );
 require_once( 'class.range.php' );
 require_once( 'class.url.php' );
 require_once( 'class.user.php' );

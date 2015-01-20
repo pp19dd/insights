@@ -1,14 +1,25 @@
 
-{if $search_tips|count == 0}
-<p><a href="?{rewrite erase='deleted,keywords,search'}{/rewrite}">Exit from Search Mode</a></p>
-{/if}
+<h1>Search keywords</h1>
+
+<form class="" action="http://localhost/insights/?" method="get">
+<table width="100%">
+	<tr>
+		<td><input type="text" autocomplete="off" name="keywords" id="search_form_search" value="{$smarty.get.keywords}"></td>
+		<td style="width:100px"><input type="submit" value="Search" name="search" style="margin-right:10px"></td>
+	</tr>
+</table>
+
+</form>
 
 <ul class="search_tips">
-	<li>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if} for search: </li>
-{foreach from=$search_tips key=word item=alt}
+{foreach from=$search_tips item=word}
 	<li class="search_term">{$word} <a class="glyphicon glyphicon-remove" title="Remove word from search" href="?{rewrite erase=deleted keywords=$alt}{/rewrite}"></a></li>
 {/foreach}
 </ul>
+
+<div class="clearfix"></div>
+
+<h1>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>
 
 <div class="clearfix"></div>
 
@@ -24,11 +35,14 @@
 
 {else}
 
+{*<!--
 {if $range->active->range_start_human == $range->active->range_end_human}
 <h1 class="table_title">Search date includes {$range->active->range_start_human|date_format:"M d, Y"}</h1>
 {else}
 <h1 class="table_title">Search dates include {$range->active->range_start_human|date_format:"M d, Y"} - {$range->active->range_end_human|date_format:"M d, Y"}</h1>
 {/if}
+-->*}
+
 
 {include file="table_entries.tpl" ids=$entries|array_keys entries=$entries highlight=$search_tips|array_keys}
 

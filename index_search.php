@@ -5,31 +5,19 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 # search is now specialized: ElasticSearch
 # ============================================================================
 
+die( "index_search.php needs work");
+
 $words = explode(" ", trim(strip_tags($_GET['keywords'])));
 $words = array_filter( $words );
-
-/*
-if( count($words) == 0 ) {
-	$query_entries["stop"] = array("Warning: Empty search string");
-} else {
-	$query_entries["search"] = $words;
-}
-*/
-
-// search removal tips
-$tips = array();
-foreach( $words as $word ) {
-	$words_as_keys = array_flip( $words );
-	unset( $words_as_keys[$word]);
-	$tips[$word] = implode(" ", array_keys($words_as_keys));
-}
-$smarty->assign( "search_tips", $tips);
+$smarty->assign( "search_tips", $words);
 
 // elastic search mode
 $search_results = array(
 	"exact"	=> array(),
 	"fuzzy" => array()
 );
+
+$filters = array();
 
 $search_words = implode(" ", $words);
 $search_results["exact"] = $ELASTIC->Query('

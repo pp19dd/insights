@@ -22,19 +22,18 @@
 		<input type="hidden" name="until" id="id_search_form_date_end" value="{$range->active->range_end_human}" />
 		<input type="hidden" name="range" id="id_search_form_date_range" value="{$smarty.get.range}" />
 
-		<input 
-			title="Click or hit ESC key to show" 
-			class="btn btn-xs" type="button" 
+		<input
+			title="Click or hit ESC key to show"
+			class="btn btn-xs" type="button"
 			value="Add insight..."
 			role="button" id="pick_add_insight"
 			style="margin-right:20px"
 		/>
-
-		<span style="color:silver">Keywords:&nbsp;</span>
-		<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
-		<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
-
-
+		<span class="search_boxlet">
+			<span style="color:silver">Keywords:&nbsp;</span>
+			<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
+			<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
+		</span>
 	</form>
 </span>
 </li>
