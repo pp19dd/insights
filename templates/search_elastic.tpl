@@ -12,7 +12,7 @@
 </form>
 
 <ul class="search_tips">
-{foreach from=$search_tips item=word}
+{foreach from=$search_tips key=word item=alt}
 	<li class="search_term">{$word} <a class="glyphicon glyphicon-remove" title="Remove word from search" href="?{rewrite erase=deleted keywords=$alt}{/rewrite}"></a></li>
 {/foreach}
 </ul>

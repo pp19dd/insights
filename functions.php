@@ -379,3 +379,12 @@ function insights_save_watchlist($a) {
 	$expire = 60 * 60 * 24 * 365;
 	setcookie( "insights_watch_list", $str, time() + $expire, "/");
 }
+
+/**
+* debug helper
+*/
+function pre($a, $die = true) {
+	echo "<pre style='padding:10px; background-color:silver'>";
+	print_r( $a );
+	if( $die ) die;
+}
