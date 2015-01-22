@@ -15,6 +15,11 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 *         [1] => pkg
 *         [2] => editor:jim
 *     )
+*     [highlight] => Array(
+*         [0] => obama
+*         [1] => pkg
+*         [2] => jim
+*     )
 *     [all] => Array(
 *         [0] => obama
 *         [1] => pkg
@@ -32,7 +37,8 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 function insights_parse_search_words( $keywords ) {
 
     $ret = array(
-        "words" => array(),     // simple string
+        "words" => array(),     // simple string, raw
+        "highlight" => array(), // simple string, stripped of prefixes
         "all" => array(),       // _all
         "complex" => array()    // specialized fields
     );
@@ -56,9 +62,11 @@ function insights_parse_search_words( $keywords ) {
                     "type" => $r[1], // editor
                     "word" => insights_escape_word($r[2])  // jim
                 );
+                $ret["highlight"][] = insights_escape_word($r[2]);
             }
         } else {
             $ret["all"][] = insights_escape_word($word);
+            $ret["highlight"][] = insights_escape_word($word);
         }
     }
 
@@ -70,7 +78,7 @@ function insights_escape_word($w) {
     return( str_replace('"', '', $w) );
 }
 
-function insights_build_es_query($search) {
+function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
 
     $matches = array();
     if( !empty($search["all"]) ) {
@@ -112,7 +120,8 @@ function insights_build_es_query($search) {
 
     $query = '
     {
-        "size": 100,
+        "size": ' . $per_page . ',
+        "from": ' . $from . ',
         "query": {
             "bool": {
                 "must": [
@@ -126,6 +135,17 @@ function insights_build_es_query($search) {
     return( $query );
 }
 
+// pagination helper: based on a total count and current page,
+// give us number of pages and current record range
+function insights_search_pagination($page) {
+    if( $page < 0 ) $page = 0;
+    $a = array(
+        "current" => $page,
+        "from" => ($page - 1) * PER_PAGE,
+        "pages" => array()
+    );
+    return($a);
+}
 
 // append search results ids to query
 function process_elastic_ids($r, &$ids) {

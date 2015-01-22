@@ -6,6 +6,7 @@
 define( 'TEMP_CONF_PWD', "md5-hash-of-temp-admin-pwd" );
 define( 'TEMP_EDIT_PWD', "md5-hash-of-temp-user-pwd" );
 define( 'API_KEY', 		 "md5-hash-of-api-pwd" );
+define( 'PER_PAGE',		 100 );
 
 if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 

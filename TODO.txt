@@ -4,21 +4,16 @@
  * quick-remove table item "hide"
  * reset cookie names
  * group by views (radio/beta/etc) <-- ??
- * editable search line
  * date range? remove? optional?
  * facets?
- * g-mail style prefix   editor:jim
- * search title: remove range
- * search pagination
+ * g-mail style prefix   editor:jim (tips for search)
  * title: remove range from edit links (1970 bug)
- * error: quote " breaks guzzle in searches
+ * error: quote " breaks guzzle in searches - remove quotes
  * customizable filter is missing from search table (columns.js)
- * highlight search results
  * Add option for NOT making something searchable
  * Cookie description textarea height
  * Watchlist titles for aspects (region/beat/etc...)
  * elasticsearch facets need to use a keyword tokenizer
- * pagination for search results
  * facets interface for search results (active query)
  * default view: show some entries if nothing is starred
  * London Bureau: Radio + Africa + Middle East + Europe query

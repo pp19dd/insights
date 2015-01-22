@@ -260,7 +260,7 @@ cookied_filter_striped.prototype.setup_striped_rows = function() {
 		var descr = $(".column_description", e).html();
 		$(e).after(
 			"<tr class='striped_tr " + preserve_class + "'>" +
-			"<td class='striped_td striped_td_left entry_field column_description'>" +
+			"<td class='striped_td striped_td_left entry_field column_description highlightable'>" +
 			descr +
 			"</td><td class='striped_td striped_td_right'></td></tr>"
 		);

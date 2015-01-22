@@ -6,7 +6,7 @@
 {strip}
 
 {function name=title_restricted}<title>VOA Insights - Restricted Access</title>{/function}
-{function name=title_search}<title>VOA Insights - {range_title} - Search {$smarty.get.keywords}</title>{/function}
+{function name=title_search}<title>VOA Insights - Search {$smarty.get.keywords}</title>{/function}
 {function name=title_editing}<title>VOA Insights - {range_title} - Editing # {$entry.id} - {$entry.slug}</title>{/function}
 {function name=title_viewing}<title>VOA Insights - {range_title} - Viewing # {$entry.id} - {$entry.slug}</title>{/function}
 {function name=title_all}<title>VOA Insights - {range_title} - ALL</title>{/function}

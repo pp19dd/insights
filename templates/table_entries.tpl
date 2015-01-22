@@ -26,15 +26,15 @@
 
 {capture assign="class"}insights_entry_id_{$entry.id} insights_entry_deleted_{$entry.is_deleted|lower}{/capture}
 <tr class="insights_entry {$class} insights_entry_starred_{$entry.is_starred|lower} {cycle values='even,odd'}" data-preserve-class="{$class}">
-	<td class="entry_field column_slug">{$entry.slug}</td>
-	<td class="entry_field column_description">{$entry.description|nl2br}</td>
-	<td class="entry_field column_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
-	<td class="entry_field column_origin">{map set=$entry.map.services}</td>
-	<td class="entry_field column_medium">{map set=$entry.map.mediums}</td>
-	<td class="entry_field column_beat">{map set=$entry.map.beats}</td>
-	<td class="entry_field column_region">{map set=$entry.map.regions}</td>
-	<td class="entry_field column_reporter">{map set=$entry.map.reporters}</td>
-	<td class="entry_field column_editor">{map set=$entry.map.editors}</td>
+	<td class="entry_field highlightable column_slug">{$entry.slug}</td>
+	<td class="entry_field highlightable column_description">{$entry.description|nl2br}</td>
+	<td class="entry_field highlightable column_deadline">{if is_null($entry.deadline)}Hold for Release{else}{$entry.deadline} {$entry.deadline_time}{/if}</td>
+	<td class="entry_field highlightable column_origin">{map set=$entry.map.services}</td>
+	<td class="entry_field highlightable column_medium">{map set=$entry.map.mediums}</td>
+	<td class="entry_field highlightable column_beat">{map set=$entry.map.beats}</td>
+	<td class="entry_field highlightable column_region">{map set=$entry.map.regions}</td>
+	<td class="entry_field highlightable column_reporter">{map set=$entry.map.reporters}</td>
+	<td class="entry_field highlightable column_editor">{map set=$entry.map.editors}</td>
 	<td data-id="{$entry.id}" class="entry_field column_action">
 		<div class="btn-group">
 			<a
