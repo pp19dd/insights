@@ -39,7 +39,7 @@ function cursor_in_search_field() {
 // cursor in search field
 $(document).ready(function() {
 	cursor_in_search_field();
-	highlight_search_terms();
+	// highlight_search_terms();
 });
 </script>
 {/block}
