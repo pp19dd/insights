@@ -24,7 +24,9 @@ $search_results = array(
 );
 
 // given # of results, compute # of available pages
-$pages["page_count"] = ceil($search_results["exact"]["hits"]["total"] / PER_PAGE);
+$result_count = $search_results["exact"]["hits"]["total"];
+
+$pages["page_count"] = ceil($result_count / PER_PAGE);
 for( $i = 0; $i < $pages["page_count"]; $i++ ) {
 	$pages["pages"][] = $i + 1;
 }
@@ -38,6 +40,7 @@ $query_entries = array();
 $query_entries["id"] = array();
 $query_entries["orderby"] = "deadline";
 $query_entries["direction"] = "desc";
+if( $result_count === 0 ) $query_entries["stop"] = true;
 
 // combine two separate searches into one result
 process_elastic_ids($search_results["exact"], $query_entries["id"]);

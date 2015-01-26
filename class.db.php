@@ -2,6 +2,12 @@
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
 /* usage:
+
+debug hint:
+SET GLOBAL general_log = 'ON'
+SET GLOBAL general_log = 'OFF'
+
+
 $database = new VOA_DB(
     DATABASE__HOST,
     SELECT_DATABASE,
@@ -102,6 +108,7 @@ class VOA_DB {
             echo "<h4>Error connecting to MySQL</h4>";
             die;
         }
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     function Single() {
@@ -123,7 +130,11 @@ class VOA_DB {
     // warning: defaults were set prior to this
     function doIndex() {
         $ret = array();
-        $data = $this->statement->fetchAll($this->fetch_style);
+        if( $this->statement->rowCount() > 0 ) {
+            $data = $this->statement->fetchAll($this->fetch_style);
+        } else {
+            $data = array();
+        }
 
         foreach( $data as $line ) {
             if( !isset($line[$this->index[0]]) ) {
@@ -165,7 +176,9 @@ class VOA_DB {
         if( $this->single_mode == false ) {
             if( empty($this->index) ) {
                 if( $this->sticky == false ) $this->setDefaults();
-                return( $this->statement->fetchAll($this->fetch_style) );
+                if( $this->statement->rowCount() > 0 ) {
+                    return( $this->statement->fetchAll($this->fetch_style) );
+                }
             } else {
                 return( $this->doIndex() );
             }

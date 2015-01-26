@@ -152,8 +152,8 @@ function process_elastic_ids($r, &$ids) {
     static $seen = array();
 
     if(
-    !isset( $r["hits"]) ||
-    !isset( $r["hits"]["hits"] )
+        !isset( $r["hits"]) ||
+        !isset( $r["hits"]["hits"] )
     ) {
         return(false);
     }

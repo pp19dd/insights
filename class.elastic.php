@@ -57,12 +57,11 @@ EOF;
         global $db;
         $tbl = TABLE_PREFIX;
 
-        $limit_b = $this->batch_size;
+        $limit_b = intval($this->batch_size);
         $limit_a = intval($batch_number) * $limit_b;
 
         $entries = $db->Query(
-            "select `id` from `{$tbl}entries` where `is_deleted`='No' limit ?,?",
-            array($limit_a, $limit_b)
+            "select `id` from `{$tbl}entries` where `is_deleted`='No' limit {$limit_a}, {$limit_b}"
         );
 
         $params = array("body"=>array());

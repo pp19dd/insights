@@ -170,3 +170,133 @@ function insights_get_history( $entry_id ) {
     #pre($r);
     return( $r );
 }
+
+
+/**
+* returns number of activity items
+*/
+function insights_get_history_rows($where = array(1)) {
+    global $db;
+    $tbl = TABLE_PREFIX;
+
+    $where_sql = implode(") and (", $where);
+
+    $r = $db->Single()->Query(
+        "select count(*) as rows from `${tbl}_history` left join {$tbl}entries on {$tbl}entries.id={$tbl}_history.entry_id where ({$where_sql})"
+    );
+
+    return( $r["rows"] );
+}
+
+/**
+* retrieves activity list, by page
+*/
+function insights_get_history_page($p = 0, $per_page = 500, $where = array(1)) {
+    global $db;
+    $tbl = TABLE_PREFIX;
+
+    $where_sql = implode(") and (", $where);
+
+    $limit_b = intval($per_page);
+    $limit_a = intval(($p - 1) * $limit_b);
+
+    $r = $db->Query(
+        "select
+            {$tbl}_history.*,
+            {$tbl}entries.slug
+        from
+            {$tbl}_history
+        left join
+            {$tbl}entries
+        on
+            {$tbl}entries.id=${tbl}_history.entry_id
+        where
+            ({$where_sql})
+        order by
+            id desc
+        limit
+            {$limit_a},{$limit_b}"
+    );
+
+    return( $r );
+}
+
+/**
+* gives a breakdown of all add/delete/update/star actions
+*/
+function insights_get_history_actions() {
+    global $db;
+    $tbl = TABLE_PREFIX;
+
+    $r = $db->Index("action")->Query(
+        "select count(*) AS `rows` , `action`
+        FROM `{$tbl}_history`
+        GROUP BY `action`
+        ORDER BY `action`"
+    );
+
+    return( $r );
+}
+
+/**
+ * Admin-panel function; focuses retrival of all activity
+ */
+function insights_get_history_data_where(&$where, $field, $field_sql = null, $like = false) {
+
+    if( is_null($field_sql) ) $field_sql = $field;
+
+    if( !isset( $_GET[$field]) ) return(false);
+
+    $field = trim(mysql_real_escape_string($_GET[$field]));
+    if( strlen($field) == 0 ) return(false);
+
+    if( $like == false ) {
+        $where[] = sprintf("`%s`='%s'", $field_sql, $field);
+    } else {
+        $where[] = sprintf("`%s` like '%%%s%%'", $field_sql, $field);
+    }
+}
+
+/**
+ * Admin-panel function; retrieves all activity
+ */
+function insights_get_history_data() {
+    $ret = array();
+
+    $tbl = TABLE_PREFIX;
+    $per_page = 500;
+
+    $where = array(1);
+    insights_get_history_data_where($where, "ip");
+    insights_get_history_data_where($where, "id", "entry_id");
+    insights_get_history_data_where($where, "slug", "slug", true);
+
+#    if( isset( $_GET['id']) ) $where[] = mysql_real_escape_string($_GET['ip']);
+    #if( isset( $_GET['ip']) ) $where[] = mysql_real_escape_string($_GET['ip']);
+
+    $ret["history_rows"] = insights_get_history_rows($where);
+    $ret["history_actions"] = insights_get_history_actions($where);
+
+    // easier pagination for smarty
+    $pages = array();
+    $ret["history_pages"] = array(
+        "current" => 1,
+        "total" => ceil($ret["history_rows"] / $per_page),
+        "list" => array()
+    );
+    for( $i = 0; $i < $ret["history_pages"]["total"]; $i++ ) {
+        $ret["history_pages"]["list"][] = $i + 1;
+    }
+
+    if( isset( $_GET['p']) ) {
+        $ret["history_pages"]["current"] = intval($_GET['p']);
+    }
+
+    $ret["history_entries"] = insights_get_history_page(
+        $ret["history_pages"]["current"],
+        $per_page,
+        $where
+    );
+
+    return( $ret );
+}
