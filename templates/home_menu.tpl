@@ -94,14 +94,6 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 		</td>
 	</tr>
 	<tr>
-		<td style="width:50px">
-			<a href="{$base_url}?range=day&day=watchlist&all=1">Watch List</a>
-			<span class="disabled_badge insights_entry_count insights_watchlist_count"></span>
-		</td>
-		<td style="width:80px">
-			<a href="{$base_url}?range=day&day=HFR&all=1">Hold For<br/>Release</a>
-			<span class="disabled_badge insights_entry_count">{$activity.hfr}</span>
-		</td>
 		<td style="width:60px">
 			<a
 				title="Pick from calendar"

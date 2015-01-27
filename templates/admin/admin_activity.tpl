@@ -1,4 +1,4 @@
-{extends file='admin.tpl'}
+{extends file='admin/admin.tpl'}
 
 {block name='head' append}
 <style type="text/css">

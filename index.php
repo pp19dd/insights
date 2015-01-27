@@ -55,31 +55,32 @@ if( $USER->CAN['view'] === false ) $mode = "403";
 
 switch( $mode ) {
     case 'admin':
+        $template = "admin/";
         switch( $_GET['page'] ) {
-            case 'divisions':       $template = 'admin_divisions.tpl'; break;
-            case 'services':        $template = 'admin_services.tpl'; break;
-            case 'beats':           $template = 'admin_beats.tpl'; break;
-            case 'reporters':       $template = 'admin_reporters.tpl'; break;
-            case 'editors':         $template = 'admin_editors.tpl'; break;
-            case 'elasticsearch':   $template = 'admin_elasticsearch.tpl'; break;
+            case 'divisions':       $template .= 'admin_divisions.tpl'; break;
+            case 'services':        $template .= 'admin_services.tpl'; break;
+            case 'beats':           $template .= 'admin_beats.tpl'; break;
+            case 'reporters':       $template .= 'admin_reporters.tpl'; break;
+            case 'editors':         $template .= 'admin_editors.tpl'; break;
+            case 'elasticsearch':   $template .= 'admin_elasticsearch.tpl'; break;
 
             case 'activity':
                 $history_data = insights_get_history_data();
                 foreach( $history_data as $h_k => $h_v ) {
                     $smarty->assign( $h_k, $h_v );
                 }
-                $template = 'admin_activity.tpl';
+                $template .= 'admin_activity.tpl';
             break;
 
             case 'cameras':
                 $smarty->assign( 'cameras', insights_get_entries(array(
                     "cameras" => "Yes"
                 )));
-                $template = 'admin_cameras.tpl';
+                $template .= 'admin_cameras.tpl';
 
             break;
 
-            default:                $template = 'admin.tpl'; break;
+            default:                $template .= 'admin.tpl'; break;
         }
     break;
 

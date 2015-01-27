@@ -18,8 +18,8 @@ th.th_count, td.td_count { text-align: right; width: 100px; }
 
 {block name='footer'}
 
-{include file="modal_rename.tpl"}
-{include file="modal_merge.tpl"}
+{include file="admin/modal_rename.tpl"}
+{include file="admin/modal_merge.tpl"}
 
 <script>
 
@@ -340,7 +340,7 @@ apply_filters();
 
 {block name='content'}
 
-{include file='admin__menu.tpl'}
+{include file='admin/admin__menu.tpl'}
 
 <div class="row">
 

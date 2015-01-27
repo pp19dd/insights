@@ -15,13 +15,18 @@
 
 {if $can.view && !$is_admin}
 <li>
-<span class="btn btn-sm">
-	<form method="get" action="{$base_url}?" class="btn btn-sm">
-
-		<input type="hidden" name="day" id="id_search_form_date_start" value="{$range->active->range_start_human}" />
-		<input type="hidden" name="until" id="id_search_form_date_end" value="{$range->active->range_end_human}" />
-		<input type="hidden" name="range" id="id_search_form_date_range" value="{$smarty.get.range}" />
-
+	<span class="btn btn-sm">
+		<a href="{$base_url}?range=day&day=watchlist&all=1">Watch List</a>
+	</span>
+</li>
+<li>
+	<span class="btn btn-sm">
+		<a href="{$base_url}?range=day&day=HFR&all=1">Hold For<br/>Release</a>
+		<span class="disabled_badge insights_entry_count">{$activity.hfr}</span>
+	</span>
+</li>
+<li>
+	<span class="disabled_badge insights_entry_count insights_watchlist_count"></span>
 		<input
 			title="Click or hit ESC key to show"
 			class="btn btn-xs" type="button"
@@ -29,12 +34,6 @@
 			role="button" id="pick_add_insight"
 			style="margin-right:20px"
 		/>
-		<span class="search_boxlet">
-			<span style="color:silver">Keywords:&nbsp;</span>
-			<input type="text" value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}" name="keywords" autocomplete="off" />
-			<input style="margin-right:10px" class="btn btn-xs" type="submit" name="search" value="Search" />
-		</span>
-	</form>
 </span>
 </li>
 {/if}

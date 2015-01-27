@@ -25,14 +25,15 @@ h1 { font-size: 18px; color: gray }
 .more_view .insights_entries { line-height: 1.5em }
 
 
-.voa_insights_top { background-color: black !important }
+.voa_insights_top { background-color: #0a1d79 !important }
 .voa_insights_top a { color: white !important }
 
 .voa-insights-brand {
-	background-image: url(img/voa-insights-50.png);
+	background-image: url(img/voa-insights-50b.png);
 	background-repeat: no-repeat;
 	padding-left: 120px;
 	background-position: 0px -7px;
+	opacity:0.9;
 }
 
 .left-most { width: 70px }

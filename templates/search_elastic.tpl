@@ -10,18 +10,6 @@
 
 {/function}
 
-<form class="" action="http://localhost/insights/?" method="get">
-<table width="100%">
-	<tr>
-		<td style="width:100px">Keywords</td>
-		<td><input type="text" autocomplete="off" name="keywords" id="search_form_search" value="{$smarty.get.keywords}"></td>
-		<td style="width:100px"><input type="submit" value="Search" name="search" style="margin-right:10px"></td>
-	</tr>
-	</table>
-
-</form>
-
-
 <div class="clearfix"></div>
 
 <h1>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>

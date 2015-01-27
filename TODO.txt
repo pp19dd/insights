@@ -1,6 +1,8 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
+ * BUGFIX: cannot merge records
+ * rewrite as a search-centric program, as header/search/facets/results/footer
  * quick-remove table item "hide"
  * reset cookie names
  * group by views (radio/beta/etc) <-- ??

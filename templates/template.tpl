@@ -30,7 +30,7 @@
 
 <body class="{$theme|default:'theme_default'}">
 
-{include file='nav.tpl'}
+{include file='b_header.tpl'}
 
 <div class="clearfix"></div>
 
@@ -41,6 +41,14 @@
 <div class="clearfix"></div>
 {/if}
 
+<div class="container container_search">
+{include file='b_search.tpl'}
+</div>
+
+<div class="container container_facets">
+{include file='b_facets.tpl'}
+</div>
+
 <div class="container container_content">
 {block name='content'}{/block}
 </div>
@@ -50,7 +58,7 @@
 <br/>
 <hr/>
 
-{include file='footer.tpl'}
+{include file='b_footer.tpl'}
 
 <hr/>
 </div> <!-- /container -->

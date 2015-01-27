@@ -195,6 +195,9 @@ $(document).ready( function() {
 
 	var insights_watchlist = new watchlist();
 	insights_watchlist.init();
+
+	$("#search_form_search").focus();
+	
 });
 
 //isotope is fighting bootstrap, table for now
