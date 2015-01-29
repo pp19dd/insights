@@ -41,6 +41,8 @@
 <div class="clearfix"></div>
 {/if}
 
+{if $can.view}
+
 <div class="container container_search">
 {include file='b_search.tpl'}
 </div>
@@ -48,6 +50,8 @@
 <div class="container container_facets">
 {include file='b_facets.tpl'}
 </div>
+
+{/if}
 
 <div class="container container_content">
 {block name='content'}{/block}
