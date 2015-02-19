@@ -1,6 +1,7 @@
 ==============================================================================
   Needs doing:
 ==============================================================================
+ * RUN update insights_entries set deadline_dt=concat(deadline," ", COALESCE(deadline_time, "")) before launching v2
  * BUGFIX: cannot merge records
  * rewrite as a search-centric program, as header/search/facets/results/footer
  * quick-remove table item "hide"

@@ -34,7 +34,6 @@
 			role="button" id="pick_add_insight"
 			style="margin-right:20px"
 		/>
-</span>
 </li>
 {/if}
 

@@ -177,7 +177,12 @@ class VOA_DB {
             if( empty($this->index) ) {
                 if( $this->sticky == false ) $this->setDefaults();
                 if( $this->statement->rowCount() > 0 ) {
-                    return( $this->statement->fetchAll($this->fetch_style) );
+                    try {
+                        $data = $this->statement->fetchAll($this->fetch_style);
+                    } catch( Exception $e ) {
+                        $data = array();
+                    }
+                    return( $data );
                 }
             } else {
                 return( $this->doIndex() );

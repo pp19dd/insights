@@ -25,8 +25,10 @@ if( isset( $_GET['watch']) ) {
 
 
 if( !isset($_GET['range']) || !isset($_GET['day']) ) {
-	header("location:" . (String)$URL);
-	die;
+	#header("location:" . (String)$URL);
+	#die;
+	$_GET['range'] = "day";
+	$_GET['day'] = date("Y-m-d");
 }
 
 // is start > end?
@@ -49,9 +51,10 @@ if(
 	isset($_GET['more']) === false &&
 	isset($_GET['show']) === false
 ) {
-	$URL->set("show", "regions");
-	header("location:" . (String)$URL);
-	die;
+	#$URL->set("show", "regions");
+	$_GET['show'] = "regions";
+	#header("location:" . (String)$URL);
+	#die;
 }
 
 # ============================================================================

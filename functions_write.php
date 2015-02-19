@@ -210,10 +210,18 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
 
     // sanitized time string - can be either null or a value in db
     $time_string = "null";
+    $deadline_dt = "00:00:00";
     $time = insights_filter_time( $p["deadline_time"] );
     if( $time !== false ) {
     	$time_string = "'{$time}'";
+        $deadline_dt = $time;
     }
+
+    $deadline_dt_string = sprintf(
+        "%s %s",
+        date("Y-m-d", strtotime($p['deadline'])),
+        $deadline_dt
+    );
 
     $db->Query(
         "update
@@ -225,7 +233,8 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             `description`=:description,
             `camera_assigned`=:camera,
             `deadline`=:deadline,
-            `deadline_time`={$time_string}
+            `deadline_time`={$time_string},
+            `deadline_dt`='{$deadline_dt_string}'
         where
             `id`=:entry_id
         limit 1",

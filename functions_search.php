@@ -129,7 +129,7 @@ function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
                 ]
             }
         },
-        "sort": { "deadline": "desc" }
+        "sort": { "deadline_dt": "desc" }
     }
     ';
     return( $query );

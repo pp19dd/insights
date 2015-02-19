@@ -19,22 +19,31 @@ function insights_backup($entry_id) {
     # insert a copy, as a deleted entry
     unset( $old["id"] );
     unset( $old["last_update"] );
-    $keys = array();
-    $values = array();
+    # $keys = array();
+    # $values = array();
     $old["is_deleted"] = "Yes";
 
-    # sanitize
-    foreach( $old as $k => $v ) {
-        $keys[] = mysql_real_escape_string($k);
-        $values[] = mysql_real_escape_string($v);
-    }
-    $keys = implode("`, `", $keys);
-    $values = implode("', '", $values);
+    # old = single entry
 
-    # this routine normally sanitizes parameters, bypass it with our own
     $db->Query(
-        "insert into `{$tbl}entries` (`{$keys}`) values ('{$values}');"
+        "/* backup {$entry_id} */
+        insert into `{$tbl}entries`
+            (`preslug`, `slug`, `deadline`, `deadline_time`, `deadline_dt`, `description`, `is_deleted`, `is_starred`, `camera_assigned`)
+        values
+            (:preslug, :slug, :deadline, :deadline_time, :deadline_dt, :description, :is_deleted, :is_starred, :camera_assigned)",
+        array(
+            ":preslug"          => $old["preslug"],
+            ":slug"             => $old["slug"],
+            ":deadline"         => $old["deadline"],
+            ":deadline_time"    => $old["deadline_time"],
+            ":deadline_dt"      => $old["deadline_dt"],
+            ":description"      => $old["description"],
+            ":is_deleted"       => $old["is_deleted"],
+            ":is_starred"       => $old["is_starred"],
+            ":camera_assigned"  => $old["camera_assigned"]
+        )
     );
+
     $copy_id = $db->getInsertID();
 
     return( $copy_id );
@@ -247,7 +256,8 @@ function insights_get_history_data_where(&$where, $field, $field_sql = null, $li
 
     if( !isset( $_GET[$field]) ) return(false);
 
-    $field = trim(mysql_real_escape_string($_GET[$field]));
+    # $field = trim(mysql_real_escape_string($_GET[$field]));
+    $field = trim($_GET[$field]);
     if( strlen($field) == 0 ) return(false);
 
     if( $like == false ) {
