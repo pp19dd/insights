@@ -30,6 +30,33 @@ $pages["page_count"] = ceil($result_count / PER_PAGE);
 for( $i = 0; $i < $pages["page_count"]; $i++ ) {
 	$pages["pages"][] = $i + 1;
 }
+
+/*
+pagination for > 15 pages:
+
+[part a] [...] [part b] [...] [part c]
+*/
+/*
+if( count($pages["pages"]) > 15 ) {
+	$page_width = 6;
+	$halfpage_width = 3;
+
+	$pages_a = array_slice($pages["pages"], 0, $page_width);
+	$pages_b = array_slice($pages["pages"], $pages["current"] - $halfpage_width-1, $halfpage_width*2);
+	$pages_c = array_slice($pages["pages"], -$page_width);
+
+	$pages_delim = array("...");
+
+	$pages["pages"] = array();
+	$pages["pages"] = array_merge($pages["pages"], $pages_a);
+	$pages["pages"] = array_merge($pages["pages"], $pages_delim);
+	$pages["pages"] = array_merge($pages["pages"], $pages_b);
+	$pages["pages"] = array_merge($pages["pages"], $pages_delim);
+	$pages["pages"] = array_merge($pages["pages"], $pages_c);
+
+	#die;
+}
+*/
 $smarty->assign( "pages", $pages);
 
 // ===========================================================================

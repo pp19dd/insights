@@ -153,10 +153,11 @@ EOF;
                 implode("@#@", $v)
             );
             $v = str_replace("@#@", ",", $v);
+
             $ret["facet_{$k}"] = $v;
         }
 
-        #        $this->reduceMapDebug($ret,$map);
+                $this->reduceMapDebug($ret,$map);
 
         return($ret);
     }

@@ -48,7 +48,7 @@
 </div>
 
 <div class="container container_facets">
-{include file='b_facets.tpl'}
+{include file='b_aggregations.tpl'}
 </div>
 
 {/if}

@@ -1,7 +1,7 @@
 <?php
 if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 
-define( "VERSION", "1.10" );
+define( "VERSION", "2.0" );
 
 require( 'vendor/autoload.php' );
 require( 'config.php' );

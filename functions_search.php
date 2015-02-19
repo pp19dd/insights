@@ -129,9 +129,25 @@ function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
                 ]
             }
         },
-        "sort": { "deadline_dt": "desc" }
+        "sort": { "deadline_dt": "desc" },
+        "aggregations": {
+            "reporters": { "terms": { "field": "map_facet_reporters" , "size": 50} },
+            "beats": { "terms": { "field": "map_facet_beats" , "size": 50} },
+            "editors": { "terms": { "field": "map_facet_editors" , "size": 50} },
+            "divisions": { "terms": { "field": "map_facet_divisions" , "size": 50} },
+            "services": { "terms": { "field": "map_facet_services" , "size": 50} },
+            "mediums": { "terms": { "field": "map_facet_mediums" , "size": 50} },
+            "regions": { "terms": { "field": "map_facet_regions", "size": 50 } }
+        }
     }
     ';
+
+# "facets": {
+#     "map_reporters": { "terms": { "field": "map_reporters" } },
+#     "map_editors": { "terms": { "field": "map_editors" } },
+#     "map_medium": { "terms": { "field": "map_medium" } }
+# }
+
     return( $query );
 }
 

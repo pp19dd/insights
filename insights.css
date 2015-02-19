@@ -205,3 +205,14 @@ textarea { resize:vertical }
 #search_form_search { width: 100%; padding:5px }
 
 span.highlight { background-color: #FFFF88; padding: 4px; }
+
+.aggregations h5 { color: gold }
+.aggregations { }
+.aggregations ul { margin:0; padding:0; }
+.aggregations li { margin:0; padding:0; list-style: none }
+
+.aggregation {
+	float:left;
+	border-right: 1px solid silver;
+	margin-right:10px;
+}

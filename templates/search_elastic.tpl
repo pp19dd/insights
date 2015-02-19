@@ -2,17 +2,38 @@
 
 {if $pages.page_count > 1}
 <ul class="pagination">
+	<li style="color:black; border:0px;">
+		<a style="border:0px;">{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</a>
+
+	</li>
+	<li class="">
+{if $pages.current > 1}
+		<a href="?{rewrite p=$pages.current-1}{/rewrite}">&lt;</a>
+{else}
+		<a style="color: black" href="#">&nbsp;</a>
+{/if}
+	</li>
+{*<!--
 {foreach from=$pages.pages item=p}
 	<li class="{if $p == $pages.current}active{/if}"><a href="?{rewrite p=$p}{/rewrite}" title="Page {$p}">{$p}</a></li>
 {/foreach}
+-->*}
+	<li><a>Page {$pages.current} of {$pages.pages|count}</a></li>
+	<li class="">
+{if $pages.current < $pages.pages|count}
+		<a href="?{rewrite p=$pages.current+1}{/rewrite}">&gt;</a>
+{else}
+	<a style="color: black">&nbsp;</a>
+{/if}
+	</li>
 </ul>
+{else}
+<h1>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>
 {/if}
 
 {/function}
 
 <div class="clearfix"></div>
-
-<h1>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>
 
 {pagination}
 
