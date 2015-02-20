@@ -21,4 +21,7 @@ td { padding: 3px; vertical-align: top; }
 
 .view-all { display: none; }
 
-.watchlist_options { display: none }
+.watchlist_options { display: none; }
+
+.container_search { display: none; }
+.container_facets { display: none;}

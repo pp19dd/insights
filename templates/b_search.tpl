@@ -1,5 +1,6 @@
 
 <form class="" action="http://localhost/insights/?" method="get">
+
 <table width="100%">
     <tr>
         <td>
@@ -9,9 +10,14 @@
                 name="keywords"
                 id="search_form_search"
                 placeholder="Search keywords"
+                class="form-control"
                 value="{if isset($smarty.get.keywords)}{$smarty.get.keywords}{/if}"
             ></td>
-        <td style="width:100px"><input type="submit" value="Search" name="search" style="margin-right:10px"></td>
+        <td style="width:100px">
+            <div class="btn-group">
+                <input type="submit" value="Search" name="search" class="btn btn-default" style="margin-right:10px">
+            </div>
+        </td>
     </tr>
     </table>
 </form>

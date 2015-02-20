@@ -135,9 +135,11 @@ EOF;
     }
 
     function reduceMap($map) {
+
         $ret = array();
         foreach( $map as $map_type => $data ) {
             if( !isset( $ret[$map_type]) ) $ret[$map_type] = array();
+
             foreach( $data as $map_entry ) {
                 if( isset($map_entry["resolved"]["name"]) ) {
                     $ret[$map_type][] = $map_entry["resolved"]["name"];
@@ -145,19 +147,26 @@ EOF;
             }
         }
 
-        # reduce further, for facets
-        foreach( $ret as $k => $v ) {
-            $v = str_replace(
-                array(" ", ","),
-                array("_", "_"),
-                implode("@#@", $v)
-            );
-            $v = str_replace("@#@", ",", $v);
+        return($ret);
+    }
 
-            $ret["facet_{$k}"] = $v;
+    function getMapIDs($map) {
+        $ret = array();
+
+        # reduce further, for facets
+        foreach( $map as $map_type => $data ) {
+            if( !isset( $ret[$map_type]) ) $ret[$map_type] = array();
+
+            foreach( $data as $map_entry ) {
+                if( isset($map_entry["resolved"]["name"]) ) {
+                    $ret[$map_type][] = $map_entry["resolved"]["id"];
+                }
+            }
         }
 
-                $this->reduceMapDebug($ret,$map);
+        foreach( $ret as $k => $v ) {
+            $ret[$k] = implode(" ", $v);
+        }
 
         return($ret);
     }
@@ -177,13 +186,16 @@ EOF;
         $entry = $entries[$id];
 
         $map = $this->reduceMap($entry["map"]);
+        $facets = $this->getMapIDs($entry["map"]);
 
         // merge map and entry
         unset( $entry["map"] );
         foreach( $map as $k => $v ) {
             $entry["map_{$k}"] = $v;
         }
-
+        foreach( $facets as $k => $v ) {
+            $entry["facet_{$k}"] = $v;
+        }
         return( $entry );
     }
 

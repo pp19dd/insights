@@ -14,6 +14,22 @@ function smarty_modifier_ago($tm, $cur_tm = null) {
     return $x;
 }
 
+function smarty_block_aggregate($parms, $content, &$smarty, &$repeat ) {
+
+    if( $repeat ) {
+
+        $ret = sprintf(
+            "%s %s%s",
+            trim($parms["input"]),
+            $parms["prefix"],
+            $parms["add"]
+        );
+
+        return($ret);
+    }
+
+}
+
 function smarty_block_rewrite($parms, $content, &$smarty, &$repeat ) {
 
     if( $repeat ) {

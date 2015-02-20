@@ -1,5 +1,7 @@
 h1 { font-size: 18px; color: gray }
 
+#pick_add_insight { border-left: 1px solid silver; }
+
 .insights_show_by_menu .btn { margin-bottom: 0.5em; }
 
 .insights_entry_count { color: silver; font-size:10px; }
@@ -206,13 +208,39 @@ textarea { resize:vertical }
 
 span.highlight { background-color: #FFFF88; padding: 4px; }
 
-.aggregations h5 { color: gold }
+.aggregations h5 {
+    color: white;
+    background-color: #132fbe;
+    /* background-color: #ff851b; */
+    font-weight: bold;
+    padding:6px;
+}
 .aggregations { }
 .aggregations ul { margin:0; padding:0; }
-.aggregations li { margin:0; padding:0; list-style: none }
+.aggregations li {
+	margin:0;
+	padding:0;
+	list-style: none;
+	font-size: 12px;
+	font-family: Arial,​Helvetica,​"Arial Unicode MS",​sans-serif;
+	padding-left:6px;
+	margin-bottom:3px;
+}
 
 .aggregation {
 	float:left;
-	border-right: 1px solid silver;
-	margin-right:10px;
+	/*border-right: 1px solid silver;*/
+
+	width:14.285714285714285714285714285714%;
+}
+
+.aggregation ul {
+	max-height: 165px;
+	overflow-y:auto;
+}
+
+.aggregations {
+    /* border-bottom: 2px solid #132fbe; */
+    /* border-bottom: 2px solid #ff851b; */
+	padding-bottom:2px;
 }

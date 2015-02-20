@@ -7,7 +7,7 @@ require( "init.php" );
 
 $E = new Insights_ElasticSearch();
 
-$t = $E->getEntry(1);
+### $t = $E->getEntry(1);
 
 $E->deleteIndex();
 $E->createIndex();

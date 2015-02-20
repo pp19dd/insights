@@ -2,10 +2,6 @@
 
 {if $pages.page_count > 1}
 <ul class="pagination">
-	<li style="color:black; border:0px;">
-		<a style="border:0px;">{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</a>
-
-	</li>
 	<li class="">
 {if $pages.current > 1}
 		<a href="?{rewrite p=$pages.current-1}{/rewrite}">&lt;</a>
@@ -27,13 +23,13 @@
 {/if}
 	</li>
 </ul>
-{else}
-<h1>{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>
 {/if}
 
 {/function}
 
 <div class="clearfix"></div>
+
+<h1 class="table_title">{$elasticsearch_results.exact.hits.total} result{if $elasticsearch_results.exact.hits.total != 1}s{/if}</h1>
 
 {pagination}
 

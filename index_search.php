@@ -17,11 +17,17 @@ $pages = insights_search_pagination($page);
 
 // elastic search mode
 $search_results = array(
-	"exact"	=> $ELASTIC->Query(
-		insights_build_es_query($search, $pages["from"])
-	),
-	"fuzzy" => array()
+	"exact" => array( "hits" => array("total" => 0), "total" => ""),
+	"fuzzy" => array( "hits" => array("total" => 0), "total" => "")
 );
+
+try {
+	$search_results["exact"] = $ELASTIC->Query(
+		insights_build_es_query($search, $pages["from"])
+	);
+} catch( Exception $e ) {
+	// :(
+}
 
 // given # of results, compute # of available pages
 $result_count = $search_results["exact"]["hits"]["total"];

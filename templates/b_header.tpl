@@ -16,7 +16,8 @@
 {if $can.view && !$is_admin}
 <li>
 	<span class="btn btn-sm">
-		<a href="{$base_url}?range=day&day=watchlist&all=1">Watch List</a>
+		<a href="{$base_url}?range=day&day=watchlist&all=1">Watch<br/>List</a>
+		<span class="disabled_badge insights_entry_count insights_watchlist_count"></span>
 	</span>
 </li>
 <li>
@@ -26,14 +27,18 @@
 	</span>
 </li>
 <li>
-	<span class="disabled_badge insights_entry_count insights_watchlist_count"></span>
-		<input
-			title="Click or hit ESC key to show"
-			class="btn btn-xs" type="button"
-			value="Add insight..."
-			role="button" id="pick_add_insight"
-			style="margin-right:20px"
-		/>
+	<span class="btn btn-sm" id="pick_add_insight">
+		<a>+ Create a <br/>New Insight</a>
+	</span>
+	{*<!--
+	<input
+		title="Click or hit ESC key to show"
+		class="btn btn-xs" type="button"
+		value="Add insight..."
+		role="button" id="pick_add_insight"
+		style="margin-right:20px"
+	/>
+	-->*}
 </li>
 {/if}
 

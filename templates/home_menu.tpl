@@ -83,7 +83,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 
 {/function}
 
-<div class="insights_range">
+<div class="insights_range" style="display:none">
 <table style="width:100%" border="0" class="">
 	<tr>
 		<td rowspan="2">

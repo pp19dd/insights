@@ -112,8 +112,13 @@ function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
                 $matches[] = '{ "match": { "map_services": { "query": "' . $f["word"] . '", "operator": "and" } } }';
                 break;
 
+            case 'date':
+                $matches[] = '{ "match": { "deadline": { "query": "' . $f["word"] . '", "operator": "and" } } }';
+                #pre($f);
+                break;
+
             default:
-                pre($search);
+                ####pre($search);
                 break;
         }
     }
@@ -131,13 +136,13 @@ function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
         },
         "sort": { "deadline_dt": "desc" },
         "aggregations": {
-            "reporters": { "terms": { "field": "map_facet_reporters" , "size": 50} },
-            "beats": { "terms": { "field": "map_facet_beats" , "size": 50} },
-            "editors": { "terms": { "field": "map_facet_editors" , "size": 50} },
-            "divisions": { "terms": { "field": "map_facet_divisions" , "size": 50} },
-            "services": { "terms": { "field": "map_facet_services" , "size": 50} },
-            "mediums": { "terms": { "field": "map_facet_mediums" , "size": 50} },
-            "regions": { "terms": { "field": "map_facet_regions", "size": 50 } }
+            "reporters": { "terms": { "field": "facet_reporters" , "size": 500} },
+            "beats": { "terms": { "field": "facet_beats" , "size": 500} },
+            "editors": { "terms": { "field": "facet_editors" , "size": 500} },
+            "divisions": { "terms": { "field": "facet_divisions" , "size": 500} },
+            "services": { "terms": { "field": "facet_services" , "size": 500} },
+            "mediums": { "terms": { "field": "facet_mediums" , "size": 500} },
+            "regions": { "terms": { "field": "facet_regions", "size": 500 } }
         }
     }
     ';
