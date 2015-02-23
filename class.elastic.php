@@ -102,9 +102,24 @@ EOF;
     }
 
     function createIndex() {
+
+        $mapping = array(
+            'properties' => array(
+                'deadline_dt' => array(
+                    'type' => 'date',
+                    'format' => 'yyyy-MM-dd HH:mm:ss'
+                )
+            )
+        );
+
         try {
             $ret = $this->client->indices()->create(array(
-                "index"=>"insights"
+                "index"=>"insights",
+                "body"=>array(
+                    "mappings" => array(
+                        "entry" => $mapping
+                    )
+                )
             ));
             return( $ret );
         } catch( Exception $e ) {
