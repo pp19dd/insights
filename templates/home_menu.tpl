@@ -132,7 +132,7 @@ btn btn-sm btn-default btn_range_{$range} btn_range{$suffix} btn_range_custom{$s
 
 <div class="clearfix after_range"></div>
 
-{if !isset($smarty.get.keywords)}
+{if 0}
 
 {*<!-- ------------------------------------------------------------------
        menu buttons for different map filters

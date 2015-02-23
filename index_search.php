@@ -5,7 +5,11 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 # search is now specialized: ElasticSearch
 # ============================================================================
 
-$search = insights_parse_search_words( $_GET['keywords'] );
+if( !isset( $_GET['keywords'] ) ) {
+	$search = insights_parse_search_words( "date:" . $RANGE->active->range_start_human );
+} else {
+	$search = insights_parse_search_words( $_GET['keywords'] );
+}
 
 // pagination hints
 if( !isset( $_GET['p']) ) {

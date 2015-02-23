@@ -1,5 +1,12 @@
 
 {if isset($elasticsearch_results) && isset($elasticsearch_results.exact) && isset($elasticsearch_results.exact.aggregations)}
+{if isset($smarty.get.day) && $smarty.get.day == "HFR"}
+
+{elseif isset($smarty.get.day) && $smarty.get.day == "watchlist"}
+
+{elseif isset($smarty.get.edit)}
+
+{else}
 
 {function name="aggregations"}
 <div class="aggregation">
@@ -7,7 +14,7 @@
     <ul>
 {foreach from=$field.buckets item=bucket}
         <li>
-            <a href="?keywords={aggregate input=$smarty.get.keywords prefix=$search add=$lookup[$bucket.key].name}{/aggregate}&search=Search">
+            <a href="?keywords={aggregate input=$smarty.get.keywords|default:"" prefix=$search add=$lookup[$bucket.key].name}{/aggregate}&search=Search">
                 {$lookup[$bucket.key].name}
                 <span class="insights_entry_count">{$bucket.doc_count}</span>
             </a>
@@ -21,8 +28,14 @@
     <div class="aggregation">
         <h5>Deadline</h5>
         <ul>
-            <li>2015</li>
-            <li>2014</li>
+{if !isset($smarty.get.keywords)}
+            <li>Showing today's date.</li>
+            <li><a href="?search=search&amp;keywords=date:{$range->day->today}">Share permalink.</a></li>
+            <li>&nbsp;</li>
+{/if}
+            <li><a href="?search=search&keywords=date:{$range->day->prev->today}">Prev: {$range->day->prev->today}</a></li>
+            <li><a href="#" class="pick_date_exact" id="id_range_from" data-date="2015-02-23" data-date-format="yyyy-mm-dd">Choose Date</a></li>
+            <li><a href="?search=search&keywords=date:{$range->day->next->today}">Next: {$range->day->next->today}</a></li>
         </ul>
     </div>
     {*<!--{aggregations title="Divisions" lookup=$divisions field=$elasticsearch_results.exact.aggregations.divisions}-->*}
@@ -35,4 +48,5 @@
     <div class="clearfix"></div>
 </div>
 
+{/if}
 {/if}

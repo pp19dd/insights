@@ -41,7 +41,7 @@
 {if isset($custom_edit_link)}
 				href="{$base_url}?edit={$entry.id}"
 {else}
-				href="?edit={$entry.id}"
+				href="?{rewrite edit=$entry.id}{/rewrite}"
 {/if}
 				class="btn btn-default btn-sm"
 				type="button"
@@ -64,7 +64,7 @@
 			<tr>
 				<th class="column_slug">Slug</th>
 				<th class="column_description">Description</th>
-				<th class="column_deadline">Deadline</th>
+				<th class="column_deadline" data-defaultsort="desc">Deadline</th>
 				<th class="column_origin">Origin</th>
 				<th class="column_medium">Medium</th>
 				<th class="column_beat">Beat</th>

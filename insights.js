@@ -45,6 +45,19 @@ $('#input_deadline,#entry_deadline').datepicker({
 
 
 // range buttons (from, until)
+$('.pick_date_exact').datepicker({
+	onRender: function(e) {
+		if( typeof insights_data.activity.list[ymd(e)] != 'undefined' ) {
+			var cal_css_class = 'today_' + insights_data.activity.list[ymd(e)];
+			return( cal_css_class );
+		}
+		return( '' );
+	}
+}).on('changeDate', function(e) {
+	var date = ymd(e.date);
+	window.location = "?search=Search&keywords=date:" + date;
+});
+
 $('.pick_date').datepicker({
 	onRender: function(e) {
 		if( typeof insights_data.activity.list[ymd(e)] != 'undefined' ) {
@@ -197,7 +210,7 @@ $(document).ready( function() {
 	insights_watchlist.init();
 
 	$("#search_form_search").focus();
-	
+
 });
 
 //isotope is fighting bootstrap, table for now

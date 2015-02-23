@@ -6,7 +6,7 @@ if( !defined("INSIGHTS_RUNNING") ) die("Error 211.");
 debug hint:
 SET GLOBAL general_log = 'ON'
 SET GLOBAL general_log = 'OFF'
-
+SHOW VARIABLES LIKE '%general_log%'
 
 $database = new VOA_DB(
     DATABASE__HOST,

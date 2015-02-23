@@ -228,18 +228,15 @@ function insights_add_insight( $p, $requesting_entry_id = -1 ) {
             `{$tbl}entries`
         set
             `is_deleted`='No',
-            `preslug`=:preslug,
             `slug`=:slug,
             `description`=:description,
             `camera_assigned`=:camera,
             `deadline`=:deadline,
-            `deadline_time`={$time_string},
-            `deadline_dt`='{$deadline_dt_string}'
+            `deadline_time`={$time_string}
         where
             `id`=:entry_id
         limit 1",
         array(
-            ":preslug" => trim(strip_tags($p['preslug'])),
             ":slug" => trim(strip_tags($p['slug'])),
             ":description" => trim(strip_tags($p['description'])),
             ":camera" => (isset($p["camera_assigned"]) ? 'Yes' : 'No' ),

@@ -134,7 +134,9 @@ function insights_build_es_query($search, $from = 0, $per_page = PER_PAGE) {
                 ]
             }
         },
-        "sort": { "deadline_dt": "desc" },
+        "sort": [
+            { "deadline_dt": { "order": "desc" } }
+        ],
         "aggregations": {
             "reporters": { "terms": { "field": "facet_reporters" , "size": 500} },
             "beats": { "terms": { "field": "facet_beats" , "size": 500} },

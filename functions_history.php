@@ -28,15 +28,13 @@ function insights_backup($entry_id) {
     $db->Query(
         "/* backup {$entry_id} */
         insert into `{$tbl}entries`
-            (`preslug`, `slug`, `deadline`, `deadline_time`, `deadline_dt`, `description`, `is_deleted`, `is_starred`, `camera_assigned`)
+            (`slug`, `deadline`, `deadline_time`, `description`, `is_deleted`, `is_starred`, `camera_assigned`)
         values
-            (:preslug, :slug, :deadline, :deadline_time, :deadline_dt, :description, :is_deleted, :is_starred, :camera_assigned)",
+            (:slug, :deadline, :deadline_time, :description, :is_deleted, :is_starred, :camera_assigned)",
         array(
-            ":preslug"          => $old["preslug"],
             ":slug"             => $old["slug"],
             ":deadline"         => $old["deadline"],
             ":deadline_time"    => $old["deadline_time"],
-            ":deadline_dt"      => $old["deadline_dt"],
             ":description"      => $old["description"],
             ":is_deleted"       => $old["is_deleted"],
             ":is_starred"       => $old["is_starred"],
@@ -95,6 +93,8 @@ function insights_history( $entry_id, $action, $note = '', $skip_copy = false ) 
 function insights_simplified_map( $map ) {
     $s = array();
 
+    if( !is_array($map) ) return($s);
+
     # first pass, collect data
     foreach( $map as $k => $v ) {
         if( !isset($s[$v['type']]) ) $s[$v['type']] = array();
@@ -149,26 +149,37 @@ function insights_get_history( $entry_id ) {
         $resolved = array();
 
         # assume that is_deleted will match
-        foreach( $r['history'][$k]['map'] as $k2 => $map ) {
-            $map = resolve_map(
-                $map["type"],
-                $map["other_id"],
-                "No"
-            );
+        if(
+            isset($r["history"]) &&
+            isset($r["history"][$k]) &&
+            isset($r["history"][$k]["map"])
+        ) {
+            foreach( $r['history'][$k]['map'] as $k2 => $map ) {
+                $map = resolve_map(
+                    $map["type"],
+                    $map["other_id"],
+                    "No"
+                );
 
-            $r['history'][$k]['map'][$k2]['resolved'] = $map;
+                $r['history'][$k]['map'][$k2]['resolved'] = $map;
+            }
+
+            # make a simple list for a text-based diff
+            $r['history'][$k]['simple'] = insights_simplified_map( $r['history'][$k]['map'] );
+
+        } else {
+            //FIXME: there are some errors here
         }
 
-        # make a simple list for a text-based diff
-        $r['history'][$k]['simple'] = insights_simplified_map( $r['history'][$k]['map'] );
     }
 
-    $simple = array();
-    foreach( $r['history'] as $k => $v ) {
-        $simple[] = $v['simple'];
-    }
-    $simple = array_reverse($simple);
-    $diff = array();
+    #$diff = array();
+
+    # $simple = array();
+    # foreach( $r['history'] as $k => $v ) {
+    #     $simple[] = $v['simple'];
+    # }
+    # $simple = array_reverse($simple);
 
     #for( $i = 0; $i < count($simple)-1; $i++ ) {
         #pre( $simple[$i], false); pre( $simple[$i+1]);

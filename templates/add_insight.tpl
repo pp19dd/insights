@@ -19,6 +19,7 @@
 		<div class="form-group">
 			<label for="input_slug" class="col-sm-2 control-label">Slug</label>
 			<div class="col-sm-10">
+{*<!--
 <table width="100%" class="slug-preslug">
 	<tr>
 		<td class="td-preslug">
@@ -41,6 +42,7 @@
 
 		</td>
 		<td>
+-->*}
 			<input
 				name="slug"
 				type="text"
@@ -49,9 +51,11 @@
 				id="input_slug"
 				placeholder="Insight slug"
 			/>
+{*<!--
 		</td>
 	</tr>
 </table>
+-->*}
 			</div>
 		</div>
 		<div class="form-group">

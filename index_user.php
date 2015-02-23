@@ -60,13 +60,28 @@ if(
 # ============================================================================
 # calendar navigation / general queries
 # ============================================================================
+
+# $range_day = $_GET['day'];
+$range_day = $_GET['day'];
+if( isset( $_GET['keywords']) ) {
+	$matches = preg_match( "/date:([0-9|\-]+)/", $_GET['keywords'], $m );
+	if( $matches == 1 && is_array($m) && isset( $m[1] ) ) {
+		$range_day = $m[1];
+	} else {
+		$range_day = date("Y-m-d");
+	}
+} else {
+	$range_day = date("Y-m-d");
+}
+
 $RANGE = new Insights_Range(
-	$_GET['day'],
+	$range_day,
 	(isset($_GET['day']) ? $_GET['day'] : null),
 	(isset($_GET['until']) ? $_GET['until'] : null)
 );
 $RANGE->active = $RANGE->{$_GET['range']};
 $smarty->assign( 'range', $RANGE );
+#pre($RANGE);
 
 # ============================================================================
 # ajax / post mode?
@@ -120,7 +135,20 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'watchlist' ) {
 	$smarty->assign( "watchlist", $watchlist );
 }
 
-if( isset( $_GET['keywords']) ) {
+# ============================================================================
+# default behavior is now a search
+# ============================================================================
+if( isset( $_GET['day']) && $_GET['day'] == "watchlist" ) {
+	// ...
+} else {
+
+	if( isset( $_GET['keywords']) ) {
+		// good...
+	} else {
+		# $_GET['keywords'] = "date:" . $RANGE->active->range_start_human;
+		$_GET['search'] = "Search";
+	}
+
 	include( "index_search.php" );
 }
 

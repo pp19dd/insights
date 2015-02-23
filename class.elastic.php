@@ -48,7 +48,7 @@ EOF;
         $params = array("body" => $raw_json);
 
         $params["index"] = "insights";
-        #$params["type"] = "entries";
+        #$params["search_type"] = "query_then_fetch";
 
         return( $this->client->search($params) );
     }
@@ -104,22 +104,28 @@ EOF;
     function createIndex() {
 
         $mapping = array(
-            'properties' => array(
-                'deadline_dt' => array(
-                    'type' => 'date',
-                    'format' => 'yyyy-MM-dd HH:mm:ss'
-                )
-            )
+            #"dynamic" => "strict"#,
+            #'properties' => array(
+                ### 'deadline_time' => array(
+                ###     'type' => 'date',
+                ###     'format' => "HH:mm"
+                ### )
+                # 'deadline_dt' => array(
+                #     'type' => 'date',
+                #     # 'format' => 'YYYY-MM-dd HH:mm:ss'
+                #     'format' => "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd"
+                # )
+            #)
         );
 
         try {
             $ret = $this->client->indices()->create(array(
-                "index"=>"insights",
+                "index"=>"insights"/*,
                 "body"=>array(
                     "mappings" => array(
                         "entry" => $mapping
                     )
-                )
+                )*/
             ));
             return( $ret );
         } catch( Exception $e ) {
@@ -195,11 +201,35 @@ EOF;
     }
 
     function getEntry($id) {
+        static $count = 0;
+        $count++;
+
+#$start = microtime(true);
+#mysql_query("SET GLOBAL general_log = 'ON'");
+#global $db;
+#$db->query("SET GLOBAL general_log = 'ON'");
         $entries = insights_get_entries(array(
             "id" => array($id)
         ));
         $entry = $entries[$id];
 
+        $deadline = $entry["deadline"];
+        if( is_null($deadline) ) {  # hfr. ....
+            $deadline = "1980-01-01";
+        }
+        if( !is_null($entry["deadline_time"]) ) {
+            $deadline .= $entry["deadline_time"];
+        }
+
+        $entry["deadline_dt"] = sprintf(
+            "%sT%s",
+            date("Y-m-d", strtotime($deadline)),
+            date("H:i:s", strtotime($deadline))
+        );
+
+        $entry["deadline_dt"] = strtotime($entry["deadline_dt"]);
+
+#pre($entry["deadline_dt"]);die;
         $map = $this->reduceMap($entry["map"]);
         $facets = $this->getMapIDs($entry["map"]);
 
@@ -211,6 +241,18 @@ EOF;
         foreach( $facets as $k => $v ) {
             $entry["facet_{$k}"] = $v;
         }
+# $stop = microtime(true);
+# printf( "count %s, id %s, start = %s, stop = %s, diff = %s<br/>\n",
+# $count,
+# $id,
+# $start,
+# $stop,
+# ($stop - $start)
+# );
+# $db->query("SET GLOBAL general_log = 'OFF'");
+# die;
+# #echo microtime(true). "<br/>";
+# if( $count > 10 ) die;
         return( $entry );
     }
 
