@@ -1,5 +1,5 @@
 
-<form class="" action="http://localhost/insights/?" method="get">
+<form class="" action="http://{$base_url}/" method="get">
 
 <table width="100%">
     <tr>
