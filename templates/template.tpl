@@ -9,10 +9,10 @@
 
 {$screen = "screen"}{$print = "print"}
 
-<link media="{$screen}" href="{$base_url}js/bootstrap-3.0.2/css/bootstrap.min.css" rel="stylesheet" />
-<link media="{$screen}" href="{$base_url}js/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
-<link media="{$screen}" href="{$base_url}js/bootstrap-select2-3.4.5/select2.css" rel="stylesheet" />
-<link media="{$screen}" href="{$base_url}js/bootstrap-sortable/Contents/bootstrap-sortable.css" rel="stylesheet" />
+<link media="{$screen}" href="{$base_url}js/bootstrap-3.0.2/css/bootstrap.min.css?v={$version|default:1}" rel="stylesheet" />
+<link media="{$screen}" href="{$base_url}js/bootstrap-datepicker/css/datepicker.css?v={$version|default:1}" rel="stylesheet" />
+<link media="{$screen}" href="{$base_url}js/bootstrap-select2-3.4.5/select2.css?v={$version|default:1}" rel="stylesheet" />
+<link media="{$screen}" href="{$base_url}js/bootstrap-sortable/Contents/bootstrap-sortable.css?v={$version|default:1}" rel="stylesheet" />
 <link media="{$screen}" href="{$base_url}insights.css?v={$version|default:1}" rel="stylesheet" />
 <link media="{$print}" href="{$base_url}print.css?v={$version|default:1}" rel="stylesheet" />
 
@@ -67,16 +67,16 @@
 <hr/>
 </div> <!-- /container -->
 
-<script src="{$base_url}js/bootstrap-jquery/jquery.js"></script>
-<script src="{$base_url}js/jquery.cookie.js"></script>
-<script src="{$base_url}js/bootstrap-3.0.2/js/bootstrap.min.js"></script>
-<script src="{$base_url}js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="{$base_url}js/bootstrap-select2-3.4.5/select2.min.js"></script>
-<script src="{$base_url}js/rainbowvis-js/rainbowvis.js"></script>
-<script src="{$base_url}js/bootstrap-sortable/Scripts/bootstrap-sortable.js"></script>
-<script src="{$base_url}js/bootstrap-sortable/Scripts/moment.min.js"></script>
-<script src="{$base_url}js/isotope/isotope.pkgd.min.js"></script>
-<script src="{$base_url}js/jquery.highlight.js"></script>
+<script src="{$base_url}js/bootstrap-jquery/jquery.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/jquery.cookie.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/bootstrap-3.0.2/js/bootstrap.min.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/bootstrap-datepicker/js/bootstrap-datepicker.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/bootstrap-select2-3.4.5/select2.min.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/rainbowvis-js/rainbowvis.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/bootstrap-sortable/Scripts/bootstrap-sortable.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/bootstrap-sortable/Scripts/moment.min.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/isotope/isotope.pkgd.min.js?v={$version|default:1}"></script>
+<script src="{$base_url}js/jquery.highlight.js?v={$version|default:1}"></script>
 
 {if !$is_admin}
 {include file="_data.tpl"}
