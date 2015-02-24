@@ -52,11 +52,6 @@ $db = new VOA_DB(
 	VOA_DATABASE__PASS
 );
 
-if( isset( $_GET['dinotest']) ) {
-	$_POST['derp'] = "LOL\'s";
-	$strip_slashes = new deal_with_slashes();
-	$strip_slashes->Clean();
-	pre($_POST );
-	echo "?";
-	die;
-}
+# har, slashes... in 2015
+$strip_slashes = new deal_with_slashes();
+$strip_slashes->Clean();
