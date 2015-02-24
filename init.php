@@ -17,6 +17,7 @@ require_once( 'class.url.php' );
 require_once( 'class.user.php' );
 require_once( 'class.elastic.php' );
 require_once( 'class.db.php' );
+require_once( 'class.stripslashes.php' );
 
 // table name fragments: main portion
 $INSIGHTS_TABLES = array(
@@ -50,3 +51,12 @@ $db = new VOA_DB(
 	VOA_DATABASE__USER,
 	VOA_DATABASE__PASS
 );
+
+if( isset( $_GET['dinotest']) ) {
+	$_POST['derp'] = "LOL\'s";
+	$strip_slashes = new deal_with_slashes();
+	$strip_slashes->Clean();
+	pre($_POST );
+	echo "?";
+	die;
+}
