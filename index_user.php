@@ -138,7 +138,10 @@ if( isset( $_GET['day'] ) && $_GET['day'] === 'watchlist' ) {
 # ============================================================================
 # default behavior is now a search
 # ============================================================================
-if( isset( $_GET['day']) && $_GET['day'] == "watchlist" ) {
+if(
+	(isset( $_GET['day']) && $_GET['day'] == "watchlist") ||
+	(isset( $_GET['day']) && $_GET['day'] == "HFR")
+) {
 	// ...
 } else {
 
