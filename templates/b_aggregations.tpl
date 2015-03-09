@@ -13,12 +13,14 @@
     <h5>{$title}</h5>
     <ul>
 {foreach from=$field.buckets item=bucket}
+{if isset($lookup[$bucket.key])}
         <li>
             <a href="?keywords={aggregate input=$smarty.get.keywords|default:"" prefix=$search add=$lookup[$bucket.key].name}{/aggregate}&search=Search">
                 {$lookup[$bucket.key].name}
                 <span class="insights_entry_count">{$bucket.doc_count}</span>
             </a>
         </li>
+{/if}
 {/foreach}
     </ul>
 </div>
@@ -34,7 +36,7 @@
             <li>&nbsp;</li>
 {/if}
             <li><a href="?search=search&keywords=date:{$range->day->prev->today}">Prev: {$range->day->prev->today}</a></li>
-            <li><a href="#" class="pick_date_exact" id="id_range_from" data-date="2015-02-23" data-date-format="yyyy-mm-dd">Choose Date</a></li>
+            <li><a href="#" class="pick_date_exact" id="id_range_from" data-date="{$range->actually_today}" data-date-format="yyyy-mm-dd">Choose Date</a></li>
             <li><a href="?search=search&keywords=date:{$range->day->next->today}">Next: {$range->day->next->today}</a></li>
         </ul>
     </div>
