@@ -78,8 +78,8 @@ class Insights_User {
 		if( !isset( $_POST['password'] ) ) return( false );
 		
 		$requested_level = 0;
-		if( md5($_POST['password']) == TEMP_EDIT_PWD ) $requested_level = 5;
-		if( md5($_POST['password']) == TEMP_CONF_PWD ) $requested_level = 10;
+		if( md5(strtolower(trim($_POST['password']))) == TEMP_EDIT_PWD ) $requested_level = 5;
+		if( md5(strtolower(trim($_POST['password']))) == TEMP_CONF_PWD ) $requested_level = 10;
 		
 		if( $requested_level > 0 ) {
 			$this->doLogin( $requested_level );
